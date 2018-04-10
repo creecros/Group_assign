@@ -293,7 +293,8 @@ class TaskFinderModel extends Base
                 'uc.username AS creator_username',
                 'uc.name AS creator_name',
                 CategoryModel::TABLE.'.description AS category_description',
-                ColumnModel::TABLE.'.position AS column_position'
+                ColumnModel::TABLE.'.position AS column_position',
+                GroupModel::TABLE.'.name AS assigned_groupname'
             )
             ->join(UserModel::TABLE, 'id', 'owner_id', TaskModel::TABLE)
             ->left(UserModel::TABLE, 'uc', 'id', TaskModel::TABLE, 'creator_id')
@@ -301,6 +302,7 @@ class TaskFinderModel extends Base
             ->join(ColumnModel::TABLE, 'id', 'column_id', TaskModel::TABLE)
             ->join(SwimlaneModel::TABLE, 'id', 'swimlane_id', TaskModel::TABLE)
             ->join(ProjectModel::TABLE, 'id', 'project_id', TaskModel::TABLE)
+            ->join(GroupModel::TABLE, 'id', 'group_id', UserModel::TABLE)
             ->eq(TaskModel::TABLE.'.id', $task_id)
             ->findOne();
     }
