@@ -1,68 +1,56 @@
 <?php
 
-namespace Kanboard\Plugin\Subtaskdate;
+namespace Kanboard\Plugin\group_assign;
 
 use Kanboard\Core\Plugin\Base;
-use Kanboard\Core\Translator;
 use Kanboard\Model\TaskModel;
-//use Kanboard\Plugin\Subtaskdate\Filter\SubTaskDueDateFilter; //Needs work
-use Kanboard\Model\SubtaskModel;
+//use Kanboard\Plugin\group_assign\Filter\group_assign_filter; //Needs work
+use Kanboard\Model\TaskFinderModel;
 use PicoDb\Table;
 
 class Plugin extends Base
 {
     public function initialize()
     {
-        $this->template->setTemplateOverride('header', 'theme:layout/header');
+        // $this->template->setTemplateOverride('header', 'theme:layout/header');
 
-        //Model
-        $this->hook->on('model:subtask:creation:prepare', array($this, 'beforeSave'));
-        $this->hook->on('model:subtask:modification:prepare', array($this, 'beforeSave'));
+        //Models
+        $this->hook->on();
+        $this->hook->on();
         
-        //Forms
-        $this->template->hook->attach('template:subtask:form:create', 'Subtaskdate:subtask/form');
-        $this->template->hook->attach('template:subtask:form:edit', 'Subtaskdate:subtask/form');
+        //Details
+        $this->template->setTemplateOverride();
+        $this->template->setTemplateOverride();
         
-        //Task creatioh and modify
+        //Task creation and modify
         $this->template->setTemplateOverride('task_creation/show', 'group_assign:task_creation/show');
         $this->template->setTemplateOverride('task_modification/show', 'group_assign:task_modification/show');
       
-        //Board Tooltip
-        $this->template->hook->attach('template:board:tooltip:subtasks:header:before-assignee', 'Subtaskdate:subtask/table_header');
-        $this->template->hook->attach('template:board:tooltip:subtasks:rows', 'Subtaskdate:subtask/table_rows');
+        //Board 
+        $this->template->hook->attach();
+        $this->template->hook->attach();
         
     }
-    public function onStartup()
-    {
-        Translator::load($this->languageModel->getCurrentLanguage(), __DIR__.'/Locale');
-    }
-    public function beforeSave(array &$values)
-    {
-        $values = $this->dateParser->convert($values, array('due_date'));
-        $this->helper->model->resetFields($values, array('due_date'));
-    }
-    public function applyDateFilter(Table $query)
-    {
-        $query->lte(SubtaskModel::TABLE.'.due_date', time());
-    }
+
+
     public function getPluginName()
     {
-        return 'Subtaskdate';
+        return 'Group Assign';
     }
     public function getPluginDescription()
     {
-        return t('Add a new due date field to subtasks');
+        return t('Add group assignment to tasks');
     }
     public function getPluginAuthor()
     {
-        return 'Manuel Raposo';
+        return 'Craig Crosby';
     }
     public function getPluginVersion()
     {
-        return '1.0.1';
+        return '0.0.1';
     }
     public function getPluginHomepage()
     {
-        return 'https://github.com/eSkiSo/Subtaskdate';
+        return 'https://github.com/creecros/group_assign';
     }
 }
