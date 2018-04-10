@@ -18,15 +18,15 @@ class Plugin extends Base
         $this->hook->on();
         $this->hook->on();
         
-        //Details
+        //Task - Template - details.php
         $this->template->setTemplateOverride();
         $this->template->setTemplateOverride();
         
-        //Task creation and modify
+        //Forms - task_creation.php and task_modification.php
         $this->template->setTemplateOverride('task_creation/show', 'group_assign:task_creation/show');
         $this->template->setTemplateOverride('task_modification/show', 'group_assign:task_modification/show');
       
-        //Board 
+        //Board - Template - task_private.php, task_avatar.php, task_public.php
         $this->template->hook->attach();
         $this->template->hook->attach();
         
