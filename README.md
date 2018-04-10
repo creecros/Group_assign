@@ -9,3 +9,5 @@ Assign Tasks to Groups
 * Need to override tamplates
 * Need to override Helpers
 * Need to override Models
+* Need to look at dashboard query
+* Need to add filters
