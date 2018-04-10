@@ -12,23 +12,15 @@ class Plugin extends Base
 {
     public function initialize()
     {
-        // $this->template->setTemplateOverride('header', 'theme:layout/header');
-
         //Models
-        $this->hook->on();
-        $this->hook->on();
         
         //Task - Template - details.php
-        $this->template->setTemplateOverride();
-        $this->template->setTemplateOverride();
         
         //Forms - task_creation.php and task_modification.php
         $this->template->setTemplateOverride('task_creation/show', 'group_assign:task_creation/show');
         $this->template->setTemplateOverride('task_modification/show', 'group_assign:task_modification/show');
       
         //Board - Template - task_private.php, task_avatar.php, task_public.php
-        $this->template->hook->attach();
-        $this->template->hook->attach();
         
     }
 
