@@ -149,7 +149,7 @@ class NewTaskHelper extends Base
             } else {
                 $groupnames[] = $group['name'];
             }
-            x++;
+            $x++;
         }
 
         $attributes = array_merge(array('tabindex="4"'), $attributes);
