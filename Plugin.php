@@ -1,10 +1,10 @@
 <?php
 
-namespace Kanboard\Plugin\group_assign;
+namespace Kanboard\Plugin\Group_assign;
 
 use Kanboard\Core\Plugin\Base;
 use Kanboard\Model\TaskModel;
-//use Kanboard\Plugin\group_assign\Filter\group_assign_filter; //Needs work
+//use Kanboard\Plugin\group_assign\Filter\Group_assign_filter; //Needs work
 use Kanboard\Model\TaskFinderModel;
 use PicoDb\Table;
 
@@ -12,6 +12,9 @@ class Plugin extends Base
 {
     public function initialize()
     {
+        //Helper
+        $this->helper->register('newTaskHelper', '\Kanboard\Plugin\Group_assign\Helper\NewTaskHelper');
+        
         //Models
         
         //Task - Template - details.php
