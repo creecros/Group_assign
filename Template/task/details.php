@@ -77,7 +77,7 @@
             <div class="task-summary-column">
                 <ul class="no-bullet">
                     <li>
-                        <strong><?= t('assignee:') ?></strong>
+                        <strong><?= t('Assignee:') ?></strong>
                         <span>
                         <?php if ($task['assignee_username']): ?>
                             <?= $this->text->e($task['assignee_name'] ?: $task['assignee_username']) ?>
@@ -89,7 +89,11 @@
                     <li>
                         <strong><?= t('Assigned Group:') ?></strong>
                         <span>
-                            <?= $task['owner_gp'] ?>
+                        <?php if ($task['assigned_groupname']): ?>
+                            <?= $this->text->e($task['owner_gp'] ?: $task['assigned_groupname']) ?>
+                        <?php else: ?>
+                            <?= t('not assigned') ?>
+                        <?php endif ?>
                         </span>
                     </li>
                     <?php if ($task['creator_username']): ?>
