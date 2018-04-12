@@ -34,7 +34,7 @@ class Plugin extends Base
     {
       return array(
         'Plugin\Group_assign\Controller' => array(
-          'NewTaskCreationController'
+          'TaskCreationController'
         ),
       );
     }
