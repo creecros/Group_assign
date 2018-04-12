@@ -144,7 +144,7 @@ class NewTaskHelper extends Base
         $groupnames[] = t('Unassigned');
             
         foreach ($groups as $group) { 
-                $groupnames[] = $group['name'];
+            array_splice($groupnames, 1, 0, $group['name']);    
             }
 
 
