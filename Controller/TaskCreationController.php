@@ -1,6 +1,6 @@
 <?php
 
-namespace Kanboard\Controller;
+namespace namespace Kanboard\Plugin\Group_assign\Controller;
 
 use Kanboard\Core\Controller\PageNotFoundException;
 
@@ -10,7 +10,7 @@ use Kanboard\Core\Controller\PageNotFoundException;
  * @package  Kanboard\Controller
  * @author   Frederic Guillot
  */
-class TaskCreationController extends BaseController
+class NewTaskCreationController extends BaseController
 {
     /**
      * Display a form to create a new task
