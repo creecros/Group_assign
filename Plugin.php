@@ -19,13 +19,7 @@ class Plugin extends Base
         $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
             return new NewTaskFinderModel($c);
         });
-        
-        //Controllers
-        $this->container['taskCreationController'] = $this->container->factory(function ($c) {
-            return new NewTaskCreationController($c);
-        });
-        
-        
+           
         //Task - Template - details.php
         
         //Forms - task_creation.php and task_modification.php
@@ -34,6 +28,15 @@ class Plugin extends Base
       
         //Board - Template - task_private.php, task_avatar.php, task_public.php
         
+    }
+    
+     public function getClasses()
+    {
+      return array(
+        'Plugin\Timetrackingeditor\Controller' => array(
+          'NewTaskCreationController'
+        ),
+      );
     }
 
 
