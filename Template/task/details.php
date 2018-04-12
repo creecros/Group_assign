@@ -89,11 +89,7 @@
                     <li>
                         <strong><?= t('Assigned Group:') ?></strong>
                         <span>
-                        <?php if ($task['owner_gp']): ?>
-                            <?= $this->text->e($task['assignee_groupname'] ?: $task['owner_gp']) ?>
-                        <?php else: ?>
-                            <?= t('not assigned') ?>
-                        <?php endif ?>
+                            <?= $task['owner_gp'] ?>
                         </span>
                     </li>
                     <?php if ($task['creator_username']): ?>
