@@ -140,7 +140,7 @@ class NewTaskHelper extends Base
             return '';
         }
         $groups = $this->projectGroupRoleModel->getGroups($values['project_id']);
-        for each ($groups as $group) { echo $group['name'];}
+        foreach ($groups as $group) { echo $group['name'];}
         $attributes = array_merge(array('tabindex="4"'), $attributes);
 
         $html = $this->helper->form->label(t('Assigned Group'), 'group_id');
