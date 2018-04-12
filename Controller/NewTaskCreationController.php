@@ -15,7 +15,7 @@ use Kanboard\Core\Controller\PageNotFoundException;
  * @package  Kanboard\Controller
  * @author   Frederic Guillot
  */
-class NewTaskCreationController extends \Kanboard\Controller\TaskCreationController
+class TaskCreationController extends \Kanboard\Controller\TaskCreationController
 {
     /**
      * Display a form to create a new task
