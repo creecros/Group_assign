@@ -37,7 +37,7 @@ class NewTaskCreationController extends BaseController
             'users_list' => $this->projectUserRoleModel->getAssignableUsersList($project['id'], true, false, $project['is_private'] == 1),
             'categories_list' => $this->categoryModel->getList($project['id']),
             'swimlanes_list' => $swimlanesList,
-            'groups' => $this->projectGroupRoleModel ->getGroups($project['id']),
+            'groups' => $this->projectGroupRoleModel->getGroups($project['id']),
         )));
     }
 
