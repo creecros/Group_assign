@@ -13,9 +13,7 @@ class Plugin extends Base
     public function initialize()
     {
         //Helper
-        $this->container['taskHelper'] = $this->container->factory(function ($c) {
-            return new NewTaskHelper($c);
-        });
+        $this->helper->register('newTaskHelper', '\Kanboard\Plugin\MyPlugin\Helper\NewTaskHelper');
         
         //Models
         $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
