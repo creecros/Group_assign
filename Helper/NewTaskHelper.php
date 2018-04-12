@@ -19,7 +19,6 @@ class NewTaskHelper extends Base
      * @var array
      */
     private $columns = array();
-            $groups = $this->projectGroupRoleModel->getGroups($project['id']);
 
     public function getColors()
     {
