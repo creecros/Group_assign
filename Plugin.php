@@ -33,7 +33,7 @@ class Plugin extends Base
      public function getClasses()
     {
       return array(
-        'Plugin\Timetrackingeditor\Controller' => array(
+        'Plugin\Group_assign\Controller' => array(
           'NewTaskCreationController'
         ),
       );
