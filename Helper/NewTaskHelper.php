@@ -141,7 +141,7 @@ class NewTaskHelper extends Base
         }
         $groups = $this->projectGroupRoleModel->getGroups($values['project_id']);
         $groupnames = array();
-        $x = 0
+        $x = 0;
             
         foreach ($groups as $group) { 
             if (x===0) {
