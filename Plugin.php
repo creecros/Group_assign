@@ -4,8 +4,8 @@ namespace Kanboard\Plugin\Group_assign;
 
 use Kanboard\Core\Plugin\Base;
 use Kanboard\Model\TaskModel;
-//use Kanboard\Plugin\group_assign\Filter\Group_assign_filter; //Needs work
-use Kanboard\Model\TaskFinderModel;
+use Kanboard\Plugin\Group_assign\Model\NewTaskFinderModel;
+use Kanboard\Plugin\Group_assign\Helper\NewTaskHelper;
 use PicoDb\Table;
 
 class Plugin extends Base
