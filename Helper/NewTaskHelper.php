@@ -1,6 +1,6 @@
 <?php
 
-namespace Kanboard\Helper;
+namespace Kanboard\Plugin\Group_assign\Helper;
 
 use Kanboard\Core\Base;
 
