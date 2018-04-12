@@ -11,3 +11,8 @@ Assign Tasks to Groups
 * Need to override Models
 * Need to look at dashboard query
 * Need to add filters
+
+# Progress 4.12.18
+Selecting and storing assigned group functions during task creation.
+Need to make it work in modification and display
+Much more to go.
