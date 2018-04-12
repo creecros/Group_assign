@@ -19,6 +19,7 @@ class NewTaskHelper extends Base
      * @var array
      */
     private $columns = array();
+    $groups = $this->project
 
     public function getColors()
     {
