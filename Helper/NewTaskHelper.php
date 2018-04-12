@@ -10,7 +10,7 @@ use Kanboard\Core\Base;
  * @package helper
  * @author  Frederic Guillot
  */
-class TaskHelper extends Base
+class NewTaskHelper extends Base
 {
     /**
      * Local cache for project columns
