@@ -90,8 +90,6 @@
                         <strong><?= t('Assigned Group:') ?></strong>
                         <span>
                         <?php if ($task['assigned_groupname']): ?>
-                            <?= $this->text->e($task['assigned_group'] ?: $task['assigned_groupname']) ?>
-                        <?php else: ?>
                             <?= t('not assigned') ?>
                         <?php endif ?>
                         </span>
