@@ -133,12 +133,12 @@ class NewTaskHelper extends Base
         return $html;
     }
     
-    public function renderGroupField(array $groups, array $values, array $errors = array(), array $attributes = array())
+    public function renderGroupField(array $values, array $errors = array(), array $attributes = array())
     {
         if (isset($values['project_id']) && ! $this->helper->projectRole->canChangeAssignee($values)) {
             return '';
         }
-
+        $groups = $this->projectGroupRoleModel->getGroups($values['project_id']);
         $attributes = array_merge(array('tabindex="4"'), $attributes);
 
         $html = $this->helper->form->label(t('Assigned Group'), 'group_id');
