@@ -3,6 +3,7 @@
 namespace Kanboard\Plugin\Group_assign\Model;
 
 use Kanboard\Model\TaskModel;
+use Kanboard\Model\CommentModel;
 use Kanboard\Core\Base;
 
 
