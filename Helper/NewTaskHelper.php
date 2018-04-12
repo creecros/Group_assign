@@ -144,7 +144,7 @@ class NewTaskHelper extends Base
         $x = 0;
             
         foreach ($groups as $group) { 
-            if (x===0) {
+            if (x < 1) {
                 $groupnames[] = t('Unassigned');
             } else {
                 $groupnames[] = $group['name'];
