@@ -4,6 +4,8 @@ namespace Kanboard\Plugin\Group_assign\Model;
 
 use Kanboard\Model\TaskModel;
 use Kanboard\Model\CommentModel;
+use Kanboard\Model\TaskFileModel;
+use Kanboard\Model;
 use Kanboard\Core\Base;
 
 
