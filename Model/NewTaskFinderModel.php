@@ -1,6 +1,6 @@
 <?php
 
-namespace Kanboard\Model;
+namespace Kanboard\Plugin\Group_assign\Model;
 
 use Kanboard\Core\Base;
 
