@@ -13,7 +13,7 @@ class Plugin extends Base
     public function initialize()
     {
         //Helper
-        $this->helper->register('newTaskHelper', '\Kanboard\Plugin\MyPlugin\Helper\NewTaskHelper');
+        $this->helper->register('newTaskHelper', '\Kanboard\Plugin\Group_assign\Helper\NewTaskHelper');
         
         //Models
         $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
