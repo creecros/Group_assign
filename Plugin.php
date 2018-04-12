@@ -15,8 +15,6 @@ class Plugin extends Base
     public function initialize()
     {
         
-        $groups = $this->projectGroupRoleModel->getGroups($project['id']);
-
         //Helpers
         $this->helper->register('newTaskHelper', '\Kanboard\Plugin\Group_assign\Helper\NewTaskHelper');
         
