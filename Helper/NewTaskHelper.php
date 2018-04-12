@@ -141,8 +141,17 @@ class NewTaskHelper extends Base
         }
         $groups = $this->projectGroupRoleModel->getGroups($values['project_id']);
         $groupnames = array();
-        
-        foreach ($groups as $group) { $groupnames[] = $group['name'];}
+        $x = 0
+            
+        foreach ($groups as $group) { 
+            if (x===0) {
+                $groupnames[] = t('Unassigned');
+            } else {
+                $groupnames[] = $group['name'];
+            }
+            x++;
+        }
+
         $attributes = array_merge(array('tabindex="4"'), $attributes);
 
         $html = $this->helper->form->label(t('Assigned Group'), 'owner_gp');
