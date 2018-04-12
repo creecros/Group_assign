@@ -145,8 +145,8 @@ class NewTaskHelper extends Base
         foreach ($groups as $group) { $groupnames[] = $group['name'];}
         $attributes = array_merge(array('tabindex="4"'), $attributes);
 
-        $html = $this->helper->form->label(t('Assigned Group'), 'group_id');
-        $html .= $this->helper->form->select('group_id', $groupnames, $values, $errors, $attributes);
+        $html = $this->helper->form->label(t('Assigned Group'), 'owner_gp');
+        $html .= $this->helper->form->select('owner_gp', $groupnames, $values, $errors, $attributes);
         $html .= '&nbsp;';
 
         return $html;
