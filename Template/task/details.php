@@ -77,7 +77,7 @@
             <div class="task-summary-column">
                 <ul class="no-bullet">
                     <li>
-                        <strong><?= t('Assignee:') ?></strong>
+                        <strong><?= t('assignee:') ?></strong>
                         <span>
                         <?php if ($task['assignee_username']): ?>
                             <?= $this->text->e($task['assignee_name'] ?: $task['assignee_username']) ?>
