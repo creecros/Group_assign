@@ -2,7 +2,9 @@
 
 namespace Kanboard\Plugin\Group_assign\Model;
 
+use Kanboard\Model\TaskModel;
 use Kanboard\Core\Base;
+
 
 /**
  * Task Finder model
