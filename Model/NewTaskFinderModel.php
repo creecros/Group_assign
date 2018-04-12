@@ -10,7 +10,7 @@ use Kanboard\Core\Base;
  * @package  Kanboard\Model
  * @author   Frederic Guillot
  */
-class TaskFinderModel extends Base
+class NewTaskFinderModel extends Base
 {
     /**
      * Get query for project user overview
