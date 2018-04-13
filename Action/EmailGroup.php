@@ -51,7 +51,7 @@ class EmailGroup extends Base
     {
 	$groupmembers = $this->groupMemberModel->getMembers($data['task']['owner_gp']);
 	
-             if (! empty($groupmembers) {
+             if (! empty($groupmembers)) {
 	       foreach ($groupmembers as $members) {
                $user = $this->userModel->getById($members['id']);
                if (! empty($user['email'])) {
