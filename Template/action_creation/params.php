@@ -23,14 +23,10 @@
             <?= $this->form->select('params['.$param_name.']', $users_list, $values) ?>
         <?php elseif ($this->text->contains($param_name, 'group_id')): ?>
            <?php $groups = $this->model->projectGroupRoleModel->getGroups('project_id'); ?>
-           <?php $groupnames = array(); ?>
-           <?php $groupids = array(); ?>
+           <?php $groupnames = array_column($groups, 'name'); ?>
+           <?php $groupids = array_column($groups, 'id'); ?>
            <?php $groupids[] = 0; ?>
            <?php $groupnames[] = t('Unassigned'); ?>
-                 <?php foreach ($groups as $group): ?>
-                      <?php $groupnames[] = $group['name']; ?> 
-                      <?php $groupids[] = $group['id']; ?>
-                 <?php endforeach ?>
            <?php $groupvalues = array_combine($groupids, $groupnames); ?>
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->select('params['.$param_name.']', $groupvalues, $values) ?>
