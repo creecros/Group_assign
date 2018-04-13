@@ -6,6 +6,9 @@ Assign Tasks to Groups
 * Can only assign groups to a task that have permissions in the Project.
 * If a user is in a group that a task is assigned to, it will show up on their dashboard.
 * If a group is assigned, it will be appear on the task in detail view, board view, creation, modification. 
+* Includes 2 Automatic Actions to utilize the Assigned Group
+  * Email Assigned Group on Task Modification, Creation, Close, or Movement
+  * Email Assigned Group of impending Task Due Date
 * using ``assignee:me`` in filter will find tasks assigned to groups that the user is in.
 * using ``assignee:'GroupName'`` in filter will find tasks assigned to a group by NAME of the group.
 * using ``assignee:`GroupID'`` in filter will find tasks assigned to a group by ID number of group.
