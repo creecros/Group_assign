@@ -22,7 +22,18 @@
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->select('params['.$param_name.']', $users_list, $values) ?>
         <?php elseif ($this->text->contains($param_name, 'group_id')): ?>
-            <?= $this->helper->newTaskHelper->renderGroupField($values, array()) ?>
+            <?= $groups = $this->projectGroupRoleModel->getGroups($values['project_id']) ?>
+            <?= $groupnames = array() ?>
+            <?= $groupids = array() ?>
+            <?= $groupids[] = 0 ?>
+            <?= $groupnames[] = t('Unassigned') ?>
+            <?= foreach ($groups as $group): ?>
+                 <?= $groupnames[] = $group['name'] ?>
+                 <?= $groupids[] = $group['id'] ?>
+            <?php endforeach ?>
+            <?= $groupvalues = array_combine($groupids, $groupnames) ?>
+            <?= $this->form->label($param_desc, $param_name) ?>
+            <?= $this->form->select('params['.$param_name.']', $groupvalues, $values) ?>
         <?php elseif ($this->text->contains($param_name, 'check_box')): ?>
             <?= $this->form->label(t('Options'), $param_name) ?>
             <?= $this->form->checkbox('params['.$param_name.']', $param_desc, 1) ?>    
