@@ -201,13 +201,15 @@ class NewTaskFinderModel extends Base
                 ColumnModel::TABLE.'.title AS column_name',
                 ColumnModel::TABLE.'.position AS column_position',
                 SwimlaneModel::TABLE.'.name AS swimlane_name',
-                ProjectModel::TABLE.'.name AS project_name'
+                ProjectModel::TABLE.'.name AS project_name',
+                GroupModel::TABLE.'.name AS assigned_groupname'
             )
             ->join(UserModel::TABLE, 'id', 'owner_id', TaskModel::TABLE)
             ->left(UserModel::TABLE, 'uc', 'id', TaskModel::TABLE, 'creator_id')
             ->join(CategoryModel::TABLE, 'id', 'category_id', TaskModel::TABLE)
             ->join(ColumnModel::TABLE, 'id', 'column_id', TaskModel::TABLE)
             ->join(SwimlaneModel::TABLE, 'id', 'swimlane_id', TaskModel::TABLE)
+            ->join(GroupModel::TABLE, 'id', 'owner_gp', TaskModel::TABLE)
             ->join(ProjectModel::TABLE, 'id', 'project_id', TaskModel::TABLE);
     }
 
