@@ -3,6 +3,7 @@
 namespace Kanboard\Plugin\Group_assign\Action;
 
 use Kanboard\Model\TaskModel;
+use Kanboard\Model\ProjectGroupRoleModel;
 use Kanboard\Action\Base;
 
 class AssignGroup extends Base
