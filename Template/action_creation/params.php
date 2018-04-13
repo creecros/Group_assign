@@ -22,7 +22,7 @@
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->select('params['.$param_name.']', $users_list, $values) ?>
         <?php elseif ($this->text->contains($param_name, 'group_id')): ?>
-            <?= $groups = $this->projectGroupRoleModel->getGroups('project_id') ?>
+            <?= $groups = $this->model->projectGroupRoleModel->getGroups('project_id') ?>
             <?= $groupnames = array() ?>
             <?= $groupids = array() ?>
             <?= $groupids[] = 0 ?>
