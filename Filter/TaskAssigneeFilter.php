@@ -3,7 +3,7 @@
 namespace Kanboard\Plugin\Group_assign\Filter;
 
 use Kanboard\Core\Filter\FilterInterface;
-use Kanboard\Filter\BaseDateFilter;
+use Kanboard\Filter\BaseFilter;
 use Kanboard\Model\TaskModel;
 use Kanboard\Model\UserModel;
 
