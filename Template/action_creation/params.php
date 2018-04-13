@@ -25,8 +25,6 @@
            <?php $groups = $this->model->projectGroupRoleModel->getGroups('project_id'); ?>
            <?php $groupnames = array_column($groups, 'name'); ?>
            <?php $groupids = array_column($groups, 'id'); ?>
-           <?php $groupids[] = 0; ?>
-           <?php $groupnames[] = t('Unassigned'); ?>
            <?php $groupvalues = array_combine($groupids, $groupnames); ?>
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->select('params['.$param_name.']', $groupvalues, $values) ?>
