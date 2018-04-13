@@ -28,7 +28,10 @@
            <?php array_unshift($groupnames, t('Unassigned')); ?>
            <?php array_unshift($groupids, 0); ?>
            <?php $groupvalues = array_combine($groupids, $groupnames); ?>
-            <?= $groupvalues ?>
+            
+            <?php foreach ($groupvalues as $f): ?>
+             <?= $f ?>
+            <? php endforeach ?>
             <?= $users_list ?>
             <?= $values ?>
             <?= $this->form->label($param_desc, $param_name) ?>
