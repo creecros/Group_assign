@@ -22,3 +22,23 @@ Find bugs or missing functionality, please report it.
 - [ ] Add relationship for ``assignee:'Username'`` or ``assignee:'Name'`` in the table lookup 
 - [ ] Add an event for assigned group change.
 - [ ] Incorporate into notifications
+
+# Screenshots
+
+## Task Details:
+![image](https://user-images.githubusercontent.com/26339368/38753714-493c926e-3f2d-11e8-8ef7-271bab0e255d.png)
+
+## Task Creation/Modification:
+![image](https://user-images.githubusercontent.com/26339368/38753761-692db008-3f2d-11e8-8ce2-59d88ddf39b1.png)
+
+## Board View:
+![image](https://user-images.githubusercontent.com/26339368/38753779-77b931d8-3f2d-11e8-8160-ef2563119252.png)
+
+## Automatic Actions:
+![image](https://user-images.githubusercontent.com/26339368/38754253-0a0fd2de-3f2f-11e8-9dde-2036de011a6b.png)
+
+![image](https://user-images.githubusercontent.com/26339368/38754279-2285d0d4-3f2f-11e8-88c2-0ed91e452f90.png)
+
+![image](https://user-images.githubusercontent.com/26339368/38754288-310df2c6-3f2f-11e8-9993-39e96b55076c.png)
+
+
