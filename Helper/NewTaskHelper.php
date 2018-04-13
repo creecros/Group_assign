@@ -152,7 +152,7 @@ class NewTaskHelper extends Base
         $attributes = array_merge(array('tabindex="4"'), $attributes);
 
         $html = $this->helper->form->label(t('Assigned Group'), 'owner_gp');
-        $html .= $this->helper->form->select('owner_gp', $groupnames, $values, $errors, $attributes);
+        $html .= $this->helper->form->select('owner_gp', $groups, $values, $errors, $attributes);
         $html .= '&nbsp;';
 
         return $html;
