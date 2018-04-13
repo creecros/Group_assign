@@ -17,7 +17,7 @@ Assign Tasks to Groups
 # Future enhancments
 Find bugs or missing functionality, please report it.
 
-* Add a few basic automatic actions that utilize Groups assigned
+* ~~~Add a few basic automatic actions that utilize Groups assigned~~
 * Add relationship for ``assignee:'Username'`` or ``assignee:'Name'`` in the table lookup 
 * Add an event for assigned group change.
 * Incorporate into notifications
