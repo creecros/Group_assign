@@ -142,7 +142,7 @@ class NewTaskHelper extends Base
         $groups = $this->projectGroupRoleModel->getGroups($values['project_id']);
         $groupnames = array();
         $groupnames[] = t('Unassigned');
-        $keys = array('id', 'name', 'role');
+        $keys = array(t('id'), t('name'), t('role'));
         
         foreach ($groups as $group) { 
             // array_splice($groupnames, 1, 0, $group['name']);
