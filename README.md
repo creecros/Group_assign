@@ -6,7 +6,7 @@ Assign Tasks to Groups
 * Can only assign groups to a task that have permissions in the Project.
 * If a user is in a group that a task is assigned to, it will show up on their dashboard.
 * If a group is assigned, it will be appear on the task in detail view, board view, creation, modification. 
-* Includes 2 Automatic Actions to utilize the Assigned Group
+* Includes 3 Automatic Actions to utilize the Assigned Group
   * Email Assigned Group on Task Modification, Creation, Close, or Movement
   * Email Assigned Group of impending Task Due Date
   * Assign task to a group on creation or movement
