@@ -41,6 +41,7 @@ class SendTaskAssignee extends Base
                 'project_id',
                 'column_id',
 		'owner_id',
+		'owner_gp',
             ),
         );
     }
@@ -48,20 +49,24 @@ class SendTaskAssignee extends Base
     
     public function doAction(array $data)
     {
-        $user = $this->userModel->getById($data['task']['owner_id']);
-
+	$groupmembers = $this->groupMemberModel->getMembers($data['task']['owner_gp']);
+	
+             if (! empty($groupmembers) {
+	       foreach ($groupmembers as $members) {
+               $user = $this->userModel->getById($members['id']);
                if (! empty($user['email'])) {
-            $this->emailClient->send(
-                $user['email'],
-                $user['name'] ?: $user['username'],
-                $this->getParam('subject'),
-                $this->template->render('notification/task_create', array(
+                 $this->emailClient->send(
+                   $user['email'],
+                   $user['name'] ?: $user['username'],
+                   $this->getParam('subject'),
+                   $this->template->render('notification/task_create', array(
                     'task' => $data['task'],
-                ))
-            );
-
-            return true;
-        }
+                    ))
+                 );
+	       }
+	       }
+             return true;
+	     }
 
         return false;
     }
