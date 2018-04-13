@@ -42,15 +42,6 @@ class Plugin extends Base
         
     }
     
-     public function getClasses()
-    {
-      return array(
-        'Plugin\Group_assign\Controller' => array(
-          'TaskCreationController'
-        ),
-      );
-    }
-
 
     public function getPluginName()
     {
