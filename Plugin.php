@@ -9,6 +9,7 @@ use Kanboard\Plugin\Group_assign\Model\NewTaskFinderModel;
 use Kanboard\Plugin\Group_assign\Helper\NewTaskHelper;
 use Kanboard\Plugin\Group_assign\Controller\TaskCreationController;
 use Kanboard\Plugin\Group_assign\Filter\TaskAssigneeFilter;
+use Kanboard\Plugin\Group_assign\Action\EmailGroup;
 use PicoDb\Table;
 
 class Plugin extends Base
@@ -39,6 +40,10 @@ class Plugin extends Base
             $taskLexer->withFilter(TaskAssigneeFilter::getInstance()->setCurrentUserId($c['userSession']->getId()));
             return $taskLexer;
         });
+        
+        //Actions
+        $this->actionManager->register(new EmailGroup($this->container));
+
         
     }
     
