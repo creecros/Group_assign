@@ -10,7 +10,7 @@ class SendTaskAssignee extends Base
    
     public function getDescription()
     {
-        return t('Send a task by email to assignee');
+        return t('Send a task by email to assigned group members');
     }
 
    
