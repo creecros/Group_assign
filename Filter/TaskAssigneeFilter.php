@@ -9,12 +9,7 @@ use Kanboard\Model\UserModel;
 use Kanboard\Model\GroupMemberModel;
 use Kanboard\Model\GroupModel;
 
-/**
- * Filter tasks by assignee
- *
- * @package filter
- * @author  Frederic Guillot
- */
+
 class TaskAssigneeFilter extends BaseFilter implements FilterInterface
 {
     /**
