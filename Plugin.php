@@ -45,6 +45,9 @@ class Plugin extends Base
         //Actions
         $this->actionManager->register(new EmailGroup($this->container));
         $this->actionManager->register(new EmailGroupDue($this->container));
+        
+        //Params
+        $this->template->setTemplateOverride('action_creation/params', 'group_assign:action_creation/params');
 
     }
     
