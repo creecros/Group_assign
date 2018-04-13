@@ -5,12 +5,7 @@ namespace Kanboard\Plugin\Group_assign\Helper;
 use Kanboard\Model\ProjectGroupRoleModel;
 use Kanboard\Core\Base;
 
-/**
- * Task helpers
- *
- * @package helper
- * @author  Frederic Guillot
- */
+
 class NewTaskHelper extends Base
 {
     /**
