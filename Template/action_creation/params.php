@@ -26,14 +26,8 @@
            <?php $groupnames = array_column($groups, 'name'); ?>
            <?php $groupids = array_column($groups, 'id'); ?>
            <?php array_unshift($groupnames, t('Unassigned')); ?>
-           <?php array_unshift($groupids, 0); ?>
+           <?php array_unshift($groupids, t('0')); ?>
            <?php $groupvalues = array_combine($groupids, $groupnames); ?>
-            
-            <?php foreach ($groupvalues as $f): ?>
-             <?= $f ?>
-            <? php endforeach ?>
-            <?= $users_list ?>
-            <?= $values ?>
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->select('params['.$param_name.']', $groupvalues, $values) ?>
         <?php elseif ($this->text->contains($param_name, 'check_box')): ?>
