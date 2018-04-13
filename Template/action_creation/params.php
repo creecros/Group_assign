@@ -28,6 +28,7 @@
            <?php array_unshift($groupnames, t('Unassigned')); ?>
            <?php array_unshift($groupids, 0); ?>
            <?php $groupvalues = array_combine($groupids, $groupnames); ?>
+            <?= $groupvalues ?>
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->select('params['.$param_name.']', $groupvalues, $values) ?>
         <?php elseif ($this->text->contains($param_name, 'check_box')): ?>
