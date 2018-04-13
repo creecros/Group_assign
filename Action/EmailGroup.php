@@ -5,7 +5,7 @@ namespace Kanboard\Plugin\Group_assign\Action;
 use Kanboard\Model\TaskModel;
 use Kanboard\Action\Base;
 
-class SendTaskAssignee extends Base
+class EmailGroup extends Base
 {
    
     public function getDescription()
