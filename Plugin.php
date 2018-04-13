@@ -31,7 +31,8 @@ class Plugin extends Base
         $this->template->setTemplateOverride('task_creation/show', 'group_assign:task_creation/show');
         $this->template->setTemplateOverride('task_modification/show', 'group_assign:task_modification/show');
       
-        //Board - Template - task_private.php, task_avatar.php, task_public.php
+        //Board
+         $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/group');
         
         //Filter
         $this->container->extend('taskLexer', function($taskLexer, $c) {
