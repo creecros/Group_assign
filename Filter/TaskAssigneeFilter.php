@@ -58,12 +58,12 @@ class TaskAssigneeFilter extends BaseFilter implements FilterInterface
     {
         if (is_int($this->value) || ctype_digit($this->value)) {
             $this->query->eq(TaskModel::TABLE.'.owner_id', $this->value);
-            $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id='$user_id')");
+            $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id='$this->value')");
         } else {
             switch ($this->value) {
                 case 'me':
                     $this->query->eq(TaskModel::TABLE.'.owner_id', $this->currentUserId);
-                    $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id='$user_id')");
+                    $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id='$this->currentUserId')");
                     break;
                 case 'nobody':
                     $this->query->eq(TaskModel::TABLE.'.owner_id', 0);
