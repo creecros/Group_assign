@@ -137,6 +137,7 @@ class NewTaskFinderModel extends Base
                     ->beginOr()
                     ->eq(TaskModel::TABLE.'.owner_id', $user_id)
                     ->addCondition(TaskModel::TABLE.".id IN (SELECT task_id FROM ".SubtaskModel::TABLE." WHERE ".SubtaskModel::TABLE.".user_id='$user_id')")
+                    ->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id='$user_id')")
                     ->closeOr()
                     ->eq(TaskModel::TABLE.'.is_active', TaskModel::STATUS_OPEN)
                     ->eq(ProjectModel::TABLE.'.is_active', ProjectModel::ACTIVE)
