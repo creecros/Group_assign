@@ -74,7 +74,7 @@ class AssignGroup extends Base
     {
         $values = array(
             'id' => $data['task_id'],
-            'owner_id' => $this->getParam('group_id'),
+            'owner_gp' => $this->getParam('group_id'),
         );
 
         return $this->taskModificationModel->update($values);
