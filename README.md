@@ -9,6 +9,7 @@ Assign Tasks to Groups
 * Includes 2 Automatic Actions to utilize the Assigned Group
   * Email Assigned Group on Task Modification, Creation, Close, or Movement
   * Email Assigned Group of impending Task Due Date
+  * Assign task to a group on creation or movement
 * using ``assignee:me`` in filter will find tasks assigned to groups that the user is in.
 * using ``assignee:'GroupName'`` in filter will find tasks assigned to a group by NAME of the group.
 * using ``assignee:`GroupID'`` in filter will find tasks assigned to a group by ID number of group.
