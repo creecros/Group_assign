@@ -32,6 +32,12 @@ class Plugin extends Base
       
         //Board - Template - task_private.php, task_avatar.php, task_public.php
         
+        //Filter
+        $this->container->extend('taskLexer', function($taskLexer, $c) {
+            $taskLexer->withFilter(TaskAssigneeFilter::getInstance()->setCurrentUserId($c['userSession']->getId());
+            return $taskLexer;
+        });
+        
     }
     
      public function getClasses()
