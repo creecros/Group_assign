@@ -6,6 +6,7 @@ use Kanboard\Core\Filter\FilterInterface;
 use Kanboard\Filter\BaseFilter;
 use Kanboard\Model\TaskModel;
 use Kanboard\Model\UserModel;
+use Kanboard\Model\GroupMemberModel;
 
 /**
  * Filter tasks by assignee
