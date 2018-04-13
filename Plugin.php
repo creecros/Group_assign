@@ -10,6 +10,7 @@ use Kanboard\Plugin\Group_assign\Helper\NewTaskHelper;
 use Kanboard\Plugin\Group_assign\Controller\TaskCreationController;
 use Kanboard\Plugin\Group_assign\Filter\TaskAssigneeFilter;
 use Kanboard\Plugin\Group_assign\Action\EmailGroup;
+use Kanboard\Plugin\Group_assign\Action\EmailGroupDue;
 use PicoDb\Table;
 
 class Plugin extends Base
@@ -43,8 +44,8 @@ class Plugin extends Base
         
         //Actions
         $this->actionManager->register(new EmailGroup($this->container));
+        $this->actionManager->register(new EmailGroupDue($this->container));
 
-        
     }
     
 
