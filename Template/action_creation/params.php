@@ -27,7 +27,7 @@
             <?= $groupids = array() ?>
             <?= $groupids[] = 0 ?>
             <?= $groupnames[] = t('Unassigned') ?>
-            <?= foreach ($groups as $group): ?>
+            <?php foreach ($groups as $group): ?>
                  <?= $groupnames[] = $group['name'] ?>
                  <?= $groupids[] = $group['id'] ?>
             <?php endforeach ?>
