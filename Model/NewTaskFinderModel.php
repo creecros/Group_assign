@@ -78,12 +78,6 @@ use Kanboard\Model\UserUnreadNotificationModel;
 use Kanboard\Core\Base;
 
 
-/**
- * Task Finder model
- *
- * @package  Kanboard\Model
- * @author   Frederic Guillot
- */
 class NewTaskFinderModel extends Base
 {
     /**
