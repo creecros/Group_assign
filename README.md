@@ -1,6 +1,9 @@
 # Group_assign
 Assign Tasks to Groups
 
+# Requirements
+Kanboard v1.1.0 or Higher
+
 # Features and usage
 * A task can have an assigned group.
 * Can only assign groups to a task that have permissions in the Project.
