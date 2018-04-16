@@ -57,7 +57,7 @@ class NewTaskHelper extends Base
         return $this->helper->form->textEditor('description', $values, $errors, array('tabindex' => 2));
     }
 
-    public function renderDescriptionTemplateDropdown($projectId)
+ /*   public function renderDescriptionTemplateDropdown($projectId)
     {
         $templates = $this->predefinedTaskDescriptionModel->getAll($projectId);
 
@@ -80,7 +80,7 @@ class NewTaskHelper extends Base
 
         return '';
     }
-
+*/
     public function renderTagField(array $project, array $tags = array())
     {
         $options = $this->tagModel->getAssignableList($project['id']);
