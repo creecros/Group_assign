@@ -6,7 +6,7 @@ use Kanboard\Model\ProjectGroupRoleModel;
 use Kanboard\Core\Base;
 
 
-class NewTaskHelper extends Base
+class TaskHelper extends Base
 {
     /**
      * Local cache for project columns
@@ -57,30 +57,6 @@ class NewTaskHelper extends Base
         return $this->helper->form->textEditor('description', $values, $errors, array('tabindex' => 2));
     }
 
- /*   public function renderDescriptionTemplateDropdown($projectId)
-    {
-        $templates = $this->predefinedTaskDescriptionModel->getAll($projectId);
-
-        if (! empty($templates)) {
-            $html = '<div class="dropdown dropdown-smaller">';
-            $html .= '<a href="#" class="dropdown-menu dropdown-menu-link-icon"><i class="fa fa-floppy-o fa-fw" aria-hidden="true"></i>'.t('Template for the task description').' <i class="fa fa-caret-down" aria-hidden="true"></i></a>';
-            $html .= '<ul>';
-
-            foreach ($templates as  $template) {
-                $html .= '<li>';
-                $html .= '<a href="#" data-template-target="textarea[name=description]" data-template="'.$this->helper->text->e($template['description']).'" class="js-template">';
-                $html .= $this->helper->text->e($template['title']);
-                $html .= '</a>';
-                $html .= '</li>';
-            }
-
-            $html .= '</ul></div>';
-            return $html;
-        }
-
-        return '';
-    }
-*/
     public function renderTagField(array $project, array $tags = array())
     {
         $options = $this->tagModel->getAssignableList($project['id']);
@@ -149,20 +125,17 @@ class NewTaskHelper extends Base
             }
         
         $groupvalues = array_combine($groupids, $groupnames);
-
-
         $attributes = array_merge(array('tabindex="4"'), $attributes);
-
         $html = $this->helper->form->label(t('Assigned Group'), 'owner_gp');
         $html .= $this->helper->form->select('owner_gp', $groupvalues, $values, $errors, $attributes);
         $html .= '&nbsp;';
-
         return $html;
     }
 
+
     public function renderCategoryField(array $categories, array $values, array $errors = array(), array $attributes = array(), $allow_one_item = false)
     {
-        $attributes = array_merge(array('tabindex="5"'), $attributes);
+        $attributes = array_merge(array('tabindex="4"'), $attributes);
         $html = '';
 
         if (! (! $allow_one_item && count($categories) === 1 && key($categories) == 0)) {
@@ -175,7 +148,7 @@ class NewTaskHelper extends Base
 
     public function renderSwimlaneField(array $swimlanes, array $values, array $errors = array(), array $attributes = array())
     {
-        $attributes = array_merge(array('tabindex="6"'), $attributes);
+        $attributes = array_merge(array('tabindex="5"'), $attributes);
         $html = '';
 
         if (count($swimlanes) > 1) {
@@ -188,7 +161,7 @@ class NewTaskHelper extends Base
 
     public function renderColumnField(array $columns, array $values, array $errors = array(), array $attributes = array())
     {
-        $attributes = array_merge(array('tabindex="7"'), $attributes);
+        $attributes = array_merge(array('tabindex="6"'), $attributes);
 
         $html = $this->helper->form->label(t('Column'), 'column_id');
         $html .= $this->helper->form->select('column_id', $columns, $values, $errors, $attributes);
@@ -203,7 +176,7 @@ class NewTaskHelper extends Base
         $values += array('priority' => $project['priority_default']);
 
         $html = $this->helper->form->label(t('Priority'), 'priority');
-        $html .= $this->helper->form->select('priority', $options, $values, array(), array('tabindex="8"'));
+        $html .= $this->helper->form->select('priority', $options, $values, array(), array('tabindex="7"'));
 
         return $html;
     }
