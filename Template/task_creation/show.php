@@ -8,9 +8,6 @@
         <div class="task-form-main-column">
             <?= $this->task->renderTitleField($values, $errors) ?>
             <?= $this->task->renderDescriptionField($values, $errors) ?>
-            <?php if(method_exists('TaskHelper', 'renderDescriptionTemplateDropdown')): ?>
-            <?= $this->task->renderDescriptionTemplateDropdown($project['id']) ?>
-            <?php endif ?>
             <?= $this->task->renderTagField($project) ?>
 
             <?= $this->hook->render('template:task:form:first-column', array('values' => $values, 'errors' => $errors)) ?>
