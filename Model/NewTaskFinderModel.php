@@ -192,6 +192,7 @@ class NewTaskFinderModel extends Base
                 UserModel::TABLE.'.avatar_path AS assignee_avatar_path',
                 CategoryModel::TABLE.'.name AS category_name',
                 CategoryModel::TABLE.'.description AS category_description',
+                CategoryModel::TABLE.'.color_id AS category_color_id',
                 ColumnModel::TABLE.'.title AS column_name',
                 ColumnModel::TABLE.'.position AS column_position',
                 SwimlaneModel::TABLE.'.name AS swimlane_name',
@@ -365,7 +366,8 @@ class NewTaskFinderModel extends Base
                 'uc.name AS creator_name',
                 CategoryModel::TABLE.'.description AS category_description',
                 ColumnModel::TABLE.'.position AS column_position',
-                GroupModel::TABLE.'.name AS assigned_groupname'
+                GroupModel::TABLE.'.name AS assigned_groupname',
+                ColumnModel::TABLE.'.position AS column_position'
             )
             ->join(UserModel::TABLE, 'id', 'owner_id', TaskModel::TABLE)
             ->left(UserModel::TABLE, 'uc', 'id', TaskModel::TABLE, 'creator_id')
