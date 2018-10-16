@@ -15,7 +15,7 @@ class NewTaskFinderModelTest extends Base
     public function testGetDetails()
     {
         $taskCreationModel = new TaskCreationModel($this->container);
-        $taskFinderModel = new TaskFinderModel($this->container);
+        $taskFinderModel = new NewTaskFinderModel($this->container);
         $projectModel = new ProjectModel($this->container);
         $categoryModel = new \Kanboard\Model\CategoryModel($this->container);
         $this->assertEquals(1, $projectModel->create(array('name' => 'Project #1')));
@@ -71,7 +71,7 @@ class NewTaskFinderModelTest extends Base
     public function testGetTasksForDashboardWithHiddenColumn()
     {
         $taskCreationModel = new TaskCreationModel($this->container);
-        $taskFinderModel = new TaskFinderModel($this->container);
+        $taskFinderModel = new NewTaskFinderModel($this->container);
         $projectModel = new ProjectModel($this->container);
         $columnModel = new ColumnModel($this->container);
         $this->assertEquals(1, $projectModel->create(array('name' => 'Project #1')));
@@ -91,7 +91,7 @@ class NewTaskFinderModelTest extends Base
     public function testGetOverdueTasks()
     {
         $taskCreationModel = new TaskCreationModel($this->container);
-        $taskFinderModel = new TaskFinderModel($this->container);
+        $taskFinderModel = new NewTaskFinderModel($this->container);
         $projectModel = new ProjectModel($this->container);
         $this->assertEquals(1, $projectModel->create(array('name' => 'Project #1')));
         $this->assertEquals(1, $taskCreationModel->create(array('title' => 'Task #1', 'project_id' => 1, 'date_due' => strtotime('-1 day'))));
@@ -107,7 +107,7 @@ class NewTaskFinderModelTest extends Base
     public function testGetOverdueTasksByProject()
     {
         $taskCreationModel = new TaskCreationModel($this->container);
-        $taskFinderModel = new TaskFinderModel($this->container);
+        $taskFinderModel = new NewTaskFinderModel($this->container);
         $projectModel = new ProjectModel($this->container);
         $this->assertEquals(1, $projectModel->create(array('name' => 'Project #1')));
         $this->assertEquals(2, $projectModel->create(array('name' => 'Project #2')));
@@ -125,7 +125,7 @@ class NewTaskFinderModelTest extends Base
     public function testGetOverdueTasksByUser()
     {
         $taskCreationModel = new TaskCreationModel($this->container);
-        $taskFinderModel = new TaskFinderModel($this->container);
+        $taskFinderModel = new NewTaskFinderModel($this->container);
         $projectModel = new ProjectModel($this->container);
         $this->assertEquals(1, $projectModel->create(array('name' => 'Project #1')));
         $this->assertEquals(2, $projectModel->create(array('name' => 'Project #2')));
@@ -150,7 +150,7 @@ class NewTaskFinderModelTest extends Base
     public function testCountByProject()
     {
         $taskCreationModel = new TaskCreationModel($this->container);
-        $taskFinderModel = new TaskFinderModel($this->container);
+        $taskFinderModel = new NewTaskFinderModel($this->container);
         $projectModel = new ProjectModel($this->container);
         $this->assertEquals(1, $projectModel->create(array('name' => 'Project #1')));
         $this->assertEquals(2, $projectModel->create(array('name' => 'Project #2')));
@@ -163,7 +163,7 @@ class NewTaskFinderModelTest extends Base
     public function testGetProjectToken()
     {
         $taskCreationModel = new TaskCreationModel($this->container);
-        $taskFinderModel = new TaskFinderModel($this->container);
+        $taskFinderModel = new NewTaskFinderModel($this->container);
         $projectModel = new ProjectModel($this->container);
         $this->assertEquals(1, $projectModel->create(array('name' => 'Project #1')));
         $this->assertEquals(2, $projectModel->create(array('name' => 'Project #2')));
