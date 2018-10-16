@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/creecros/Group_assign.svg?branch=master)](https://travis-ci.com/creecros/Group_assign)
+
 # Group_assign
 Assign Tasks to Groups
 
