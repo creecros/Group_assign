@@ -7,6 +7,12 @@ use Kanboard\Plugin\Group_assign\Helper\NewTaskHelper;
 
 class NewTaskHelperTest extends Base
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $plugin = new Loader($this->container);
+        $plugin->scan();
+    }
     public function testSelectPriority()
     {
         $helper = new NewTaskHelper($this->container);
