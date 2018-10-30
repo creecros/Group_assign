@@ -6,6 +6,7 @@ use Kanboard\Core\Plugin\Base;
 use Kanboard\Model\TaskModel;
 use Kanboard\Model\ProjectGroupRoleModel;
 use Kanboard\Plugin\Group_assign\Model\NewTaskFinderModel;
+use Kanboard\Plugin\Group_assign\Model\OldTaskFinderModel;
 use Kanboard\Plugin\Group_assign\Helper\NewTaskHelper;
 use Kanboard\Plugin\Group_assign\Filter\TaskAssigneeFilter;
 use Kanboard\Plugin\Group_assign\Action\EmailGroup;
