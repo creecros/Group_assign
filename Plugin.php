@@ -6,6 +6,7 @@ use Kanboard\Core\Plugin\Base;
 use Kanboard\Model\TaskModel;
 use Kanboard\Model\ProjectGroupRoleModel;
 use Kanboard\Plugin\Group_assign\Model\NewTaskFinderModel;
+use Kanboard\Plugin\Group_assign\Model\OldTaskFinderModel;
 use Kanboard\Plugin\Group_assign\Helper\NewTaskHelper;
 use Kanboard\Plugin\Group_assign\Filter\TaskAssigneeFilter;
 use Kanboard\Plugin\Group_assign\Action\EmailGroup;
@@ -15,17 +16,33 @@ use PicoDb\Table;
 
 class Plugin extends Base
 {
+    
     public function initialize()
     {
         
         //Helpers
         $this->helper->register('newTaskHelper', '\Kanboard\Plugin\Group_assign\Helper\NewTaskHelper');
         
+        
         //Models
-        $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
-            return new NewTaskFinderModel($c);
-        });
-           
+        if (function_exists('\Schema\version_132') && DB_DRIVER == 'mysql') {
+            $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
+                return new NewTaskFinderModel($c);
+            });
+        } else if (function_exists('\Schema\version_119') && DB_DRIVER == 'sqlite') {
+            $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
+                return new NewTaskFinderModel($c);
+            });
+        } else if (function_exists('\Schema\version_110') && DB_DRIVER == 'postgres') {
+            $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
+                return new NewTaskFinderModel($c);
+            });
+        } else {
+            $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
+                return new OldTaskFinderModel($c);
+            });
+        }
+        
         //Task - Template - details.php
         $this->template->hook->attach('template:task:details:third-column', 'group_assign:task/details');
         
@@ -67,7 +84,7 @@ class Plugin extends Base
     }
     public function getPluginVersion()
     {
-        return '0.0.2';
+        return '0.0.3';
     }
     public function getPluginHomepage()
     {
