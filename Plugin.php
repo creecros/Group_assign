@@ -23,7 +23,7 @@ class Plugin extends Base
         $this->helper->register('newTaskHelper', '\Kanboard\Plugin\Group_assign\Helper\NewTaskHelper');
         
         //Models
-        if (function_exists('Schema\version_132') {
+        if (function_exists('Schema\version_132')) {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
                 return new NewTaskFinderModel($c);
             });
