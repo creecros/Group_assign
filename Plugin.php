@@ -15,17 +15,26 @@ use PicoDb\Table;
 
 class Plugin extends Base
 {
+    global $SCHEMA_VERSION;
+    
     public function initialize()
     {
+        $SCHEMA_VERSION = $this->db->getDriver()->getSchemaVersion();
         
         //Helpers
         $this->helper->register('newTaskHelper', '\Kanboard\Plugin\Group_assign\Helper\NewTaskHelper');
         
         //Models
-        $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
-            return new NewTaskFinderModel($c);
-        });
-           
+        if ($SCHEMA_VERSION >= 132) {
+            $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
+                return new NewTaskFinderModel($c);
+            });
+        } else {
+            $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
+                return new OldTaskFinderModel($c);
+            });
+        }
+        
         //Task - Template - details.php
         $this->template->hook->attach('template:task:details:third-column', 'group_assign:task/details');
         
@@ -67,7 +76,7 @@ class Plugin extends Base
     }
     public function getPluginVersion()
     {
-        return '0.0.2';
+        return '0.0.3';
     }
     public function getPluginHomepage()
     {
