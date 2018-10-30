@@ -15,17 +15,15 @@ use PicoDb\Table;
 
 class Plugin extends Base
 {
-    global $SCHEMA_VERSION;
     
     public function initialize()
     {
-        $SCHEMA_VERSION = $this->db->getDriver()->getSchemaVersion();
         
         //Helpers
         $this->helper->register('newTaskHelper', '\Kanboard\Plugin\Group_assign\Helper\NewTaskHelper');
         
         //Models
-        if ($SCHEMA_VERSION >= 132) {
+        if (function_exists('Schema\version_132') {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
                 return new NewTaskFinderModel($c);
             });
