@@ -78,7 +78,7 @@ use Kanboard\Model\UserUnreadNotificationModel;
 use Kanboard\Core\Base;
 
 
-class NewTaskFinderModel extends Base
+class OldTaskFinderModel extends Base
 {
     /**
      * Get query for project user overview
