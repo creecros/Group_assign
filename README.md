@@ -1,5 +1,9 @@
 [![Build Status](https://travis-ci.com/creecros/Group_assign.svg?branch=master)](https://travis-ci.com/creecros/Group_assign)
 
+## :star: If you use it, you should star it on Github! 
+- It's the least you can do for all the work put into it!
+
+
 # Group_assign
 Assign Tasks to Groups
 
