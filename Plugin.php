@@ -75,7 +75,7 @@ class Plugin extends Base
             'Plugin\Group_assign\Model' => [
                 'MultiselectMemberModel',
             ],
-            'Plugin\Group_assign\Export' => [
+            'Plugin\Group_assign\Model' => [
                 'MultiselectModel',
             ],
         ];
