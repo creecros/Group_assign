@@ -11,7 +11,7 @@ function version_1(PDO $pdo)
     $pdo->exec("ALTER TABLE tasks ADD COLUMN owner_ms INT DEFAULT '0'");
     
     $pdo->exec("
-        CREATE TABLE groups (
+        CREATE TABLE multiselect (
             id SERIAL PRIMARY KEY,
             external_id VARCHAR(255) DEFAULT '',
             name TEXT NOT NULL UNIQUE
@@ -19,7 +19,7 @@ function version_1(PDO $pdo)
     ");
     
     $pdo->exec("
-        CREATE TABLE group_has_users (
+        CREATE TABLE multiselect_has_users (
             group_id INTEGER NOT NULL,
             user_id INTEGER NOT NULL,
             FOREIGN KEY(group_id) REFERENCES groups(id) ON DELETE CASCADE,
