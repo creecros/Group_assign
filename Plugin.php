@@ -69,6 +69,17 @@ class Plugin extends Base
 
     }
     
+    public function getClasses()
+    {
+        return [
+            'Plugin\Group_assign\Model' => [
+                'MultiselectMemberModel',
+            ],
+            'Plugin\Group_assign\Export' => [
+                'MultiselectModel',
+            ],
+        ];
+    }
 
     public function getPluginName()
     {
