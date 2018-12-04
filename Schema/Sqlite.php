@@ -6,7 +6,7 @@ use PDO;
 
 const VERSION = 2;
 
-function version_1(PDO $pdo)
+function version_2(PDO $pdo)
 {
     $pdo->exec("ALTER TABLE tasks ADD COLUMN owner_ms INTEGER DEFAULT '0'");
     
