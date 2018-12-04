@@ -57,7 +57,7 @@ class GroupAssignTaskCreationController extends BaseController
         $values = $this->request->getValues();
         $values['project_id'] = $project['id'];
         if (isset($values['owner_ms']) && !empty($values['owner_ms'])) {
-          $ms_id = $this->multislectModel->create();
+          $ms_id = $this->multiselectModel->create();
           foreach ($values['owner_ms'] as $user) {
             $this->multiselectMemberModel->addUser($ms_id, $user);
           }
