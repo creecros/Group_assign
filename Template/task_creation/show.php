@@ -1,7 +1,7 @@
 <div class="page-header">
     <h2><?= $this->text->e($project['name']) ?> &gt; <?= t('New task') ?></h2>
 </div>
-<form method="post" action="<?= $this->url->href('TaskCreationController', 'save', array('project_id' => $project['id'])) ?>" autocomplete="off">
+<form method="post" action="<?= $this->url->href('GroupAssignTaskCreationController', 'save', array('plugin' => 'Group_assign', 'project_id' => $project['id'])) ?>" autocomplete="off">
     <?= $this->form->csrf() ?>
 
     <div class="task-form-container">
@@ -18,6 +18,7 @@
             <?= $this->task->renderColorField($values) ?>
             <?= $this->task->renderAssigneeField($users_list, $values, $errors) ?>
             <?= $this->helper->newTaskHelper->renderGroupField($values, $errors) ?>
+            <?= $this->helper->newTaskHelper->renderMultiAssigneeField($users_list, $values) ?>
             <?= $this->task->renderCategoryField($categories_list, $values, $errors) ?>
             <?= $this->task->renderSwimlaneField($swimlanes_list, $values, $errors) ?>
             <?= $this->task->renderColumnField($columns_list, $values, $errors) ?>
