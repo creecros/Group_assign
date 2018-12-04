@@ -139,9 +139,9 @@ class NewTaskHelper extends Base
         $attributes = array_merge(array('tabindex="4"'), $attributes);
         $name = 'owner_ms';
 
-        $html = $this->helper->form->label(t('Other Assignees'), 'owner_ms');
+        $html = $this->helper->form->label(t('Other Assignees'), $name.'[]');
         
-        $html .= '<select multiple size="3" name="'.$name.'" id="form-'.$name.'" '.implode(' ', $attributes).'>';
+        $html .= '<select multiple size="3" name="'.$name.'[]" id="form-'.$name.'" '.implode(' ', $attributes).'>';
         
         foreach ($users as $id => $value) {
             $html .= '<option value="'.$this->helper->text->e($id).'"';
