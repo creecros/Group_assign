@@ -13,8 +13,7 @@ function version_2(PDO $pdo)
     $pdo->exec("
         CREATE TABLE multiselect (
             id SERIAL PRIMARY KEY,
-            external_id VARCHAR(255) DEFAULT '',
-            name TEXT NOT NULL UNIQUE
+            external_id VARCHAR(255) DEFAULT ''
         )
     ");
     
