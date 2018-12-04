@@ -129,6 +129,40 @@ class NewTaskHelper extends Base
         return $html;
     }
     
+    public function renderMultiAssigneeField(array $users, array $values, array $errors = array(), array $attributes = array())
+    {
+        if (isset($values['project_id']) && ! $this->helper->projectRole->canChangeAssignee($values)) {
+            return '';
+        }
+
+        $attributes = array_merge(array('tabindex="3"'), $attributes);
+        $name = 'owner_ms';
+
+        $html = $this->helper->form->label(t('Other Assignees'), 'owner_ms');
+        
+        $html .= '<select multiple name="'.$name.'" id="form-'.$name.'" class="'.$class.'" '.implode(' ', $attributes).'>';
+        
+        foreach ($users as $id => $value) {
+            $html .= '<option value="'.$this->helper->text->e($id).'"';
+            if (isset($values->$name)) {
+                $multiusers = $this->multiselectMemberModel->getMembers($values->$name);
+                foreach ($multiusers as $member) {
+                    if ($member['user_id'] == $id){ $html .= ' selected="selected"'; break; }
+                }
+            }
+            if (isset($values[$name])) {
+                $multiusers = $this->multiselectMemberModel->getMembers($values[$name]);
+                foreach ($multiusers as $member) {
+                    if ($member['user_id'] == $id){ $html .= ' selected="selected"'; break; }
+                }
+            }
+            $html .= '>'.$this->helper->text->e($value).'</option>';
+        }
+        $html .= '</select>';
+
+        return $html;
+    }
+    
     public function renderGroupField(array $values, array $errors = array(), array $attributes = array())
     {
         if (isset($values['project_id']) && ! $this->helper->projectRole->canChangeAssignee($values)) {
