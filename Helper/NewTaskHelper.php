@@ -2,6 +2,7 @@
 
 namespace Kanboard\Plugin\Group_assign\Helper;
 
+use Kanboard\Plugin\Group_assign\Model\MultiselectMemberModel;
 use Kanboard\Model\ProjectGroupRoleModel;
 use Kanboard\Core\Base;
 
