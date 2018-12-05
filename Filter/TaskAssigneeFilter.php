@@ -2,6 +2,7 @@
 
 namespace Kanboard\Plugin\Group_assign\Filter;
 
+use Kanboard\Plugin\Group_assign\Model\MultiselectMemberModel;
 use Kanboard\Core\Filter\FilterInterface;
 use Kanboard\Filter\BaseFilter;
 use Kanboard\Model\TaskModel;
@@ -56,6 +57,7 @@ class TaskAssigneeFilter extends BaseFilter implements FilterInterface
             $this->query->beginOr();
             $this->query->eq(TaskModel::TABLE.'.owner_id', $this->value);
             $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id='$this->value')");
+            $this->query->addCondition(TaskModel::TABLE.".owner_ms IN (SELECT group_id FROM ".MultiselectMemberModel::TABLE." WHERE ".MultiselectMemberModel::TABLE.".user_id='$this->value')");
             $this->query->closeOr();
         } else {
             switch ($this->value) {
@@ -63,6 +65,7 @@ class TaskAssigneeFilter extends BaseFilter implements FilterInterface
                     $this->query->beginOr();
                     $this->query->eq(TaskModel::TABLE.'.owner_id', $this->currentUserId);
                     $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id='$this->currentUserId')");
+                    $this->query->addCondition(TaskModel::TABLE.".owner_ms IN (SELECT group_id FROM ".MultiselectMemberModel::TABLE." WHERE ".MultiselectMemberModel::TABLE.".user_id='$this->currentUserId')");
                     $this->query->closeOr();
                     break;
                 case 'nobody':
