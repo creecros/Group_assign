@@ -3,8 +3,12 @@
                         <strong><?= t('Other Assignees:') ?></strong>
                     </li>
                     <?php foreach ($this->task->multiselectMemberModel->getMembers($task['owner_ms']) as $user) : ?>
-                    <li>
-                        <?= '- '. $user['user_id'] ?>
-                    </li>
+                    <li><small>
+                        <?php 
+                            $userinfo = $this->task->userModel->getById($user['user_id']);
+                            $username = $useerinfo['name'];
+                        ?>
+                        <?= '- '. $username ?>
+                      </small></li>
                     <?php endforeach ?>
                     <?php endif ?>
