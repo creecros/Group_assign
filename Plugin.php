@@ -6,6 +6,8 @@ use Kanboard\Core\Plugin\Base;
 use Kanboard\Model\TaskModel;
 use Kanboard\Model\ProjectGroupRoleModel;
 use Kanboard\Plugin\Group_assign\Model\NewTaskFinderModel;
+use Kanboard\Plugin\Group_assign\Model\MultiselectModel;
+use Kanboard\Plugin\Group_assign\Model\MultiselectMemberModel;
 use Kanboard\Plugin\Group_assign\Model\OldTaskFinderModel;
 use Kanboard\Plugin\Group_assign\Helper\NewTaskHelper;
 use Kanboard\Plugin\Group_assign\Filter\TaskAssigneeFilter;
@@ -13,6 +15,7 @@ use Kanboard\Plugin\Group_assign\Action\EmailGroup;
 use Kanboard\Plugin\Group_assign\Action\EmailGroupDue;
 use Kanboard\Plugin\Group_assign\Action\AssignGroup;
 use PicoDb\Table;
+use PicoDb\Database;
 
 class Plugin extends Base
 {
@@ -45,6 +48,7 @@ class Plugin extends Base
         
         //Task - Template - details.php
         $this->template->hook->attach('template:task:details:third-column', 'group_assign:task/details');
+        $this->template->hook->attach('template:task:details:third-column', 'group_assign:task/multi');
         
         //Forms - task_creation.php and task_modification.php
         $this->template->setTemplateOverride('task_creation/show', 'group_assign:task_creation/show');
@@ -55,7 +59,8 @@ class Plugin extends Base
         
         //Filter
         $this->container->extend('taskLexer', function($taskLexer, $c) {
-            $taskLexer->withFilter(TaskAssigneeFilter::getInstance()->setCurrentUserId($c['userSession']->getId()));
+            $taskLexer->withFilter(TaskAssigneeFilter::getInstance()->setDatabase($c['db'])
+                                                                    ->setCurrentUserId($c['userSession']->getId()));
             return $taskLexer;
         });
         
@@ -69,10 +74,18 @@ class Plugin extends Base
 
     }
     
+    public function getClasses()
+    {
+        return [
+            'Plugin\Group_assign\Model' => [
+                'MultiselectMemberModel', 'MultiselectModel',
+            ],
+        ];
+    }
 
     public function getPluginName()
     {
-        return 'Group Assign';
+        return 'Group_assign';
     }
     public function getPluginDescription()
     {
@@ -84,7 +97,7 @@ class Plugin extends Base
     }
     public function getPluginVersion()
     {
-        return '0.0.3';
+        return '1.1.0';
     }
     public function getPluginHomepage()
     {

@@ -132,6 +132,7 @@ class NewTaskFinderModel extends Base
                     ->eq(TaskModel::TABLE.'.owner_id', $user_id)
                     ->addCondition(TaskModel::TABLE.".id IN (SELECT task_id FROM ".SubtaskModel::TABLE." WHERE ".SubtaskModel::TABLE.".user_id='$user_id')")
                     ->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id='$user_id')")
+                    ->addCondition(TaskModel::TABLE.".owner_ms IN (SELECT group_id FROM ".MultiselectMemberModel::TABLE." WHERE ".MultiselectMemberModel::TABLE.".user_id='$user_id')")
                     ->closeOr()
                     ->eq(TaskModel::TABLE.'.is_active', TaskModel::STATUS_OPEN)
                     ->eq(ProjectModel::TABLE.'.is_active', ProjectModel::ACTIVE)
@@ -205,6 +206,7 @@ class NewTaskFinderModel extends Base
             ->join(ColumnModel::TABLE, 'id', 'column_id', TaskModel::TABLE)
             ->join(SwimlaneModel::TABLE, 'id', 'swimlane_id', TaskModel::TABLE)
             ->join(GroupModel::TABLE, 'id', 'owner_gp', TaskModel::TABLE)
+            ->join(MultiselectModel::TABLE, 'id', 'owner_ms', TaskModel::TABLE)
             ->join(ProjectModel::TABLE, 'id', 'project_id', TaskModel::TABLE);
     }
 
@@ -376,6 +378,7 @@ class NewTaskFinderModel extends Base
             ->join(SwimlaneModel::TABLE, 'id', 'swimlane_id', TaskModel::TABLE)
             ->join(ProjectModel::TABLE, 'id', 'project_id', TaskModel::TABLE)
             ->join(GroupModel::TABLE, 'id', 'owner_gp', TaskModel::TABLE)
+            ->join(MultiselectModel::TABLE, 'id', 'owner_ms', TaskModel::TABLE)
             ->eq(TaskModel::TABLE.'.id', $task_id)
             ->findOne();
     }

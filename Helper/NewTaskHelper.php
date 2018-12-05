@@ -2,6 +2,7 @@
 
 namespace Kanboard\Plugin\Group_assign\Helper;
 
+use Kanboard\Plugin\Group_assign\Model\MultiselectMemberModel;
 use Kanboard\Model\ProjectGroupRoleModel;
 use Kanboard\Core\Base;
 
@@ -125,6 +126,40 @@ class NewTaskHelper extends Base
         $html .= '<small>';
         $html .= '<a href="#" class="assign-me" data-target-id="form-owner_id" data-current-id="'.$this->userSession->getId().'" title="'.t('Assign to me').'">'.t('Me').'</a>';
         $html .= '</small>';
+
+        return $html;
+    }
+    
+    public function renderMultiAssigneeField(array $users, array $values, array $errors = array(), array $attributes = array())
+    {
+        if (isset($values['project_id']) && ! $this->helper->projectRole->canChangeAssignee($values)) {
+            return '';
+        }
+
+        $attributes = array_merge(array('tabindex="4"'), $attributes);
+        $name = 'owner_ms';
+
+        $html = $this->helper->form->label(t('Other Assignees'), $name.'[]');
+        
+        $html .= '<select multiple size="3" name="'.$name.'[]" id="form-'.$name.'" '.implode(' ', $attributes).'>';
+        
+        foreach ($users as $id => $value) {
+            $html .= '<option value="'.$this->helper->text->e($id).'"';
+            if (isset($values->$name)) {
+                $multiusers = $this->multiselectMemberModel->getMembers($values->$name);
+                foreach ($multiusers as $member) {
+                    if ($member['user_id'] == $id){ $html .= ' selected="selected"'; break; }
+                }
+            }
+            if (isset($values[$name])) {
+                $multiusers = $this->multiselectMemberModel->getMembers($values[$name]);
+                foreach ($multiusers as $member) {
+                    if ($member['user_id'] == $id){ $html .= ' selected="selected"'; break; }
+                }
+            }
+            $html .= '>'.$this->helper->text->e($value).'</option>';
+        }
+        $html .= '</select>';
 
         return $html;
     }
