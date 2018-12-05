@@ -3,5 +3,4 @@
                         <strong><?= t('Other Assignees:') ?></strong>
                     </li>
                     <?= $this->helper->smallAvatarHelperExtend->smallMultiple($task['owner_ms'], 'avatar-inline') ?>
-                    <?php endforeach ?>
                     <?php endif ?>
