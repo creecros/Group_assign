@@ -6,6 +6,6 @@
                         <?php 
                             $userinfo = $this->task->userModel->getById($user['user_id']);
                         ?>
-                        <?= $this->helper->SmallAvatarHelperExtend->smallMultiple($task['owner_ms'], 'avatar-inline') ?>
+                        <?= $this->helper->smallAvatarHelperExtend->smallMultiple($task['owner_ms'], 'avatar-inline') ?>
                     <?php endforeach ?>
                     <?php endif ?>
