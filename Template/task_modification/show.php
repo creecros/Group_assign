@@ -1,7 +1,7 @@
 <div class="page-header">
     <h2><?= $this->text->e($project['name']) ?> &gt; <?= $this->text->e($task['title']) ?></h2>
 </div>
-<form method="post" action="<?= $this->url->href('TaskModificationController', 'update', array('task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>" autocomplete="off">
+<form method="post" action="<?= $this->url->href('GroupAssignTaskModificationController', 'update', array('plugin' => 'Group_assign', 'task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>" autocomplete="off">
     <?= $this->form->csrf() ?>
 
     <div class="task-form-container">
@@ -18,6 +18,7 @@
             <?= $this->task->renderColorField($values) ?>
             <?= $this->task->renderAssigneeField($users_list, $values, $errors) ?>
             <?= $this->helper->newTaskHelper->renderGroupField($values, $errors) ?>
+            <?= $this->helper->newTaskHelper->renderMultiAssigneeField($users_list, $values) ?>
             <?= $this->task->renderCategoryField($categories_list, $values, $errors) ?>
             <?= $this->task->renderPriorityField($project, $values) ?>
 
