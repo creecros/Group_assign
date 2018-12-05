@@ -72,7 +72,7 @@ class TaskAssigneeFilter extends BaseFilter implements FilterInterface
                     $this->query->eq(TaskModel::TABLE.'.owner_id', 0);
                     break;
                 default:
-                    $searchid = $this->userModel->getIdByUsername($this->value);
+                    if (!empty($this->value)) { $searchid = $this->userModel->getIdByUsername($this->value); }
                     $this->query->beginOr();
                     $this->query->ilike(UserModel::TABLE.'.username', '%'.$this->value.'%');
                     $this->query->ilike(UserModel::TABLE.'.name', '%'.$this->value.'%');
