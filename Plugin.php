@@ -59,6 +59,7 @@ class Plugin extends Base
       
         //Board
          $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/group');
+         $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/multi');
         
         //Filter
         $this->container->extend('taskLexer', function($taskLexer, $c) {
