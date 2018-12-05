@@ -6,5 +6,5 @@
                     <li>
                         <?= '- '. $user['user_id'] ?>
                     </li>
-                    <?php end foreach ?>
+                    <?php endforeach ?>
                     <?php endif ?>
