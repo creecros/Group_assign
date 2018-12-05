@@ -83,7 +83,7 @@ class Plugin extends Base
 
     public function getPluginName()
     {
-        return 'Group Assign';
+        return 'Group_assign';
     }
     public function getPluginDescription()
     {
