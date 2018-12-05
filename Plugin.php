@@ -67,6 +67,8 @@ class Plugin extends Base
         //Actions
         $this->actionManager->register(new EmailGroup($this->container));
         $this->actionManager->register(new EmailGroupDue($this->container));
+        $this->actionManager->register(new EmailOtherAssignees($this->container));
+        $this->actionManager->register(new EmailOtherAssigneesDue($this->container));
         $this->actionManager->register(new AssignGroup($this->container));
         
         //Params
