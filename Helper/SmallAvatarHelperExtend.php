@@ -16,7 +16,7 @@ class SmallAvatarHelperExtend extends AvatarHelper
     public function smallMultiple($owner_ms, $css = '') {
         $assignees = $this->multiselectMemberModel->getMembers($owner_ms);
         $html = "";
-        foreach ($assignees as $assignee {
+        foreach ($assignees as $assignee) {
             $user = $this->userModel->getById($assignee['user_id']);
             $html .= $this->render($assignee['user_id'], $user['username'], $user['name'], $user['email'], $user['avatar_path'], $css, 20);
         }
