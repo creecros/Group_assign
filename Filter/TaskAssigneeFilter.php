@@ -60,6 +60,7 @@ class TaskAssigneeFilter extends BaseFilter implements FilterInterface
             $this->query->addCondition(TaskModel::TABLE.".owner_ms IN (SELECT group_id FROM ".MultiselectMemberModel::TABLE." WHERE ".MultiselectMemberModel::TABLE.".user_id='$this->value')");
             $this->query->closeOr();
         } else {
+            if (!empty($this->value)) { $searchid = $this->userModel->getIdByUsername($this->value); }
             switch ($this->value) {
                 case 'me':
                     $this->query->beginOr();
@@ -72,7 +73,6 @@ class TaskAssigneeFilter extends BaseFilter implements FilterInterface
                     $this->query->eq(TaskModel::TABLE.'.owner_id', 0);
                     break;
                 default:
-                    if (!empty($this->value)) { $searchid = $this->userModel->getIdByUsername($this->value); }
                     $this->query->beginOr();
                     $this->query->ilike(UserModel::TABLE.'.username', '%'.$this->value.'%');
                     $this->query->ilike(UserModel::TABLE.'.name', '%'.$this->value.'%');
