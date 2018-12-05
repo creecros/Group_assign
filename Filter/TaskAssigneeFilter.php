@@ -94,16 +94,15 @@ class TaskAssigneeFilter extends BaseFilter implements FilterInterface
                     break;
                 default:
                     $this->query->beginOr();
-                    $this->query->join(GroupMemberModel::TABLE, 'user_id', 'id', UserModel::TABLE);
-                    $this->query->join(MultiselectMemberModel::TABLE, 'user_id', 'id', UserModel::TABLE);
                     $this->query->ilike(UserModel::TABLE.'.username', '%'.$this->value.'%');
                     $this->query->ilike(UserModel::TABLE.'.name', '%'.$this->value.'%');
                     $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT id FROM ".GroupModel::TABLE." WHERE ".GroupModel::TABLE.".name='$this->value')");
-                    $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id='$user_id')");
-                    $this->query->addCondition(TaskModel::TABLE.".owner_ms IN (SELECT group_id FROM ".MultiselectMemberModel::TABLE." WHERE ".MultiselectMemberModel::TABLE.".user_id='$user_id')");
+                    $this->query->join(GroupMemberModel::TABLE, 'user_id', 'id', UserModel::TABLE);
+                    $this->query->join(MultiselectMemberModel::TABLE, 'user_id', 'id', UserModel::TABLE);
                     $this->query->closeOr();
             }
         }
     }
+    
 
 }
