@@ -95,11 +95,9 @@ class TaskAssigneeFilter extends BaseFilter implements FilterInterface
                 default:
                     $this->query->beginOr();
                     $this->query
-                        ->join(GroupMemberModel::TABLE, 'user_id', 'id', UserModel::TABLE)
                         ->join(MultiselectMemberModel::TABLE, 'user_id', 'id', UserModel::TABLE)
                         ->ilike(UserModel::TABLE.'.username', '%'.$this->value.'%');
                     $this->query
-                        ->join(GroupMemberModel::TABLE, 'user_id', 'id', UserModel::TABLE)
                         ->join(MultiselectMemberModel::TABLE, 'user_id', 'id', UserModel::TABLE)
                         ->ilike(UserModel::TABLE.'.name', '%'.$this->value.'%');
                     $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT id FROM ".GroupModel::TABLE." WHERE ".GroupModel::TABLE.".name='$this->value')");
