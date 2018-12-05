@@ -9,6 +9,7 @@ use Kanboard\Model\TaskModel;
 use Kanboard\Model\UserModel;
 use Kanboard\Model\GroupMemberModel;
 use Kanboard\Model\GroupModel;
+use PicoDb\Database;
 
 
 class TaskAssigneeFilter extends BaseFilter implements FilterInterface
