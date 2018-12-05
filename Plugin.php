@@ -15,6 +15,7 @@ use Kanboard\Plugin\Group_assign\Action\EmailGroup;
 use Kanboard\Plugin\Group_assign\Action\EmailGroupDue;
 use Kanboard\Plugin\Group_assign\Action\AssignGroup;
 use PicoDb\Table;
+use PicoDb\Database;
 
 class Plugin extends Base
 {
