@@ -6,6 +6,8 @@ use Kanboard\Core\Plugin\Base;
 use Kanboard\Model\TaskModel;
 use Kanboard\Model\ProjectGroupRoleModel;
 use Kanboard\Plugin\Group_assign\Model\NewTaskFinderModel;
+use Kanboard\Plugin\Group_assign\Model\MultiselectModel;
+use Kanboard\Plugin\Group_assign\Model\MultiselectMemberModel;
 use Kanboard\Plugin\Group_assign\Model\OldTaskFinderModel;
 use Kanboard\Plugin\Group_assign\Helper\NewTaskHelper;
 use Kanboard\Plugin\Group_assign\Filter\TaskAssigneeFilter;
@@ -73,10 +75,7 @@ class Plugin extends Base
     {
         return [
             'Plugin\Group_assign\Model' => [
-                'MultiselectMemberModel',
-            ],
-            'Plugin\Group_assign\Model' => [
-                'MultiselectModel',
+                'MultiselectMemberModel', 'MultiselectModel',
             ],
         ];
     }
