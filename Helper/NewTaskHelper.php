@@ -145,12 +145,12 @@ class NewTaskHelper extends Base
         
         foreach ($users as $id => $value) {
             $html .= '<option value="'.$this->helper->text->e($id).'"';
-            /*if (isset($values->$name)) {
+            if (isset($values->$name)) {
                 $multiusers = $this->multiselectMemberModel->getMembers($values->$name);
                 foreach ($multiusers as $member) {
                     if ($member['user_id'] == $id){ $html .= ' selected="selected"'; break; }
                 }
-            }*/
+            }
             if (isset($values[$name])) {
                 $multiusers = $this->multiselectMemberModel->getMembers($values[$name]);
                 foreach ($multiusers as $member) {
