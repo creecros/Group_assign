@@ -13,6 +13,8 @@ use Kanboard\Plugin\Group_assign\Helper\NewTaskHelper;
 use Kanboard\Plugin\Group_assign\Filter\TaskAssigneeFilter;
 use Kanboard\Plugin\Group_assign\Action\EmailGroup;
 use Kanboard\Plugin\Group_assign\Action\EmailGroupDue;
+use Kanboard\Plugin\Group_assign\Action\EmailOtherAssignees;
+use Kanboard\Plugin\Group_assign\Action\EmailOtherAssigneesDue;
 use Kanboard\Plugin\Group_assign\Action\AssignGroup;
 use PicoDb\Table;
 use PicoDb\Database;
