@@ -47,6 +47,7 @@ class Plugin extends Base
         
         //Task - Template - details.php
         $this->template->hook->attach('template:task:details:third-column', 'group_assign:task/details');
+        $this->template->hook->attach('template:task:details:third-column', 'group_assign:task/multi');
         
         //Forms - task_creation.php and task_modification.php
         $this->template->setTemplateOverride('task_creation/show', 'group_assign:task_creation/show');
