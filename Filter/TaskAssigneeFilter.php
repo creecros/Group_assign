@@ -14,6 +14,26 @@ use Kanboard\Model\GroupModel;
 class TaskAssigneeFilter extends BaseFilter implements FilterInterface
 {
     /**
+     * Database object
+     *
+     * @access private
+     * @var Database
+     */
+    private $db;
+    /**
+     * Set database object
+     *
+     * @access public
+     * @param  Database $db
+     * @return TaskAssigneeFilter
+     */
+    public function setDatabase(Database $db)
+    {
+        $this->db = $db;
+        return $this;
+    }
+    
+    /**
      * Current user id
      *
      * @access private
@@ -60,7 +80,6 @@ class TaskAssigneeFilter extends BaseFilter implements FilterInterface
             $this->query->addCondition(TaskModel::TABLE.".owner_ms IN (SELECT group_id FROM ".MultiselectMemberModel::TABLE." WHERE ".MultiselectMemberModel::TABLE.".user_id='$this->value')");
             $this->query->closeOr();
         } else {
-            if (!empty($this->value)) { $searchid = $this->userModel->getIdByUsername($this->value); }
             switch ($this->value) {
                 case 'me':
                     $this->query->beginOr();
@@ -73,14 +92,28 @@ class TaskAssigneeFilter extends BaseFilter implements FilterInterface
                     $this->query->eq(TaskModel::TABLE.'.owner_id', 0);
                     break;
                 default:
+                    $user_id = $this->getSubQuery()->findAllByColumn('id');
                     $this->query->beginOr();
                     $this->query->ilike(UserModel::TABLE.'.username', '%'.$this->value.'%');
                     $this->query->ilike(UserModel::TABLE.'.name', '%'.$this->value.'%');
                     $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT id FROM ".GroupModel::TABLE." WHERE ".GroupModel::TABLE.".name='$this->value')");
-                    $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id='$searchid')");
-                    $this->query->addCondition(TaskModel::TABLE.".owner_ms IN (SELECT group_id FROM ".MultiselectMemberModel::TABLE." WHERE ".MultiselectMemberModel::TABLE.".user_id='$searchid')");
+                    $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id='$user_id')");
+                    $this->query->addCondition(TaskModel::TABLE.".owner_ms IN (SELECT group_id FROM ".MultiselectMemberModel::TABLE." WHERE ".MultiselectMemberModel::TABLE.".user_id='$user_id')");
                     $this->query->closeOr();
             }
         }
+    }
+    
+    protected function getSubQuery()
+    {
+        return $this->db->table(UserModel::TABLE)
+            ->columns(
+                UserModel::TABLE.'.id',
+                UserModel::TABLE.'.username',
+                UserModel::TABLE.'.name'
+            )
+            ->join(UserModel::TABLE, 'id', 'user_id', MultiselectMemberModel::TABLE)
+            ->ilike(UserModel::TABLE.'.username', '%'.$this->value.'%')
+            ->ilike(UserModel::TABLE.'.name', '%'.$this->value.'%');
     }
 }
