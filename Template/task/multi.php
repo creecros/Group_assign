@@ -6,7 +6,7 @@
                     <li><small>
                         <?php 
                             $userinfo = $this->task->userModel->getById($user['user_id']);
-                            $username = $useerinfo['name'];
+                            if (!empty($userinfo['name'])) { $username = $userinfo['name']; } else { $username = $userinfo['username']; }
                         ?>
                         <?= '- '. $username ?>
                       </small></li>
