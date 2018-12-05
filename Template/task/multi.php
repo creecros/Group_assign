@@ -2,10 +2,6 @@
                     <li>
                         <strong><?= t('Other Assignees:') ?></strong>
                     </li>
-                    <?php foreach ($this->task->multiselectMemberModel->getMembers($task['owner_ms']) as $user) : ?>
-                        <?php 
-                            $userinfo = $this->task->userModel->getById($user['user_id']);
-                        ?>
-                        <?= $this->helper->smallAvatarHelperExtend->smallMultiple($task['owner_ms'], 'avatar-inline') ?>
+                    <?= $this->helper->smallAvatarHelperExtend->smallMultiple($task['owner_ms'], 'avatar-inline') ?>
                     <?php endforeach ?>
                     <?php endif ?>
