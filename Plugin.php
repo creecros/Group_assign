@@ -77,6 +77,9 @@ class Plugin extends Base
         
         //Params
         $this->template->setTemplateOverride('action_creation/params', 'group_assign:action_creation/params');
+        
+        //CSS
+        $this->hook->on('template:layout:css', array('template' => 'plugins/Group_assign/Assets/css/mini_avatars.css'));
 
     }
     
