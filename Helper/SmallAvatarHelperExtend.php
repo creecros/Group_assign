@@ -18,7 +18,7 @@ class SmallAvatarHelperExtend extends AvatarHelper
         $html = "";
         foreach ($assignees as $assignee) {
             $user = $this->userModel->getById($assignee['user_id']);
-            $html .= $this->render($assignee['user_id'], $user['username'], $user['name'], $user['email'], $user['avatar_path'], $css, 20);
+            $html .= $this->render($assignee['user_id'], $user['username'], $user['name'], $user['email'], $user['avatar_path'], $css, 12);
         }
         return $html;
     }
