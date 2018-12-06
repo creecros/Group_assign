@@ -27,6 +27,7 @@ class Plugin extends Base
         
         //Helpers
         $this->helper->register('newTaskHelper', '\Kanboard\Plugin\Group_assign\Helper\NewTaskHelper');
+        $this->helper->register('smallAvatarHelperExtend', '\Kanboard\Plugin\Group_assign\Helper\SmallAvatarHelperExtend');
         
         
         //Models
@@ -58,6 +59,7 @@ class Plugin extends Base
       
         //Board
          $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/group');
+         $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/multi');
         
         //Filter
         $this->container->extend('taskLexer', function($taskLexer, $c) {
@@ -75,6 +77,9 @@ class Plugin extends Base
         
         //Params
         $this->template->setTemplateOverride('action_creation/params', 'group_assign:action_creation/params');
+        
+        //CSS
+        $this->hook->on('template:layout:css', array('template' => 'plugins/Group_assign/Assets/css/mini_avatars.css'));
 
     }
     

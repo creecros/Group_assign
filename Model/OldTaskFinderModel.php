@@ -197,6 +197,7 @@ class OldTaskFinderModel extends Base
                 ColumnModel::TABLE.'.position AS column_position',
                 SwimlaneModel::TABLE.'.name AS swimlane_name',
                 ProjectModel::TABLE.'.name AS project_name',
+                TaskModel::TABLE.'.owner_ms',
                 GroupModel::TABLE.'.name AS assigned_groupname'
             )
             ->join(UserModel::TABLE, 'id', 'owner_id', TaskModel::TABLE)
