@@ -23,15 +23,15 @@ Kanboard v1.1.0 or Higher
   * Email Other Assignees of impending Task Due Date
   * Assign task to a group on creation or movement
 * using ``assignee:me`` in filter will find tasks assigned to groups that the user is in or assignee in other assignees is in.
-* using ``assignee:'GroupName'`` in filter will find tasks assigned to a group by NAME of the group.
-* using ``assignee:`GroupID'`` in filter will find tasks assigned to a group by ID number of group.
-* using ``assignee:'Username'`` or ``assignee:'Name'`` will NOW find a task assigned to a group with that UserName or Name in the group or in Other Assignees. 
+* using ``assignee:GroupName`` in filter will find tasks assigned to a group by NAME of the group.
+* using ``assignee:GroupID`` in filter will find tasks assigned to a group by ID number of group.
+* using ``assignee:Username`` or ``assignee:Name`` will NOW find a task assigned to a group with that UserName or Name in the group or in Other Assignees. 
 
 # Future enhancments
 Find bugs or missing functionality, please report it.
 
 - [x] Add a few basic automatic actions that utilize Groups assigned
-- [x] Add relationship for ``assignee:'Username'`` or ``assignee:'Name'`` in the table lookup 
+- [x] Add relationship for ``assignee:Username`` or ``assignee:Name`` in the table lookup 
 - [ ] Add an event for assigned group change.
 - [ ] Incorporate into notifications
 
