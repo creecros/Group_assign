@@ -15,6 +15,8 @@ Kanboard v1.1.0 or Higher
 * Can only assign groups or other assigness to a task that have permissions in the Project.
 * If a user is in a group that a task is assigned to, it will show up on their dashboard.
 * If a user is in other assignees multiselect that a task is assigned to, it will show up on their dashboard.
+* If a user is in a group that a task is assigned to, it will show up in their calendar.
+* If a user is in other assignees multiselect that a task is assigned to, it will show up in their calendar.
 * If a group is assigned or a user is assigneed in other assignees, it will be appear on the task in detail view, board view, creation, modification. 
 * Includes 5 Automatic Actions to utilize the Assigned Group
   * Email Assigned Group on Task Modification, Creation, Close, or Movement
