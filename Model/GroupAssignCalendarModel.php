@@ -43,8 +43,8 @@ class GroupAssignCalendarModel extends Base
                 
          $tasks = $this->db->table(self::TABLE)
             ->beginOr()
-            ->eq('owner_gp', $getGr_Ids)
-            ->eq('owner_ms', $getMS_Ids)
+            ->in('owner_gp', $getGr_Ids)
+            ->in('owner_ms', $getMS_Ids)
             ->closeOr()
             ->gte('date_due', strtotime($start))
             ->lte('date_due', strtotime($end))
