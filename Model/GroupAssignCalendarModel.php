@@ -4,7 +4,7 @@ namespace Kanboard\Plugin\Group_assign\Model;
 
 use DateTime;
 use Kanboard\Model\GroupMemberModel;
-use Kanboard\Plugin\Group_assign\MultiselectMemberModel;
+use Kanboard\Plugin\Group_assign\Model\MultiselectMemberModel;
 use Kanboard\Model\TimezoneModel;
 use Kanboard\Model\TaskFinderModel;
 use Kanboard\Model\ColorModel;
