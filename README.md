@@ -56,6 +56,3 @@ Find bugs or missing functionality, please report it.
 
 ![image](https://user-images.githubusercontent.com/26339368/38754288-310df2c6-3f2f-11e8-9993-39e96b55076c.png)
 
-## Calendar Plugin Updated to work with Group_assign
-You can install seperately here: https://github.com/creecros/plugin-calendar
-
