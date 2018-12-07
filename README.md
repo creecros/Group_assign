@@ -51,6 +51,13 @@ Find bugs or missing functionality, please report it.
 ![image](https://user-images.githubusercontent.com/26339368/38753779-77b931d8-3f2d-11e8-8160-ef2563119252.png)
 ![image](https://user-images.githubusercontent.com/26339368/49557866-0f1cc180-f8d7-11e8-9ed7-040be16e4b24.png)
 
+## Users Calendar View
+
+- Tasks that a user is assigned too but not main assignee will show up in calendar, with Dark Grey Background and Task color Border, to differentiate that they are not the main assignee.
+
+![image](https://user-images.githubusercontent.com/26339368/49655821-b7cb3e00-fa09-11e8-9608-952abbf146fa.png)
+
+
 ## Automatic Actions:
 ![image](https://user-images.githubusercontent.com/26339368/38754253-0a0fd2de-3f2f-11e8-9dde-2036de011a6b.png)
 
