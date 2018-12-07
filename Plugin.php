@@ -16,6 +16,7 @@ use Kanboard\Plugin\Group_assign\Action\EmailGroupDue;
 use Kanboard\Plugin\Group_assign\Action\EmailOtherAssignees;
 use Kanboard\Plugin\Group_assign\Action\EmailOtherAssigneesDue;
 use Kanboard\Plugin\Group_assign\Action\AssignGroup;
+use Kanboard\Plugin\Group_assign\Model\GroupAssignCalendarModel;
 use PicoDb\Table;
 use PicoDb\Database;
 
@@ -80,6 +81,14 @@ class Plugin extends Base
         
         //CSS
         $this->hook->on('template:layout:css', array('template' => 'plugins/Group_assign/Assets/css/mini_avatars.css'));
+        
+        //Calendar Events
+        $container = $this->container;
+        
+        $this->hook->on('controller:calendar:user:events', function($user_id, $start, $end) use ($container) {
+            $model = new GroupAssignCalendarModel($container);
+            return $model->getUserCalendarEvents($user_id, $start, $end); // Return new events
+        });
 
     }
     
@@ -106,7 +115,7 @@ class Plugin extends Base
     }
     public function getPluginVersion()
     {
-        return '1.1.1';
+        return '1.1.2';
     }
     public function getPluginHomepage()
     {
