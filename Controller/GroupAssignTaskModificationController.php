@@ -146,7 +146,7 @@ class GroupAssignTaskModificationController extends BaseController
         $values['id'] = $task['id'];
         $values['project_id'] = $task['project_id'];
         if (isset($values['owner_ms']) && !empty($values['owner_ms'])) {
-          $ms_id = $this->multiselectModel->create();
+          if (!empty($task['owner_ms'])) { $ms_id = $task['owner_ms']; } else { $ms_id = $this->multiselectModel->create(); }
           foreach ($values['owner_ms'] as $user) {
             $this->multiselectMemberModel->addUser($ms_id, $user);
           }
