@@ -106,7 +106,7 @@ class MultiselectMemberModel extends Base
      * @param  integer $user_id
      * @return boolean
      */
-    public function removeAllUSers($group_id)
+    public function removeAllUsers($group_id)
     {
         return $this->db->table(self::TABLE)
             ->eq('group_id', $group_id)
