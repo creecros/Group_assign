@@ -19,6 +19,7 @@ class MultiselectModel extends Base
      * @var string
      */
     const TABLE = 'multiselect';
+    const EVENT_ASSIGNED = 'multiselect.assigned';
 
     /**
      * Get query to fetch all groups
