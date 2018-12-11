@@ -25,7 +25,10 @@ class Plugin extends Base
     
     public function initialize()
     {
-        
+        //Events & Changes        
+        $this->template->setTemplateOverride('task/changes', 'group_assign:task/changes');
+
+
         //Helpers
         $this->helper->register('newTaskHelper', '\Kanboard\Plugin\Group_assign\Helper\NewTaskHelper');
         $this->helper->register('smallAvatarHelperExtend', '\Kanboard\Plugin\Group_assign\Helper\SmallAvatarHelperExtend');
@@ -115,7 +118,7 @@ class Plugin extends Base
     }
     public function getPluginVersion()
     {
-        return '1.2.0';
+        return '1.2.1';
     }
     public function getPluginHomepage()
     {
