@@ -25,9 +25,7 @@ class Plugin extends Base
     
     public function initialize()
     {
-        //Events & Changes
-        $this->eventManager->register('multiselect.assigned', 'Users were assigned to a task via Multiselect');
-        
+        //Events & Changes        
         $this->template->setTemplateOverride('task/changes', 'group_assign:task/changes');
 
 
