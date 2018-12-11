@@ -70,7 +70,7 @@
                     if (empty($task['owner_ms'])) {
                         echo '<li>'.t('The task is not assigned to multiple users anymore').'</li>';
                     } else {
-                        echo '<li>'.t('The tasks has been assigned or reassigned to other users).'</li>';
+                        echo '<li>'.t('The tasks has been assigned or reassigned to other users').'</li>';
                     }
                     break;
                 default:
