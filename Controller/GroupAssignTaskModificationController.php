@@ -151,7 +151,7 @@ class GroupAssignTaskModificationController extends BaseController
             if ($user !== 0) { $this->multiselectMemberModel->addUser($ms_id, $user); }
           }
           unset($values['owner_ms']);
-          $values['owner_ms'] = $ms_id; }
+          $values['owner_ms'] = $ms_id;
         }
 
         list($valid, $errors) = $this->taskValidator->validateModification($values);
