@@ -25,7 +25,9 @@ class Plugin extends Base
     
     public function initialize()
     {
-        
+        //Events
+        $this->eventManager->register('multiselect.assigned', 'Users were assigned to a task via Multiselect');
+
         //Helpers
         $this->helper->register('newTaskHelper', '\Kanboard\Plugin\Group_assign\Helper\NewTaskHelper');
         $this->helper->register('smallAvatarHelperExtend', '\Kanboard\Plugin\Group_assign\Helper\SmallAvatarHelperExtend');
