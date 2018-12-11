@@ -25,8 +25,11 @@ class Plugin extends Base
     
     public function initialize()
     {
-        //Events
+        //Events & Changes
         $this->eventManager->register('multiselect.assigned', 'Users were assigned to a task via Multiselect');
+        
+        $this->template->setTemplateOverride('task/changes', 'group_assign:task/changes');
+
 
         //Helpers
         $this->helper->register('newTaskHelper', '\Kanboard\Plugin\Group_assign\Helper\NewTaskHelper');
