@@ -152,7 +152,7 @@ class GroupAssignTaskModificationController extends BaseController
           foreach ($values['owner_ms'] as $user) {
             if ($user !== 0) { $this->multiselectMemberModel->addUser($ms_id, $user); $i++;} else { $user_unassigned = true; }
           }
-          if ($user_unassigned && $i == 0) { unset($values['owner_ms']); $values['owner_ms'] = 0; } else { unset($values['owner_ms']); $values['owner_ms'] = $ms_id; }
+          if ($user_unassigned && $i == 0) { unset($values['owner_ms']); $this->multiselectMemberModel->remove($ms_id); } else { unset($values['owner_ms']); $values['owner_ms'] = $ms_id; }
         }
 
         list($valid, $errors) = $this->taskValidator->validateModification($values);
