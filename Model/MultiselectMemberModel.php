@@ -99,6 +99,21 @@ class MultiselectMemberModel extends Base
     }
 
     /**
+     * Remove all users from a group
+     *
+     * @access public
+     * @param  integer $group_id
+     * @param  integer $user_id
+     * @return boolean
+     */
+    public function removeAllUSers($group_id)
+    {
+        return $this->db->table(self::TABLE)
+            ->eq('group_id', $group_id)
+            ->remove();
+    }
+    
+    /**
      * Check if a user is member
      *
      * @access public
