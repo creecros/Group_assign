@@ -144,15 +144,14 @@ class GroupAssignTaskModificationController extends BaseController
         $task = $this->getTask();
         $values = $this->request->getValues();
         $values['id'] = $task['id'];
-        $i = 0;
-        $user_unassigned = false;
         $values['project_id'] = $task['project_id'];
         if (isset($values['owner_ms']) && !empty($values['owner_ms'])) {
-          if (!empty($task['owner_ms'])) { $ms_id = $task['owner_ms']; } else { $ms_id = $this->multiselectModel->create(); }
+          if (!empty($task['owner_ms'])) { $ms_id = $task['owner_ms']; $this->multiselectMemberModel->removeAllUsers($ms_id); } else { $ms_id = $this->multiselectModel->create(); }
           foreach ($values['owner_ms'] as $user) {
-            if ($user !== 0) { $this->multiselectMemberModel->addUser($ms_id, $user); $i++;} else { $user_unassigned = true; }
+            if ($user !== 0) { $this->multiselectMemberModel->addUser($ms_id, $user); }
           }
-          if ($user_unassigned && $i == 0) { unset($values['owner_ms']); $this->multiselectMemberModel->remove($ms_id); } else { unset($values['owner_ms']); $values['owner_ms'] = $ms_id; }
+          unset($values['owner_ms']);
+          $values['owner_ms'] = $ms_id; }
         }
 
         list($valid, $errors) = $this->taskValidator->validateModification($values);
