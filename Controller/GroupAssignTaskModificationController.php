@@ -152,6 +152,10 @@ class GroupAssignTaskModificationController extends BaseController
           }
           unset($values['owner_ms']);
           $values['owner_ms'] = $ms_id;
+          $this->dispatcher->dispatch(
+            MultiselectModel::EVENT_ASSIGN,
+                new GenericEvent($event)
+            );
         }
 
         list($valid, $errors) = $this->taskValidator->validateModification($values);
