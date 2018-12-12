@@ -6,6 +6,7 @@ use Kanboard\Core\Plugin\Base;
 use Kanboard\Model\TaskModel;
 use Kanboard\Model\ProjectGroupRoleModel;
 use Kanboard\Plugin\Group_assign\Model\NewTaskFinderModel;
+use Kanboard\Plugin\Group_assign\Model\NewUserNotificationFilterModel;
 use Kanboard\Plugin\Group_assign\Model\MultiselectModel;
 use Kanboard\Plugin\Group_assign\Model\MultiselectMemberModel;
 use Kanboard\Plugin\Group_assign\Model\OldTaskFinderModel;
@@ -27,7 +28,11 @@ class Plugin extends Base
     {
         //Events & Changes        
         $this->template->setTemplateOverride('task/changes', 'group_assign:task/changes');
-
+        
+        //Notifications
+        $this->container['userNotificationFilterModel'] = $this->container->factory(function ($c) {
+                return new NewUserNotificationFilterModel($c);
+        });
 
         //Helpers
         $this->helper->register('newTaskHelper', '\Kanboard\Plugin\Group_assign\Helper\NewTaskHelper');
