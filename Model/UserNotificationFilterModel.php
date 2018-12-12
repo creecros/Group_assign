@@ -2,6 +2,9 @@
 
 namespace Kanboard\Plugin\Group_assign\Model;
 
+use Kanboard\Model\UserModel;
+use Kanboard\Model\GroupMemberModel;
+use Kanboard\Plugin\Group_assign\Model\MultiselectMemberModel;
 use Kanboard\Core\Base;
 
 /**
@@ -155,7 +158,10 @@ class UserNotificationFilterModel extends Base
      */
     public function filterAssignee(array $user, array $event_data)
     {
-        return $user['notifications_filter'] == self::FILTER_ASSIGNEE && $event_data['task']['owner_id'] == $user['id'];
+        return ($user['notifications_filter'] == self::FILTER_ASSIGNEE && 
+               ($event_data['task']['owner_id'] == $user['id'] || 
+                $this->multiselectMemberModel->isMember($event_data['task']['owner_ms'], $user['id']) ||
+                $this->groupMemberModel->isMember($event_data['task']['owner_gp'], $user['id']));
     }
 
     /**
@@ -182,7 +188,9 @@ class UserNotificationFilterModel extends Base
     public function filterBoth(array $user, array $event_data)
     {
         return $user['notifications_filter'] == self::FILTER_BOTH &&
-               ($event_data['task']['creator_id'] == $user['id'] || $event_data['task']['owner_id'] == $user['id']);
+               ($event_data['task']['creator_id'] == $user['id'] || $event_data['task']['owner_id'] == $user['id'] || 
+                $this->multiselectMemberModel->isMember($event_data['task']['owner_ms'], $user['id']) ||
+                $this->groupMemberModel->isMember($event_data['task']['owner_gp'], $user['id']));
     }
 
     /**
