@@ -13,7 +13,7 @@ use Kanboard\Core\Base;
  * @package  Kanboard\Plugin\Group_assign
  * @author   Craig Crosby
  */
-class UserNotificationFilterModel extends Base
+class NewUserNotificationFilterModel extends Base
 {
     /**
      * SQL table name
