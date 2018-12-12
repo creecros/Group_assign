@@ -35,7 +35,7 @@ Find bugs or missing functionality, please report it.
 - [x] Add a few basic automatic actions that utilize Groups assigned
 - [x] Add relationship for ``assignee:Username`` or ``assignee:Name`` in the table lookup 
 - [ ] Add an event for assigned group change.
-- [ ] Incorporate into notifications
+- [x] Incorporate into notifications
 
 # Screenshots
 
