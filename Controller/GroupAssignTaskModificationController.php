@@ -17,10 +17,10 @@ use Kanboard\Core\Controller\PageNotFoundException;
 
 
 /**
- * Task Modification controller
+ * Group Assign Task Modification controller
  *
- * @package  Kanboard\Controller
- * @author   Frederic Guillot
+ * @package  Kanboard\Plugin\Group_assign\
+ * @author   Craig Crosby
  */
 class GroupAssignTaskModificationController extends BaseController
 {
@@ -141,17 +141,27 @@ class GroupAssignTaskModificationController extends BaseController
      */
     public function update()
     {
+        $previousMembers = array();
         $task = $this->getTask();
         $values = $this->request->getValues();
         $values['id'] = $task['id'];
         $values['project_id'] = $task['project_id'];
         if (isset($values['owner_ms']) && !empty($values['owner_ms'])) {
-          if (!empty($task['owner_ms'])) { $ms_id = $task['owner_ms']; $this->multiselectMemberModel->removeAllUsers($ms_id); } else { $ms_id = $this->multiselectModel->create(); }
+          if (!empty($task['owner_ms'])) { 
+              $ms_id = $task['owner_ms']; 
+              $previousMembers = $this->multiselectMemberModel->getMembers($ms_id); 
+              $this->multiselectMemberModel->removeAllUsers($ms_id); 
+          } else { 
+              $ms_id = $this->multiselectModel->create(); 
+          }
           foreach ($values['owner_ms'] as $user) {
             if ($user !== 0) { $this->multiselectMemberModel->addUser($ms_id, $user); }
           }
           unset($values['owner_ms']);
           $values['owner_ms'] = $ms_id;
+          $newMembersSet = $this->multiselectMemberModel->getMembers($ms_id); 
+          if (sort($previousMembers) !== sort($newMemberSet)) { $this->multiselectMemberModel->assigneeChanged($task, $values); }
+          if ($values['owner_gp'] !== $task['owner_gp']) { $this->multiselectMemberModel->assigneeChanged($task, $values); }
         }
 
         list($valid, $errors) = $this->taskValidator->validateModification($values);
