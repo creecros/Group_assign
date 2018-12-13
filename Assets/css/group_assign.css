@@ -7,3 +7,11 @@
 .avatar-13 img {
     border-radius: 6.5px;
 }
+
+.assigned-group {
+    display: inline-block;
+    margin: 3px 3px 0 0;
+    padding: 1px 3px 1px 3px;
+    color: #333;
+    border-radius: 4px;
+}
