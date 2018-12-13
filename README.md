@@ -42,8 +42,7 @@ Find bugs or missing functionality, please report it.
 # Screenshots
 
 ## Task Details:
-![image](https://user-images.githubusercontent.com/26339368/38753714-493c926e-3f2d-11e8-8ef7-271bab0e255d.png)
-![image](https://user-images.githubusercontent.com/26339368/49557880-2065ce00-f8d7-11e8-985c-bc20c1617b6b.png)
+![image](https://user-images.githubusercontent.com/26339368/49951197-64546680-fec7-11e8-9473-82820b1a4f7e.png)
 
 ## Task Creation/Modification:
 ![image](https://user-images.githubusercontent.com/26339368/38753761-692db008-3f2d-11e8-8ce2-59d88ddf39b1.png)
