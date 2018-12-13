@@ -28,7 +28,8 @@ Kanboard v1.1.0 or Higher
 * using ``assignee:GroupName`` in filter will find tasks assigned to a group by NAME of the group.
 * using ``assignee:GroupID`` in filter will find tasks assigned to a group by ID number of group.
 * using ``assignee:Username`` or ``assignee:Name`` will NOW find a task assigned to a group with that UserName or Name in the group or in Other Assignees. 
-* user assigneed via a group or multiselect will now recieve notifications
+* User assigneed via a group or multiselect will now recieve notifications
+* Changing assigned group or any multiselect users will now trigger `EVENT_ASSIGNEE_CHANGE`
 
 # Future enhancments
 Find bugs or missing functionality, please report it.
