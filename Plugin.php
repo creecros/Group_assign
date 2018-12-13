@@ -123,7 +123,7 @@ class Plugin extends Base
     }
     public function getPluginVersion()
     {
-        return '1.3.0';
+        return '1.4.0';
     }
     public function getPluginHomepage()
     {
