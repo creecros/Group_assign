@@ -50,8 +50,7 @@ Find bugs or missing functionality, please report it.
 ![image](https://user-images.githubusercontent.com/26339368/49557918-3c696f80-f8d7-11e8-91b8-7cef11c6eec0.png)
 
 ## Board View:
-![image](https://user-images.githubusercontent.com/26339368/38753779-77b931d8-3f2d-11e8-8160-ef2563119252.png)
-![image](https://user-images.githubusercontent.com/26339368/49557866-0f1cc180-f8d7-11e8-9ed7-040be16e4b24.png)
+![image](https://user-images.githubusercontent.com/26339368/49951135-3a9b3f80-fec7-11e8-9bf6-3a777c09c675.png)
 
 ## Users Calendar View
 
