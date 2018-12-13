@@ -4,6 +4,8 @@ namespace Kanboard\Plugin\Group_assign\Model;
 
 use Kanboard\Plugin\Group_assign\Model\MultiselectModel;
 use Kanboard\Model\UserModel;
+use Kanboard\Model\TaskModel;
+use Kanboard\Core\Queue\QueueManager;
 use Kanboard\Core\Base;
 
 /**
@@ -144,5 +146,24 @@ class MultiselectMemberModel extends Base
             ->eq(self::TABLE.'.user_id', $user_id)
             ->asc(MultiselectModel::TABLE.'.id')
             ->findAll();
+    }
+    
+    /**
+     * Fire Assignee Change
+     *
+     * @access protected
+     * @param  array $task
+     * @param  array $changes
+     */
+    public function assigneeChanged(array $task, array $changes)
+    {
+        $events = array();
+        $events[] = TaskModel::EVENT_ASSIGNEE_CHANGE;
+
+        if (! empty($events)) {
+            $this->queueManager->push($this->taskEventJob
+                ->withParams($task['id'], $events, $changes, array(), $task)
+            );
+        }
     }
 }
