@@ -104,7 +104,7 @@ class Plugin extends Base
     {
         return [
             'Plugin\Group_assign\Model' => [
-                'MultiselectMemberModel', 'MultiselectModel',
+                'MultiselectMemberModel', 'MultiselectModel', 'GroupColorExtension',
             ],
         ];
     }
