@@ -22,7 +22,7 @@ use Kanboard\Core\Base;
  * @package  Kanboard\Model
  * @author   Frederic Guillot
  */
-class TaskDuplicationModel extends Base
+class GroupAssignTaskDuplicationModel extends Base
 {
     /**
      * Fields to copy when duplicating a task
