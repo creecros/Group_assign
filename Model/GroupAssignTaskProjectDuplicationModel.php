@@ -30,6 +30,29 @@ class GroupAssignTaskProjectDuplicationModel extends TaskDuplicationModel
         $new_task_id = $this->save($task_id, $values);
 
         if ($new_task_id !== false) {
+                    // Check if the group is allowed for the destination project
+                    if ($values['owner_gp'] > 0) {
+                        $group_in_project = $this->db
+                            ->table(ProjectGroupRoleModel::TABLE)
+                            ->eq('project_id', $values['project_id'])
+                            ->eq('group_id', $values['owner_gp'])
+                            ->exists();
+                        if ($group_in_project) { $this->db->table(TaskModel::TABLE)->eq('id', $new_task_id)->update(['owner_gp' => $values['owner_gp']]); }
+                    }
+        
+                    // Check if the other assignees are allowed for the destination project
+                    if ($values['owner_ms'] > 0) {
+                        $users_in_ms = $this->multiselectMemberModel->getMembers($values['owner_ms']);
+                        $this->multiselectMemberModel->removeAllUsers($values['owner_ms']); 
+                        foreach ($users_in_ms as $user) {
+                            if ($this->projectPermissionModel->isUserAllowed($values['project_id'], $user['id'])) { 
+                                $this->multiselectMemberModel->addUser($values['owner_ms'], $user['id']); 
+                            } else {
+                                $this->multiselectMemberModel->removeUser($values['owner_ms'], $user['id']); 
+                            }
+                        }
+                    }
+            
             $this->tagDuplicationModel->duplicateTaskTagsToAnotherProject($task_id, $new_task_id, $project_id);
             $this->taskLinkModel->create($new_task_id, $task_id, 4);
         }
