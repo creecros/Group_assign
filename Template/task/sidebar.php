@@ -59,10 +59,10 @@
             <?= $this->modal->small('files-o', t('Duplicate'), 'TaskDuplicationController', 'duplicate', array('task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>
         </li>
         <li>
-            <?= $this->modal->small('clipboard', t('Duplicate to another project'), 'GroupAssignTaskDuplicationController', 'copy', array('plugin' => 'Group_assign', 'task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>
+            <?= $this->modal->small('clipboard', t('Duplicate to another project'), 'GroupAssignTaskDuplicationController', 'copy', array('plugin' => 'group_assign', 'task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>
         </li>
         <li>
-            <?= $this->modal->small('clone', t('Move to another project'), 'GroupAssignTaskDuplicationController', 'move', array('plugin' => 'Group_assign', 'task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>
+            <?= $this->modal->small('clone', t('Move to another project'), 'GroupAssignTaskDuplicationController', 'move', array('plugin' => 'group_assign', 'task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>
         </li>
         <li>
             <?= $this->modal->small('paper-plane', t('Send by email'), 'TaskMailController', 'create', array('task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>
