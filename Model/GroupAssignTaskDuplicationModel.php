@@ -90,25 +90,6 @@ class GroupAssignTaskDuplicationModel extends Base
         if ($values['owner_id'] > 0 && ! $this->projectPermissionModel->isUserAllowed($values['project_id'], $values['owner_id'])) {
             $values['owner_id'] = 0;
         }
-        
-        // Check if the group is allowed for the destination project
-        if ($values['owner_gp'] > 0) {
-            $group_in_project = $this->db
-                ->table(ProjectGroupRoleModel::TABLE)
-                ->eq('project_id', $values['project_id'])
-                ->eq('group_id', $values['owner_gp'])
-                ->exists();
-            if (! $group_in_project) { $values['owner_gp'] = 0; error_log('false',0); } else { error_log('true',0); }
-        }
-        
-        // Check if the other assignees are allowed for the destination project
-        if ($values['owner_ms'] > 0) {
-          $users_in_ms = $this->multiselectMemberModel->getMembers($values['owner_ms']);
-          $this->multiselectMemberModel->removeAllUsers($values['owner_ms']); 
-          foreach ($users_in_ms as $user) {
-            if ($this->projectPermissionModel->isUserAllowed($values['project_id'], $user['id'])) { $this->multiselectMemberModel->addUser($values['owner_ms'], $user['id']); }
-          }
-        }
 
         // Check if the category exists for the destination project
         if ($values['category_id'] > 0) {
