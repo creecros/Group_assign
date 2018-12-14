@@ -7,7 +7,6 @@ use Kanboard\Model\TaskModel;
 use Kanboard\Model\ProjectGroupRoleModel;
 use Kanboard\Plugin\Group_assign\Model\MultiselectMemberModel;
 use Kanboard\Plugin\Group_assign\Model\MultiselectModel;
-use Kanboard\Plugin\Group_assign\Model\MultiselectMemberModel;
 use Kanboard\Model\ProjectPermissionModel;
 use Kanboard\Model\TaskLinkModel;
 
