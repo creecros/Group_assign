@@ -98,7 +98,8 @@ class GroupAssignTaskDuplicationModel extends Base
                 ->eq('project_id', $values['project_id'])
                 ->eq('group_id', $values['owner_gp'])
                 ->exists();
-            if (! $group_in_project) { $values['owner_gp'] = 0; }
+            if ($group_in_project == false) { $values['owner_gp'] = 0; }
+            error_log($group_in_project, 0);
         }
         
         // Check if the group is allowed for the destination project
@@ -106,6 +107,7 @@ class GroupAssignTaskDuplicationModel extends Base
           $ms_id = $this->multiselectModel->create();
           $users_in_ms = $this->multiselectMemberModel->getMembers($values['owner_ms']);
           foreach ($users_in_ms as $user) {
+              error_log($user['id'], 0);
             if ($this->projectPermissionModel->isUserAllowed($values['project_id'], $user['id'])) { $this->multiselectMemberModel->addUser($ms_id, $user['id']); }
           }
         }
