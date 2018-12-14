@@ -98,7 +98,7 @@ class GroupAssignTaskDuplicationModel extends Base
                 ->eq('project_id', $values['project_id'])
                 ->eq('group_id', $values['owner_gp'])
                 ->exists();
-            if (! $group_in_project) { $values['owner_gp'] = 0; error_log('false',0); } else { error_log('true',0); )
+            if (! $group_in_project) { $values['owner_gp'] = 0; error_log('false',0); } else { error_log('true',0); }
         }
         
         // Check if the other assignees are allowed for the destination project
