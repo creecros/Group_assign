@@ -31,7 +31,7 @@ class GroupAssignTaskProjectDuplicationModel extends GroupAssignTaskDuplicationM
 
         if ($new_task_id !== false) {
             // Check if the group is allowed for the destination project
-            $group_id = $owner_gp;
+            $group_id = $owner_gp; error_log($owner_gp, 0);
                     if ($group_id > 0) {
                         $group_in_project = $this->db
                             ->table(ProjectGroupRoleModel::TABLE)
@@ -42,7 +42,7 @@ class GroupAssignTaskProjectDuplicationModel extends GroupAssignTaskDuplicationM
                     }
         
             // Check if the other assignees are allowed for the destination project
-            $ms_id = $owner_ms;
+            $ms_id = $owner_ms; error_log($owner_ms, 0);
                     if ($ms_id > 0) {
                         $users_in_ms = $this->multiselectMemberModel->getMembers($ms_id);
                         $new_ms_id = $this->multiselectModel->create();
