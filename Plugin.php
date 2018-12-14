@@ -18,6 +18,7 @@ use Kanboard\Plugin\Group_assign\Action\EmailOtherAssignees;
 use Kanboard\Plugin\Group_assign\Action\EmailOtherAssigneesDue;
 use Kanboard\Plugin\Group_assign\Action\AssignGroup;
 use Kanboard\Plugin\Group_assign\Model\GroupAssignCalendarModel;
+use Kanboard\Plugin\Group_assign\Model\GroupAssignTaskDuplicationModel;
 use PicoDb\Table;
 use PicoDb\Database;
 
@@ -39,18 +40,27 @@ class Plugin extends Base
         $this->helper->register('smallAvatarHelperExtend', '\Kanboard\Plugin\Group_assign\Helper\SmallAvatarHelperExtend');
         
         
-        //Models
+        //Models 
         if (function_exists('\Schema\version_132') && DB_DRIVER == 'mysql') {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
                 return new NewTaskFinderModel($c);
+            });
+            $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
+                return new GroupAssignTaskDuplicationModel($c);
             });
         } else if (function_exists('\Schema\version_119') && DB_DRIVER == 'sqlite') {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
                 return new NewTaskFinderModel($c);
             });
+            $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
+                return new GroupAssignTaskDuplicationModel($c);
+            });
         } else if (function_exists('\Schema\version_110') && DB_DRIVER == 'postgres') {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
                 return new NewTaskFinderModel($c);
+            });
+            $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
+                return new GroupAssignTaskDuplicationModel($c);
             });
         } else {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
