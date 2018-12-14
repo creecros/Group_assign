@@ -59,6 +59,8 @@ class GroupAssignTaskProjectDuplicationModel extends TaskDuplicationModel
         $values['owner_id'] = $owner_id !== null ? $owner_id : $values['owner_id'];
         $values['owner_gp'] = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_gp');
         $values['owner_ms'] = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_ms');
+        error_log($values['owner_gp'],0);
+        error_log($values['owner_ms'],0);
         return $values;
     }
 }
