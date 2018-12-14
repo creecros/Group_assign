@@ -22,7 +22,7 @@ class GroupAssignTaskProjectDuplicationModel extends GroupAssignTaskDuplicationM
      * @param  integer    $owner_id
      * @return boolean|integer
      */
-    public function duplicateToProject($task_id, $project_id, $swimlane_id = null, $column_id = null, $category_id = null, $owner_id = null)
+    public function duplicateToProject($task_id, $project_id, $swimlane_id = null, $column_id = null, $category_id = null, $owner_id = null, $owner_gp = 0, $owner_ms = 0)
     {
         $values = $this->prepare($task_id, $project_id, $swimlane_id, $column_id, $category_id, $owner_id);
 
@@ -31,7 +31,7 @@ class GroupAssignTaskProjectDuplicationModel extends GroupAssignTaskDuplicationM
 
         if ($new_task_id !== false) {
             // Check if the group is allowed for the destination project
-            $group_id = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_gp');
+            $group_id = $owner_gp;
                     if ($group_id > 0) {
                         $group_in_project = $this->db
                             ->table(ProjectGroupRoleModel::TABLE)
@@ -42,7 +42,7 @@ class GroupAssignTaskProjectDuplicationModel extends GroupAssignTaskDuplicationM
                     }
         
             // Check if the other assignees are allowed for the destination project
-            $ms_id = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_ms');
+            $ms_id = $owner_ms;
                     if ($ms_id > 0) {
                         $users_in_ms = $this->multiselectMemberModel->getMembers($ms_id);
                         $new_ms_id = $this->multiselectModel->create();
