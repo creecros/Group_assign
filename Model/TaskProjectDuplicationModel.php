@@ -1,6 +1,6 @@
 <?php
 
-namespace Kanboard\Plugins\Group_assign\Model;
+namespace Kanboard\Plugin\Group_assign\Model;
 
 use Kanboard\Model\TaskDuplicationModel;
 
