@@ -28,10 +28,10 @@ class GroupAssignTaskProjectDuplicationModel extends TaskDuplicationModel
 
         $this->checkDestinationProjectValues($values);
         $new_task_id = $this->save($task_id, $values);
-
+        error_log($new_task_id, 0);
         if ($new_task_id !== false) {
             // Check if the group is allowed for the destination project
-            $group_id = $owner_gp; 
+            $group_id = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_gp');
             error_log($owner_gp, 0);
                     if ($group_id > 0) {
                         $group_in_project = $this->db
@@ -43,7 +43,7 @@ class GroupAssignTaskProjectDuplicationModel extends TaskDuplicationModel
                     }
         
             // Check if the other assignees are allowed for the destination project
-            $ms_id = $owner_ms; 
+            $ms_id = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_ms');
             error_log($owner_ms, 0);
                     if ($ms_id > 0) {
                         $users_in_ms = $this->multiselectMemberModel->getMembers($ms_id);
