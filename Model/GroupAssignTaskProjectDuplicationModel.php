@@ -8,7 +8,7 @@ namespace Kanboard\Plugins\Group_assign\Model;
  * @package  Kanboard\Plugins\Group_assign
  * @author   Craig Crosby
  */
-class GroupAssignTaskProjectDuplicationModel extends GroupAssignTaskDuplicationModel
+class GroupAssignTaskProjectDuplicationModel extends TaskDuplicationModel
 {
     /**
      * Duplicate a task to another project
