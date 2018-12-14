@@ -86,9 +86,6 @@ class Plugin extends Base
         $this->template->setTemplateOverride('task_creation/show', 'group_assign:task_creation/show');
         $this->template->setTemplateOverride('task_modification/show', 'group_assign:task_modification/show');
         
-        //Sidebar to override Controller
-        $this->template->setTemplateOverride('task/sidebar', 'group_assign:task/sidebar');
-        
         //Board
          $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/group');
          $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/multi');
