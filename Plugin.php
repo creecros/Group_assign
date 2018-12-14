@@ -19,7 +19,7 @@ use Kanboard\Plugin\Group_assign\Action\EmailOtherAssigneesDue;
 use Kanboard\Plugin\Group_assign\Action\AssignGroup;
 use Kanboard\Plugin\Group_assign\Model\GroupAssignCalendarModel;
 use Kanboard\Plugin\Group_assign\Model\GroupAssignTaskDuplicationModel;
-use Kanboard\Plugin\Group_assign\Model\GroupAssignTaskProjectDuplicationModel;
+use Kanboard\Plugin\Group_assign\Model\TaskProjectDuplicationModel;
 use PicoDb\Table;
 use PicoDb\Database;
 
