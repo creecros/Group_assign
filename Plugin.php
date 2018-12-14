@@ -19,6 +19,7 @@ use Kanboard\Plugin\Group_assign\Action\EmailOtherAssigneesDue;
 use Kanboard\Plugin\Group_assign\Action\AssignGroup;
 use Kanboard\Plugin\Group_assign\Model\GroupAssignCalendarModel;
 use Kanboard\Plugin\Group_assign\Model\GroupAssignTaskDuplicationModel;
+use Kanboard\Plugin\Group_assign\Model\GroupAssignTaskProjectDuplicationModel;
 use PicoDb\Table;
 use PicoDb\Database;
 
@@ -48,6 +49,9 @@ class Plugin extends Base
             $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
                 return new GroupAssignTaskDuplicationModel($c);
             });
+            $this->container['taskProjectDuplicationModel '] = $this->container->factory(function ($c) {
+                return new GroupAssignTaskProjectDuplicationModel ($c);
+            });
         } else if (function_exists('\Schema\version_119') && DB_DRIVER == 'sqlite') {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
                 return new NewTaskFinderModel($c);
@@ -55,12 +59,18 @@ class Plugin extends Base
             $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
                 return new GroupAssignTaskDuplicationModel($c);
             });
+            $this->container['taskProjectDuplicationModel '] = $this->container->factory(function ($c) {
+                return new GroupAssignTaskProjectDuplicationModel ($c);
+            });
         } else if (function_exists('\Schema\version_110') && DB_DRIVER == 'postgres') {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
                 return new NewTaskFinderModel($c);
             });
             $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
                 return new GroupAssignTaskDuplicationModel($c);
+            });
+            $this->container['taskProjectDuplicationModel '] = $this->container->factory(function ($c) {
+                return new GroupAssignTaskProjectDuplicationModel ($c);
             });
         } else {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
