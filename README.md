@@ -38,6 +38,7 @@ Find bugs or missing functionality, please report it.
 - [x] Add relationship for ``assignee:Username`` or ``assignee:Name`` in the table lookup 
 - [x] Add an event for assigned group change.
 - [x] Incorporate into notifications
+- [ ] Address Task Duplication
 
 # Screenshots
 
