@@ -85,7 +85,10 @@ class Plugin extends Base
         //Forms - task_creation.php and task_modification.php
         $this->template->setTemplateOverride('task_creation/show', 'group_assign:task_creation/show');
         $this->template->setTemplateOverride('task_modification/show', 'group_assign:task_modification/show');
-      
+        
+        //Sidebar to override Controller
+        $this->template->setTemplateOverride('task/sidebar', 'group_assign:task/sidebar');
+        
         //Board
          $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/group');
          $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/multi');
@@ -124,7 +127,7 @@ class Plugin extends Base
     {
         return [
             'Plugin\Group_assign\Model' => [
-                'MultiselectMemberModel', 'MultiselectModel', 'GroupColorExtension',
+                'MultiselectMemberModel', 'MultiselectModel', 'GroupColorExtension', 'GroupAssignTaskProjectDuplicationModel', 'GroupAssignTaskDuplicationModel',
             ],
         ];
     }
