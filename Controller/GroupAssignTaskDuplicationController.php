@@ -6,7 +6,7 @@ use Kanboard\Plugins\Group_assign\Model\GroupAssignTaskProjectDuplicationModel;
 use Kanboard\Model\TaskProjectMoveModel;
 use Kanboard\Validator\TaskValidator;
 use Kanboard\Plugins\Group_assign\Model\GroupAssignTaskProjectDuplicationModel;
-use Kanboard\Model\SwimlaneModel
+use Kanboard\Model\SwimlaneModel;
 use Kanboard\Model\ColumnModel;
 use Kanboard\Model\CategoryModel;
 use Kanboard\Model\ProjectUserRoleModel;
