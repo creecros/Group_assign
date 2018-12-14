@@ -30,8 +30,9 @@ class GroupAssignTaskProjectDuplicationModel extends GroupAssignTaskDuplicationM
         $new_task_id = $this->save($task_id, $values);
 
         if ($new_task_id !== false) {
-                    // Check if the group is allowed for the destination project
-                    if ($values['owner_gp'] > 0) {
+            // Check if the group is allowed for the destination project
+            $group_id = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_gp');
+                    if ($group_id > 0) {
                         $group_in_project = $this->db
                             ->table(ProjectGroupRoleModel::TABLE)
                             ->eq('project_id', $values['project_id'])
@@ -40,15 +41,15 @@ class GroupAssignTaskProjectDuplicationModel extends GroupAssignTaskDuplicationM
                         if ($group_in_project) { $this->db->table(TaskModel::TABLE)->eq('id', $new_task_id)->update(['owner_gp' => $values['owner_gp']]); }
                     }
         
-                    // Check if the other assignees are allowed for the destination project
-                    if ($values['owner_ms'] > 0) {
-                        $users_in_ms = $this->multiselectMemberModel->getMembers($values['owner_ms']);
-                        $this->multiselectMemberModel->removeAllUsers($values['owner_ms']); 
+            // Check if the other assignees are allowed for the destination project
+            $ms_id = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_ms');
+                    if ($ms_id > 0) {
+                        $users_in_ms = $this->multiselectMemberModel->getMembers($ms_id);
+                        $new_ms_id = $this->multiselectModel->create();
+                        $this->db->table(TaskModel::TABLE)->eq('id', $new_task_id)->update(['owner_ms' => $new_ms_id]);
                         foreach ($users_in_ms as $user) {
                             if ($this->projectPermissionModel->isUserAllowed($values['project_id'], $user['id'])) { 
-                                $this->multiselectMemberModel->addUser($values['owner_ms'], $user['id']); 
-                            } else {
-                                $this->multiselectMemberModel->removeUser($values['owner_ms'], $user['id']); 
+                                $this->multiselectMemberModel->addUser($new_ms_id, $user['id']); 
                             }
                         }
                     }
