@@ -1,11 +1,11 @@
 <?php
 
-namespace Kanboard\Plugins\Group_assign\Controller;
+namespace Kanboard\Plugin\Group_assign\Controller;
 
-use Kanboard\Plugins\Group_assign\Model\GroupAssignTaskProjectDuplicationModel;
+use Kanboard\Plugin\Group_assign\Model\GroupAssignTaskProjectDuplicationModel;
 use Kanboard\Model\TaskProjectMoveModel;
 use Kanboard\Validator\TaskValidator;
-use Kanboard\Plugins\Group_assign\Model\GroupAssignTaskDuplicationModel;
+use Kanboard\Plugin\Group_assign\Model\GroupAssignTaskDuplicationModel;
 use Kanboard\Model\SwimlaneModel;
 use Kanboard\Model\ColumnModel;
 use Kanboard\Model\CategoryModel;
