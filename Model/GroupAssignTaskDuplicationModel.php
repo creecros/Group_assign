@@ -2,8 +2,11 @@
 
 namespace Kanboard\Plugin\Group_assign\Model;
 
+use Kanboard\Plugin\Group_assign\Model\MultiselectModel;
+use Kanboard\Plugin\Group_assign\Model\MultiselectMemberModel;
 use Kanboard\Model\TagDuplicationModel;
 use Kanboard\Model\ProjectPermissionModel;
+use Kanboard\Model\ProjectGroupRoleModel;
 use Kanboard\Model\CategoryModel;
 use Kanboard\Model\SwimlaneModel;
 use Kanboard\Model\ColumnModel;
