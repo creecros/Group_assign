@@ -86,7 +86,7 @@ class GroupAssignTaskDuplicationController extends BaseController
             if ($valid) {
                 $task_id = $this->groupAssignTaskProjectDuplicationModel->duplicateToProject(
                     $task['id'], $values['project_id'], $values['swimlane_id'],
-                    $values['column_id'], $values['category_id'], $values['owner_id'], $values['owner_gp'], $values['owner_ms']
+                    $values['column_id'], $values['category_id'], $values['owner_id'], $task['owner_gp'], $task['owner_ms']
                 );
 
                 if ($task_id > 0) {
