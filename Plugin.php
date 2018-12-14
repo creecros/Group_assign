@@ -124,7 +124,7 @@ class Plugin extends Base
     {
         return [
             'Plugin\Group_assign\Model' => [
-                'MultiselectMemberModel', 'MultiselectModel', 'GroupColorExtension', 'GroupAssignTaskProjectDuplicationModel', 'GroupAssignTaskDuplicationModel',
+                'MultiselectMemberModel', 'MultiselectModel', 'GroupColorExtension', 'TaskProjectDuplicationModel', 'GroupAssignTaskDuplicationModel',
             ],
         ];
     }
