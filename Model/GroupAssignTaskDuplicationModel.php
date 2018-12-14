@@ -104,7 +104,7 @@ class GroupAssignTaskDuplicationModel extends Base
         // Check if the other assignees are allowed for the destination project
         if ($values['owner_ms'] > 0) {
           $users_in_ms = $this->multiselectMemberModel->getMembers($values['owner_ms']);
-          $this->multiselectMemberModel->removeAllUsers($values['owner_ms'); 
+          $this->multiselectMemberModel->removeAllUsers($values['owner_ms']); 
           foreach ($users_in_ms as $user) {
             if ($this->projectPermissionModel->isUserAllowed($values['project_id'], $user['id'])) { $this->multiselectMemberModel->addUser($values['owner_ms'], $user['id']); }
           }
