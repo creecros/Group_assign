@@ -160,7 +160,7 @@ class GroupAssignTaskModificationController extends BaseController
           unset($values['owner_ms']);
           $values['owner_ms'] = $ms_id;
           $newMembersSet = $this->multiselectMemberModel->getMembers($ms_id); 
-          if (sort($previousMembers) !== sort($newMemberSet)) { $this->multiselectMemberModel->assigneeChanged($task, $values); }
+          if (sort($previousMembers) !== sort($newMembersSet)) { $this->multiselectMemberModel->assigneeChanged($task, $values); }
           if ($values['owner_gp'] !== $task['owner_gp']) { $this->multiselectMemberModel->assigneeChanged($task, $values); }
         }
 
