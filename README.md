@@ -30,6 +30,8 @@ Kanboard v1.1.0 or Higher
 * using ``assignee:Username`` or ``assignee:Name`` will NOW find a task assigned to a group with that UserName or Name in the group or in Other Assignees. 
 * User assigneed via a group or multiselect will now recieve notifications
 * Changing assigned group or any multiselect users will now trigger `EVENT_ASSIGNEE_CHANGE`
+* Duplicating Tasks will include assigned groups and other users.
+  * Duplicating to another project or moving to another project will check permissions of assignees, and remove those without permission.
 
 # Future enhancments
 Find bugs or missing functionality, please report it.
@@ -38,7 +40,7 @@ Find bugs or missing functionality, please report it.
 - [x] Add relationship for ``assignee:Username`` or ``assignee:Name`` in the table lookup 
 - [x] Add an event for assigned group change.
 - [x] Incorporate into notifications
-- [ ] Address Task Duplication
+- [x] Address Task Duplication
 
 # Screenshots
 
