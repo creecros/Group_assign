@@ -19,7 +19,7 @@ use Kanboard\Plugin\Group_assign\Action\EmailOtherAssigneesDue;
 use Kanboard\Plugin\Group_assign\Action\AssignGroup;
 use Kanboard\Plugin\Group_assign\Model\GroupAssignCalendarModel;
 use Kanboard\Plugin\Group_assign\Model\GroupAssignTaskDuplicationModel;
-use Kanboard\Plugin\Group_assign\Model\TaskProjectDuplicationModel;
+use Kanboard\Plugin\Group_assign\Model\GroupAssignTaskProjectDuplicationModel;
 use PicoDb\Table;
 use PicoDb\Database;
 
@@ -124,7 +124,7 @@ class Plugin extends Base
     {
         return [
             'Plugin\Group_assign\Model' => [
-                'MultiselectMemberModel', 'MultiselectModel', 'GroupColorExtension', 'TaskProjectDuplicationModel', 'GroupAssignTaskDuplicationModel',
+                'MultiselectMemberModel', 'MultiselectModel', 'GroupColorExtension',
             ],
         ];
     }
@@ -143,7 +143,7 @@ class Plugin extends Base
     }
     public function getPluginVersion()
     {
-        return '1.4.1';
+        return '1.5.0';
     }
     public function getPluginHomepage()
     {
