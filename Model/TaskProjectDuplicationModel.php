@@ -16,7 +16,7 @@ use Kanboard\Model\TaskLinkModel;
  * @package  Kanboard\Plugins\Group_assign
  * @author   Craig Crosby
  */
-class GroupAssignTaskProjectDuplicationModel extends TaskDuplicationModel
+class TaskProjectDuplicationModel extends TaskDuplicationModel
 {
     /**
      * Duplicate a task to another project
