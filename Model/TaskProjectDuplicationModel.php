@@ -40,7 +40,7 @@ class TaskProjectDuplicationModel extends TaskDuplicationModel
         if ($new_task_id !== false) {
             // Check if the group is allowed for the destination project
             $group_id = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_gp');
-            error_log($owner_gp, 0);
+            error_log($group_id, 0);
                     if ($group_id > 0) {
                         $group_in_project = $this->db
                             ->table(ProjectGroupRoleModel::TABLE)
@@ -52,7 +52,7 @@ class TaskProjectDuplicationModel extends TaskDuplicationModel
         
             // Check if the other assignees are allowed for the destination project
             $ms_id = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_ms');
-            error_log($owner_ms, 0);
+            error_log($ms_id, 0);
                     if ($ms_id > 0) {
                         $users_in_ms = $this->multiselectMemberModel->getMembers($ms_id);
                         $new_ms_id = $this->multiselectModel->create();
