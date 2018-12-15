@@ -47,7 +47,7 @@ class TaskProjectDuplicationModel extends TaskDuplicationModel
                             ->eq('project_id', $values['project_id'])
                             ->eq('group_id', $group_id)
                             ->exists();
-                        if ($group_in_project) { $this->db->table(TaskModel::TABLE)->eq('id', $new_task_id)->update(['owner_gp' => $values['owner_gp']]); }
+                        if ($group_in_project) { $this->db->table(TaskModel::TABLE)->eq('id', $new_task_id)->update(['owner_gp' => $group_id]); }
                     }
         
             // Check if the other assignees are allowed for the destination project
