@@ -21,6 +21,7 @@ use Kanboard\Plugin\Group_assign\Model\GroupAssignCalendarModel;
 use Kanboard\Plugin\Group_assign\Model\GroupAssignTaskDuplicationModel;
 use Kanboard\Plugin\Group_assign\Model\TaskProjectDuplicationModel;
 use Kanboard\Plugin\Group_assign\Model\TaskProjectMoveModel;
+use Kanboard\Plugin\Group_assign\Model\TaskRecurrenceModel;
 use PicoDb\Table;
 use PicoDb\Database;
 
@@ -56,6 +57,9 @@ class Plugin extends Base
             $this->container['taskProjectMoveModel '] = $this->container->factory(function ($c) {
                 return new TaskProjectMoveModel ($c);
             });
+            $this->container['taskRecurrenceModel '] = $this->container->factory(function ($c) {
+                return new TaskRecurrenceModel ($c);
+            });
         } else if (function_exists('\Schema\version_119') && DB_DRIVER == 'sqlite') {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
                 return new NewTaskFinderModel($c);
@@ -68,6 +72,9 @@ class Plugin extends Base
             });
             $this->container['taskProjectMoveModel '] = $this->container->factory(function ($c) {
                 return new TaskProjectMoveModel ($c);
+            });
+            $this->container['taskRecurrenceModel '] = $this->container->factory(function ($c) {
+                return new TaskRecurrenceModel ($c);
             });
         } else if (function_exists('\Schema\version_110') && DB_DRIVER == 'postgres') {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
@@ -82,6 +89,9 @@ class Plugin extends Base
             $this->container['taskProjectMoveModel '] = $this->container->factory(function ($c) {
                 return new TaskProjectMoveModel ($c);
             });
+            $this->container['taskRecurrenceModel '] = $this->container->factory(function ($c) {
+                return new TaskRecurrenceModel ($c);
+            });
         } else {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
                 return new OldTaskFinderModel($c);
@@ -94,6 +104,9 @@ class Plugin extends Base
             });
             $this->container['taskProjectMoveModel '] = $this->container->factory(function ($c) {
                 return new TaskProjectMoveModel ($c);
+            });
+            $this->container['taskRecurrenceModel '] = $this->container->factory(function ($c) {
+                return new TaskRecurrenceModel ($c);
             });
         }
         
@@ -143,7 +156,7 @@ class Plugin extends Base
     {
         return [
             'Plugin\Group_assign\Model' => [
-                'MultiselectMemberModel', 'MultiselectModel', 'GroupColorExtension', 'TaskProjectDuplicationModel', 'TaskProjectMoveModel',
+                'MultiselectMemberModel', 'MultiselectModel', 'GroupColorExtension', 'TaskProjectDuplicationModel', 'TaskProjectMoveModel', 'TaskRecurrenceModel',
             ],
         ];
     }
