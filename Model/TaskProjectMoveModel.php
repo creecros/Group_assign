@@ -10,12 +10,6 @@ use Kanboard\Plugin\Group_assign\Model\MultiselectModel;
 use Kanboard\Model\ProjectPermissionModel;
 use Kanboard\Model\TaskLinkModel;
 
-/**
- * Task Project Move
- *
- * @package  Kanboard\Model
- * @author   Frederic Guillot
- */
 class TaskProjectMoveModel extends TaskDuplicationModel
 {
     /**
