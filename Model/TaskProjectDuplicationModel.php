@@ -57,7 +57,7 @@ class TaskProjectDuplicationModel extends TaskDuplicationModel
                         $new_ms_id = $this->multiselectModel->create();
                         $this->db->table(TaskModel::TABLE)->eq('id', $new_task_id)->update(['owner_ms' => $new_ms_id]);
                         foreach ($users_in_ms as $user) {
-                            if ($this->projectPermissionModel->isUserAllowed($values['project_id'], $user['id'])) { 
+                            if ($this->projectPermissionModel->isAssignable($values['project_id'], $user['id'])) { 
                                 $this->multiselectMemberModel->addUser($new_ms_id, $user['id']); 
                             }
                         }
