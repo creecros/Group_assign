@@ -32,6 +32,7 @@ Kanboard v1.1.0 or Higher
 * Changing assigned group or any multiselect users will now trigger `EVENT_ASSIGNEE_CHANGE`
 * Duplicating Tasks will include assigned groups and other users.
   * Duplicating to another project or moving to another project will check permissions of assignees, and remove those without permission.
+* Task Reccurences will include group assigned and other assignees in the recurrence.
 
 # Future enhancments
 Find bugs or missing functionality, please report it.
@@ -41,6 +42,7 @@ Find bugs or missing functionality, please report it.
 - [x] Add an event for assigned group change.
 - [x] Incorporate into notifications
 - [x] Address Task Duplication
+- [x] Task Recurrence
 
 # Screenshots
 
