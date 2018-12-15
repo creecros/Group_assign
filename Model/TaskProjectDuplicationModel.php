@@ -36,11 +36,9 @@ class TaskProjectDuplicationModel extends TaskDuplicationModel
 
         $this->checkDestinationProjectValues($values);
         $new_task_id = $this->save($task_id, $values);
-        error_log($new_task_id, 0);
         if ($new_task_id !== false) {
             // Check if the group is allowed for the destination project
             $group_id = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_gp');
-            error_log($values['project_id'], 0);
                     if ($group_id > 0) {
                         $group_in_project = $this->db
                             ->table(ProjectGroupRoleModel::TABLE)
