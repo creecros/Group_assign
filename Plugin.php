@@ -50,7 +50,7 @@ class Plugin extends Base
                 return new GroupAssignTaskDuplicationModel($c);
             });
             $this->container['taskProjectDuplicationModel '] = $this->container->factory(function ($c) {
-                return new TaskProjectDuplicationModel ($c);
+                return new GroupAssignTaskProjectDuplicationModel ($c);
             });
         } else if (function_exists('\Schema\version_119') && DB_DRIVER == 'sqlite') {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
@@ -60,7 +60,7 @@ class Plugin extends Base
                 return new GroupAssignTaskDuplicationModel($c);
             });
             $this->container['taskProjectDuplicationModel '] = $this->container->factory(function ($c) {
-                return new TaskProjectDuplicationModel ($c);
+                return new GroupAssignTaskProjectDuplicationModel ($c);
             });
         } else if (function_exists('\Schema\version_110') && DB_DRIVER == 'postgres') {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
@@ -70,7 +70,7 @@ class Plugin extends Base
                 return new GroupAssignTaskDuplicationModel($c);
             });
             $this->container['taskProjectDuplicationModel '] = $this->container->factory(function ($c) {
-                return new TaskProjectDuplicationModel ($c);
+                return new GroupAssignTaskProjectDuplicationModel ($c);
             });
         } else {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
