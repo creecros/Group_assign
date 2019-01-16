@@ -24,6 +24,7 @@ use Kanboard\Plugin\Group_assign\Model\TaskProjectMoveModel;
 use Kanboard\Plugin\Group_assign\Model\TaskRecurrenceModel;
 use PicoDb\Table;
 use PicoDb\Database;
+use Kanboard\Core\Security\Role;
 
 class Plugin extends Base
 {
