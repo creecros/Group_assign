@@ -149,6 +149,17 @@ class Plugin extends Base
             $model = new GroupAssignCalendarModel($container);
             return $model->getUserCalendarEvents($user_id, $start, $end); // Return new events
         });
+        
+        //Roles
+
+        $this->template->hook->attach('template:config:application', 'group_assign:config/toggle');
+    
+        if ($this->configModel->get('enable_pm_group_management', '2') == 1) { 
+            $this->projectAccessMap->add('GroupListController', array('index'), Role::PROJECT_MANAGER);
+            $this->projectAccessMap->add('GroupCreationController', '*', Role::PROJECT_MANAGER);
+            $this->template->setTemplateOverride('header/user_dropdown', 'group_assign:header/user_dropdown'); 
+        }
+
 
     }
     
@@ -175,7 +186,7 @@ class Plugin extends Base
     }
     public function getPluginVersion()
     {
-        return '1.5.0';
+        return '1.6.0';
     }
     public function getPluginHomepage()
     {
