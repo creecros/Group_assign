@@ -34,6 +34,7 @@ Kanboard v1.1.0 or Higher
   * Duplicating to another project or moving to another project will check permissions of assignees, and remove those without permission.
 * Task Reccurences will include group assigned and other assignees in the recurrence.
 * Setting included to enable group managment for Application Managers
+  * Found in `Settings > Application settings`
 
 # Future enhancments
 Find bugs or missing functionality, please report it.
