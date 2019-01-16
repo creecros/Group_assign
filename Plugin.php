@@ -155,7 +155,7 @@ class Plugin extends Base
 
         $this->template->hook->attach('template:config:application', 'group_assign:config/toggle');
     
-        if ($this->configModel->get('enable_pm_group_management', '2') == 1) { 
+        if ($this->configModel->get('enable_am_group_management', '2') == 1) { 
             $this->applicationAccessMap->add('GroupListController', '*', Role::APP_MANAGER);
             $this->applicationAccessMap->add('GroupCreationController', '*', Role::APP_MANAGER);
             $this->template->setTemplateOverride('header/user_dropdown', 'group_assign:header/user_dropdown'); 
