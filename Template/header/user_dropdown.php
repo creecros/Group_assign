@@ -11,7 +11,7 @@
         <li>
             <?= $this->url->icon('folder', t('Projects management'), 'ProjectListController', 'show') ?>
         </li>
-        <?php if ($this->user->hasAccess('GroupListController', 'index')): ?>
+        <?php if ($this->user->hasAccess('GroupListController', 'index') && $_SESSION['user']['role'] == 'app-manager'): ?>
             <li>
                 <?= $this->url->icon('group', t('Groups management'), 'GroupListController', 'index') ?>
             </li>
