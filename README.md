@@ -1,4 +1,10 @@
 [![Build Status](https://travis-ci.com/creecros/Group_assign.svg?branch=master)](https://travis-ci.com/creecros/Group_assign)
+[![Latest release](https://img.shields.io/github/release/creecros/Group_assign.svg)](https://github.com/creecros/Group_assign/releases)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/creecros/Group_assign/blob/master/LICENSE)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/creecros/Group_assign/graphs/contributors)
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)]()
+[![Downloads](https://img.shields.io/github/downloads/creecros/Group_assign/total.svg)](https://github.com/creecros/Group_assign/releases)
+
 
 :star: If you use it, you should star it on Github! 
 - It's the least you can do for all the work put into it!
