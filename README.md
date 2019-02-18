@@ -58,6 +58,8 @@ Find bugs or missing functionality, please report it.
 - Download the provided zip, not the source zip, i.e. `Group_assign-x.x.x.zip`
 - Unzip contents to the plugins folder
 
+In the event that you use the master repo, ensure that the directory of the plugin is named `Group_assign`, or else the plugin will not work.
+
 # Screenshots
 
 ## Task Details:
