@@ -52,6 +52,12 @@ Find bugs or missing functionality, please report it.
 - [x] Address Task Duplication
 - [x] Task Recurrence
 
+# Manual Installation
+
+- Find the release you wish to install: https://github.com/creecros/Group_assign/releases
+- Download the provided zip, not the source zip, i.e. `Group_assign-x.x.x.zip`
+- Unzip contents to the plugins folder
+
 # Screenshots
 
 ## Task Details:
