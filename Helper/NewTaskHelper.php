@@ -141,7 +141,7 @@ class NewTaskHelper extends Base
 
         $html = $this->helper->form->label(t('Other Assignees'), $name.'[]');
         
-        $html .= '<select multiple size="3" name="'.$name.'[]" id="form-'.$name.'" '.implode(' ', $attributes).'>';
+        $html .= '<select class="group-assign-select" multiple="multiple" size="3" name="'.$name.'[]" id="form-'.$name.'" '.implode(' ', $attributes).'>';
         
         foreach ($users as $id => $value) {
             $html .= '<option value="'.$this->helper->text->e($id).'"';

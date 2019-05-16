@@ -143,7 +143,10 @@ class Plugin extends Base
         
         //CSS
         $this->hook->on('template:layout:css', array('template' => 'plugins/Group_assign/Assets/css/group_assign.css'));
-        
+
+        //JS
+        $this->hook->on('template:layout:js', array('template' => 'plugins/Group_assign/Assets/js/group_assign.js'));
+
         //Calendar Events
         $container = $this->container;
         
