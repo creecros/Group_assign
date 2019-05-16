@@ -1,7 +1,6 @@
 
 Kanboard.App.prototype.grpAutoComplete = function() {
     $(".group-assign-select").select2({
-            tags: true
     });
 };
     
