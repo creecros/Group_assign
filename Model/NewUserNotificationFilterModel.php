@@ -158,6 +158,8 @@ class NewUserNotificationFilterModel extends Base
      */
     public function filterAssignee(array $user, array $event_data)
     {
+        if (!isset($event_data['task']['owner_ms'])) $event_data['task']['owner_ms'] = 0;
+        if (!isset($event_data['task']['owner_gp'])) $event_data['task']['owner_gp'] = 0;
         return $user['notifications_filter'] == self::FILTER_ASSIGNEE && 
                ($event_data['task']['owner_id'] == $user['id'] || 
                 $this->multiselectMemberModel->isMember($event_data['task']['owner_ms'], $user['id']) ||
@@ -187,6 +189,8 @@ class NewUserNotificationFilterModel extends Base
      */
     public function filterBoth(array $user, array $event_data)
     {
+        if (!isset($event_data['task']['owner_ms'])) $event_data['task']['owner_ms'] = 0;
+        if (!isset($event_data['task']['owner_gp'])) $event_data['task']['owner_gp'] = 0;
         return $user['notifications_filter'] == self::FILTER_BOTH &&
                ($event_data['task']['creator_id'] == $user['id'] || $event_data['task']['owner_id'] == $user['id'] || 
                 $this->multiselectMemberModel->isMember($event_data['task']['owner_ms'], $user['id']) ||
