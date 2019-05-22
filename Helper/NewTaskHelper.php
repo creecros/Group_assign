@@ -136,7 +136,7 @@ class NewTaskHelper extends Base
             return '';
         }
 
-        $attributes = array_merge(array(), $attributes);
+        $attributes = array_merge(array('tabindex="4"'), $attributes);
         $name = 'owner_ms';
 
         $html = $this->helper->form->label(t('Other Assignees'), $name.'[]');
