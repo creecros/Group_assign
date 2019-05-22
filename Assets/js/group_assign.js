@@ -29,29 +29,7 @@ Kanboard.App.prototype.grpAutoComplete = function() {
     }
 
     function submitForm() {
-        var form = getForm();
 
-        if (form) {
-            var url = form.getAttribute('action');
-
-            if (url) {
-                KB.http.postForm(url, form).success(function (response) {
-                    KB.trigger('modal.stop');
-
-                    if (response) {
-                        replace(response);
-                    } else {
-                        destroy();
-                    }
-                }).error(function (response) {
-                    KB.trigger('modal.stop');
-
-                    if (response.hasOwnProperty('message')) {
-                        window.alert(response.message);
-                    }
-                });
-            }
-        }
     }
 
     function afterRendering() {
