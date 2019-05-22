@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.com/creecros/Group_assign.svg?branch=master)](https://travis-ci.com/creecros/Group_assign)
 [![Latest release](https://img.shields.io/github/release/creecros/Group_assign.svg)](https://github.com/creecros/Group_assign/releases)
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/creecros/Group_assign/blob/master/LICENSE)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/creecros/Group_assign/graphs/contributors)
