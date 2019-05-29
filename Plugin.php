@@ -12,7 +12,7 @@ use Kanboard\Plugin\Group_assign\Model\MultiselectModel;
 use Kanboard\Plugin\Group_assign\Model\MultiselectMemberModel;
 use Kanboard\Plugin\Group_assign\Model\OldTaskFinderModel;
 use Kanboard\Plugin\Group_assign\Helper\NewTaskHelper;
-use Kanboard\Plugin\Group_assign\Filter\TaskAssigneeFilter;
+use Kanboard\Plugin\Group_assign\Filter\TaskAllAssigneeFilter;
 use Kanboard\Plugin\Group_assign\Action\EmailGroup;
 use Kanboard\Plugin\Group_assign\Action\EmailGroupDue;
 use Kanboard\Plugin\Group_assign\Action\EmailOtherAssignees;
@@ -126,7 +126,7 @@ class Plugin extends Base
         
         //Filter
         $this->container->extend('taskLexer', function($taskLexer, $c) {
-            $taskLexer->withFilter(TaskAssigneeFilter::getInstance()->setDatabase($c['db'])
+            $taskLexer->withFilter(TaskAllAssigneeFilter::getInstance()->setDatabase($c['db'])
                                                                     ->setCurrentUserId($c['userSession']->getId()));
             return $taskLexer;
         });
@@ -196,7 +196,7 @@ class Plugin extends Base
     }
     public function getPluginVersion()
     {
-        return '1.7.2';
+        return '1.7.3';
     }
     public function getPluginHomepage()
     {
