@@ -158,8 +158,9 @@ class NewTaskHelper extends Base
                         if ($member['user_id'] == $id){ $html .= ' selected="selected"'; break; }
                     }
                 }
+            
+                $html .= '>'.$this->helper->text->e($value).'</option>';
             }
-            $html .= '>'.$this->helper->text->e($value).'</option>';
         }
         $html .= '</select>';
 
