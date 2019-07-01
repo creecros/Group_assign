@@ -144,17 +144,19 @@ class NewTaskHelper extends Base
         $html .= '<select class="group-assign-select" multiple="multiple" size="3" name="'.$name.'[]" id="form-'.$name.'" '.implode(' ', $attributes).'>';
         
         foreach ($users as $id => $value) {
-            $html .= '<option value="'.$this->helper->text->e($id).'"';
-            if (isset($values->$name)) {
-                $multiusers = $this->multiselectMemberModel->getMembers($values->$name);
-                foreach ($multiusers as $member) {
-                    if ($member['user_id'] == $id){ $html .= ' selected="selected"'; break; }
+            if($id !== 0){
+                $html .= '<option value="'.$this->helper->text->e($id).'"';
+                if (isset($values->$name)) {
+                    $multiusers = $this->multiselectMemberModel->getMembers($values->$name);
+                    foreach ($multiusers as $member) {
+                        if ($member['user_id'] == $id){ $html .= ' selected="selected"'; break; }
+                    }
                 }
-            }
-            if (isset($values[$name])) {
-                $multiusers = $this->multiselectMemberModel->getMembers($values[$name]);
-                foreach ($multiusers as $member) {
-                    if ($member['user_id'] == $id){ $html .= ' selected="selected"'; break; }
+                if (isset($values[$name])) {
+                    $multiusers = $this->multiselectMemberModel->getMembers($values[$name]);
+                    foreach ($multiusers as $member) {
+                        if ($member['user_id'] == $id){ $html .= ' selected="selected"'; break; }
+                    }
                 }
             }
             $html .= '>'.$this->helper->text->e($value).'</option>';

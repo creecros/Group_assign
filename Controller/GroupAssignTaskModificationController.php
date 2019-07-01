@@ -164,6 +164,8 @@ class GroupAssignTaskModificationController extends BaseController
           if (sort($previousMembers) !== sort($newMembersSet)) { $this->multiselectMemberModel->assigneeChanged($task, $values); }
 
           if ($values['owner_gp'] !== $task['owner_gp']) { $this->multiselectMemberModel->assigneeChanged($task, $values); }
+        } else {
+            $this->multiselectMemberModel->removeAllUsers($task['owner_ms']);
         }
 
         list($valid, $errors) = $this->taskValidator->validateModification($values);
