@@ -45,40 +45,13 @@ class Plugin extends Base
         $this->helper->register('smallAvatarHelperExtend', '\Kanboard\Plugin\Group_assign\Helper\SmallAvatarHelperExtend');
         
         
-        //Models 
-        if (function_exists('\Schema\version_132') && DB_DRIVER == 'mysql') {
-            $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
-                return new NewTaskFinderModel($c);
-            });
-            $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
-                return new GroupAssignTaskDuplicationModel($c);
-            });
-            $this->container['taskProjectDuplicationModel '] = $this->container->factory(function ($c) {
-                return new TaskProjectDuplicationModel ($c);
-            });
-            $this->container['taskProjectMoveModel '] = $this->container->factory(function ($c) {
-                return new TaskProjectMoveModel ($c);
-            });
-            $this->container['taskRecurrenceModel '] = $this->container->factory(function ($c) {
-                return new TaskRecurrenceModel ($c);
-            });
-        } else if (function_exists('\Schema\version_119') && DB_DRIVER == 'sqlite') {
-            $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
-                return new NewTaskFinderModel($c);
-            });
-            $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
-                return new GroupAssignTaskDuplicationModel($c);
-            });
-            $this->container['taskProjectDuplicationModel '] = $this->container->factory(function ($c) {
-                return new TaskProjectDuplicationModel ($c);
-            });
-            $this->container['taskProjectMoveModel '] = $this->container->factory(function ($c) {
-                return new TaskProjectMoveModel ($c);
-            });
-            $this->container['taskRecurrenceModel '] = $this->container->factory(function ($c) {
-                return new TaskRecurrenceModel ($c);
-            });
-        } else if (function_exists('\Schema\version_110') && DB_DRIVER == 'postgres') {
+        //Models and backward compatibility
+        
+        $applications_version = str_replace('v', '', APP_VERSION);
+        if (strpos(APP_VERSION, 'master') !== false && file_exists('ChangeLog')) { $applications_version = trim(file_get_contents('ChangeLog', false, null, 8, 6), ' '); }
+        $clean_appversion = preg_replace('/\s+/', '', $applications_version);
+        
+        if (version_compare($clean_appversion, '1.2.5', '>')) {
             $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
                 return new NewTaskFinderModel($c);
             });
@@ -196,7 +169,7 @@ class Plugin extends Base
     }
     public function getPluginVersion()
     {
-        return '1.7.6';
+        return '1.7.7';
     }
     public function getPluginHomepage()
     {
