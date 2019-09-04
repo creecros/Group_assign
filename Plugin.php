@@ -23,6 +23,8 @@ use Kanboard\Plugin\Group_assign\Model\GroupAssignTaskDuplicationModel;
 use Kanboard\Plugin\Group_assign\Model\TaskProjectDuplicationModel;
 use Kanboard\Plugin\Group_assign\Model\TaskProjectMoveModel;
 use Kanboard\Plugin\Group_assign\Model\TaskRecurrenceModel;
+use Kanboard\Plugin\Group_assign\Model\NewMetaMagikSubquery;
+use Kanboard\Plugin\Group_assign\Model\OldMetaMagikSubquery;
 use PicoDb\Table;
 use PicoDb\Database;
 use Kanboard\Core\Security\Role;
@@ -52,9 +54,15 @@ class Plugin extends Base
         $clean_appversion = preg_replace('/\s+/', '', $applications_version);
         
         if (version_compare($clean_appversion, '1.2.5', '>')) {
-            $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
-                return new NewTaskFinderModel($c);
-            });
+            if (file_exists('plugins/MetaMagik')){
+                $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
+                    return new NewMetaMagikSubquery($c);
+                });
+            } else {
+                $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
+                    return new NewTaskFinderModel($c);
+                });
+            }
             $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
                 return new GroupAssignTaskDuplicationModel($c);
             });
@@ -68,9 +76,15 @@ class Plugin extends Base
                 return new TaskRecurrenceModel ($c);
             });
         } else {
-            $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
-                return new OldTaskFinderModel($c);
-            });
+            if (file_exists('plugins/MetaMagik')){
+                $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
+                    return new OldMetaMagikSubquery($c);
+                });
+            } else {
+                $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
+                    return new OldTaskFinderModel($c);
+                });
+            }
             $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
                 return new GroupAssignTaskDuplicationModel($c);
             });
@@ -169,7 +183,7 @@ class Plugin extends Base
     }
     public function getPluginVersion()
     {
-        return '1.7.7';
+        return '1.7.8';
     }
     public function getPluginHomepage()
     {

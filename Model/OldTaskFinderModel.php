@@ -54,7 +54,6 @@ use Kanboard\Model\TaskCreationModel;
 use Kanboard\Model\TaskDuplicationModel;
 use Kanboard\Model\TaskExternalLinkModel;
 use Kanboard\Model\TaskFileModel;
-use Kanboard\Model\TaskFinderModel;
 use Kanboard\Model\TaskLinkModel;
 use Kanboard\Model\TaskMetadataModel;
 use Kanboard\Model\TaskModel;
