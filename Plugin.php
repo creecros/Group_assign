@@ -108,8 +108,16 @@ class Plugin extends Base
         $this->template->setTemplateOverride('task_modification/show', 'group_assign:task_modification/show');
         
         //Board
-         $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/group');
-         $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/multi');
+        $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/group');
+        $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/multi');
+        $groupmodel = $this->projectGroupRoleModel;
+        $this->template->hook->attachCallable('template:app:filters-helper:after', 'group_assign:board/filter', function($array = array()) use ($groupmodel) {
+            if(!empty($array) && $array['id'] >= 1){
+                return ['grouplist' => array_column($groupmodel->getGroups($array['id']), 'name')];
+            } else {
+                return ['grouplist' => array()];
+            }
+        });  
         
         //Filter
         $this->container->extend('taskLexer', function($taskLexer, $c) {
