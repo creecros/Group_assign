@@ -37,6 +37,9 @@
         </div>
 
         <div class="task-form-bottom">
+
+            <?= $this->hook->render('template:task:form:bottom-before-buttons', array('values' => $values, 'errors' => $errors)) ?>
+
             <?= $this->modal->submitButtons() ?>
         </div>
     </div>
