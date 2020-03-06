@@ -12,7 +12,7 @@ use Kanboard\Model\TaskModel;
 
 class NewTaskFinderModelTest extends Base
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $plugin = new Loader($this->container);

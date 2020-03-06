@@ -7,7 +7,7 @@ use Kanboard\Plugin\Group_assign\Helper\NewTaskHelper;
 
 class NewTaskHelperTest extends Base
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $plugin = new Loader($this->container);
