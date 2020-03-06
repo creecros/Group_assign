@@ -1,7 +1,12 @@
 language: php
 sudo: false
 
+services:
+  - postgresql
+  - mysql
+
 php:
+  - 7.3
   - 7.2
 
 env:
@@ -27,4 +32,4 @@ before_script:
   - ls -la plugins/
 
 script:
-  - phpunit -c tests/units.$DB.xml plugins/$PLUGIN/Test/
+  - ./vendor/bin/phpunit -c tests/units.$DB.xml plugins/$PLUGIN/Test/
