@@ -191,7 +191,7 @@ class Plugin extends Base
     }
     public function getPluginVersion()
     {
-        return '1.7.8';
+        return '1.7.9';
     }
     public function getPluginHomepage()
     {
