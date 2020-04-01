@@ -91,6 +91,8 @@ class TaskAllAssigneeFilter extends BaseFilter implements FilterInterface
                     break;
                 case 'nobody':
                     $this->query->eq(TaskModel::TABLE.'.owner_id', 0);
+                    $this->query->eq(TaskModel::TABLE.'.owner_gp', 0);
+                    $this->query->eq(TaskModel::TABLE.'.owner_ms', 0);
                     break;
                 default:
                     $useridsarray = $this->getSubQuery()->findAllByColumn('id');
