@@ -18,6 +18,7 @@ use Kanboard\Plugin\Group_assign\Action\EmailGroupDue;
 use Kanboard\Plugin\Group_assign\Action\EmailOtherAssignees;
 use Kanboard\Plugin\Group_assign\Action\EmailOtherAssigneesDue;
 use Kanboard\Plugin\Group_assign\Action\AssignGroup;
+use Kanboard\Plugin\Group_assign\Action\AssignSubtaskAssigneesToOtherAssignees;
 use Kanboard\Plugin\Group_assign\Model\GroupAssignCalendarModel;
 use Kanboard\Plugin\Group_assign\Model\GroupAssignTaskDuplicationModel;
 use Kanboard\Plugin\Group_assign\Model\TaskProjectDuplicationModel;
@@ -132,6 +133,7 @@ class Plugin extends Base
         $this->actionManager->register(new EmailOtherAssignees($this->container));
         $this->actionManager->register(new EmailOtherAssigneesDue($this->container));
         $this->actionManager->register(new AssignGroup($this->container));
+        $this->actionManager->register(new AssignSubtaskAssigneesToOtherAssignees($this->container));
         
         //Params
         $this->template->setTemplateOverride('action_creation/params', 'group_assign:action_creation/params');
