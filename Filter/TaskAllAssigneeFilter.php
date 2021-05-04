@@ -98,6 +98,7 @@ class TaskAllAssigneeFilter extends BaseFilter implements FilterInterface
                     $useridsarray = $this->getSubQuery()->findAllByColumn('id');
                     $useridstring = implode("','", $useridsarray);
                     (!empty($useridstring)) ? $useridstring = $useridstring : $useridstring = 0;
+                    if ($useridstring == '') { $useridstring = 0; }
                     $this->query->beginOr();
                     $this->query->ilike(UserModel::TABLE.'.username', '%'.$this->value.'%');
                     $this->query->ilike(UserModel::TABLE.'.name', '%'.$this->value.'%');
