@@ -94,4 +94,6 @@ return array(
 		'You are not allowed to update tasks assigned to someone else.' => 'Você não tem permissão para atualizar tarefas designadas para outras pessoas.',
 		'You cannot create tasks in this column.' => 'Você não pode criar tarefas nesta coluna.',
 		'[DUPLICATE]' => '[DUPLICADO]',
+		'Enable Group Managment for Application Managers' => 'Ativar gerenciamento de grupo para gestores da aplicação.',
+		'Disable Group Managment for Application Managers' => 'Desativar gerenciamento de grupo para gestores da aplicação.',
 );
