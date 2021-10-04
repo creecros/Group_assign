@@ -111,9 +111,9 @@ class Plugin extends Base
         $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/group');
         $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/multi');
         $groupmodel = $this->projectGroupRoleModel;
-        $this->template->hook->attachCallable('template:app:filters-helper:after', 'group_assign:board/filter', function($array = array()) use ($groupmodel) {
-            if(!empty($array) && $array['id'] >= 1){
-                return ['grouplist' => array_column($groupmodel->getGroups($array['id']), 'name')];
+        $this->template->hook->attachCallable('template:app:filters-helper:after', 'group_assign:board/filter', function($project = array()) use ($groupmodel) {
+            if(!empty($project) && $project['id'] >= 1){
+                return ['grouplist' => array_column($groupmodel->getGroups($project['id']), 'name')];
             } else {
                 return ['grouplist' => array()];
             }
