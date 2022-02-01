@@ -2,5 +2,5 @@
                     <li>
                         <strong><?= t('Other Assignees:') ?></strong>
                     </li>
-                    <?= $this->helper->smallAvatarHelperExtend->smallMultiple($task['owner_ms'], 'avatar-inline') ?>
+                    <?= $this->helper->sizeAvatarHelperExtend->sizeMultiple($task['owner_ms'], 'avatar-inline', 20) ?>
                     <?php endif ?>
