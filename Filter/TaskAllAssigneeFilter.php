@@ -97,10 +97,12 @@ class TaskAllAssigneeFilter extends BaseFilter implements FilterInterface
                 default:
                     $useridsarray = $this->getSubQuery()->findAllByColumn('id');
                     $useridstring = implode("','", $useridsarray);
+                    (!empty($useridstring)) ? $useridstring = $useridstring : $useridstring = 0;
+                    if ($useridstring == '') { $useridstring = 0; }
                     $this->query->beginOr();
                     $this->query->ilike(UserModel::TABLE.'.username', '%'.$this->value.'%');
                     $this->query->ilike(UserModel::TABLE.'.name', '%'.$this->value.'%');
-                    $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT id FROM ".GroupModel::TABLE." WHERE ".GroupModel::TABLE.".name='$this->value')");
+                    $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT id FROM `".GroupModel::TABLE."` WHERE `".GroupModel::TABLE."`.name='$this->value')");
                     $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id IN ('$useridstring'))");
                     $this->query->addCondition(TaskModel::TABLE.".owner_ms IN (SELECT group_id FROM ".MultiselectMemberModel::TABLE." WHERE ".MultiselectMemberModel::TABLE.".user_id IN ('$useridstring'))");
                     $this->query->closeOr();
