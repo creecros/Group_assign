@@ -102,9 +102,13 @@ class Plugin extends Base
         $this->template->hook->attach('template:task:details:third-column', 'group_assign:task/multi');
 
         //Forms - task_creation.php and task_modification.php
-        $this->template->setTemplateOverride('task_creation/show', 'group_assign:task_creation/show');
-        $this->template->setTemplateOverride('task_modification/show', 'group_assign:task_modification/show');
-
+        if (file_exists('plugins/TemplateTitle')) {
+            $this->template->setTemplateOverride('task_creation/show', 'group_assign:task_creation/show_TT');
+            $this->template->setTemplateOverride('task_modification/show', 'group_assign:task_modification/show_TT');
+        } else {
+            $this->template->setTemplateOverride('task_creation/show', 'group_assign:task_creation/show');
+            $this->template->setTemplateOverride('task_modification/show', 'group_assign:task_modification/show');
+        }
         //Board
         $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/group');
 
