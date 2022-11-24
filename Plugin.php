@@ -48,7 +48,9 @@ class Plugin extends Base
 
         //Models and backward compatibility
         $applications_version = str_replace('v', '', APP_VERSION);
-        if (strpos(APP_VERSION, 'master') !== false && file_exists('ChangeLog')) { $applications_version = trim(file_get_contents('ChangeLog', false, null, 8, 6), ' '); }
+        if ((strpos(APP_VERSION, 'master') !== false || strpos(APP_VERSION, 'main') !== false) && file_exists('ChangeLog')) {
+            $applications_version = trim(file_get_contents('ChangeLog', false, null, 8, 6), ' ');
+        }
         $clean_appversion = preg_replace('/\s+/', '', $applications_version);
 
         if (version_compare($clean_appversion, '1.2.5', '>')) {
