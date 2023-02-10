@@ -4,7 +4,13 @@ namespace Kanboard\Plugin\group_assign\Schema;
 
 use PDO;
 
-const VERSION = 2;
+const VERSION = 3;
+
+function version_3(PDO $pdo)
+{
+    $pdo->exec('ALTER TABLE multiselect CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
+    $pdo->exec('ALTER TABLE multiselect_has_users CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
+}
 
 function version_2(PDO $pdo)
 {
