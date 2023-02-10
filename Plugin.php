@@ -25,6 +25,7 @@ use Kanboard\Plugin\Group_assign\Model\TaskProjectMoveModel;
 use Kanboard\Plugin\Group_assign\Model\TaskRecurrenceModel;
 use Kanboard\Plugin\Group_assign\Model\NewMetaMagikSubquery;
 use Kanboard\Plugin\Group_assign\Model\OldMetaMagikSubquery;
+use Kanboard\Plugin\Group_assign\Api\Procedure\GroupAssignTaskProcedures;
 use PicoDb\Table;
 use PicoDb\Database;
 use Kanboard\Core\Security\Role;
@@ -160,7 +161,6 @@ class Plugin extends Base
         });
 
         //Roles
-
         $this->template->hook->attach('template:config:application', 'group_assign:config/toggle');
 
         if ($this->configModel->get('enable_am_group_management', '2') == 1) {
@@ -168,6 +168,10 @@ class Plugin extends Base
             $this->applicationAccessMap->add('GroupCreationController', '*', Role::APP_MANAGER);
             $this->template->setTemplateOverride('header/user_dropdown', 'group_assign:header/user_dropdown');
         }
+
+        //API
+        $this->api->getProcedureHandler()->withClassAndMethod('createTaskGroupAssign', new GroupAssignTaskProcedures($this->container), 'createTaskGroupAssign');
+        $this->api->getProcedureHandler()->withClassAndMethod('updateTaskGroupAssign', new GroupAssignTaskProcedures($this->container), 'updateTaskGroupAssign');
     }
 
     public function onStartup()
