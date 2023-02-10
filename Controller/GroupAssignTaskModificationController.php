@@ -15,7 +15,6 @@ use Kanboard\Model\ColorModel;
 use Kanboard\Controller\BaseController;
 use Kanboard\Core\Controller\PageNotFoundException;
 
-
 /**
  * Group Assign Task Modification controller
  *
@@ -119,7 +118,6 @@ class GroupAssignTaskModificationController extends BaseController
         if (empty($task['external_uri'])) {
             $this->response->html($this->template->render('task_modification/show', $params));
         } else {
-
             try {
                 $taskProvider = $this->externalTaskManager->getProvider($task['external_provider']);
                 $params['template'] = $taskProvider->getModificationFormTemplate();
@@ -147,23 +145,29 @@ class GroupAssignTaskModificationController extends BaseController
         $values['id'] = $task['id'];
         $values['project_id'] = $task['project_id'];
         if (isset($values['owner_ms']) && !empty($values['owner_ms'])) {
-          if (!empty($task['owner_ms'])) { 
-              $ms_id = $task['owner_ms']; 
-              $previousMembers = $this->multiselectMemberModel->getMembers($ms_id); 
-              $this->multiselectMemberModel->removeAllUsers($ms_id); 
-          } else { 
-              $ms_id = $this->multiselectModel->create(); 
-          }
-          foreach ($values['owner_ms'] as $user) {
-            if ($user !== 0) { $this->multiselectMemberModel->addUser($ms_id, $user); }
-          }
-          unset($values['owner_ms']);
-          $values['owner_ms'] = $ms_id;
+            if (!empty($task['owner_ms'])) {
+                $ms_id = $task['owner_ms'];
+                $previousMembers = $this->multiselectMemberModel->getMembers($ms_id);
+                $this->multiselectMemberModel->removeAllUsers($ms_id);
+            } else {
+                $ms_id = $this->multiselectModel->create();
+            }
+            foreach ($values['owner_ms'] as $user) {
+                if ($user !== 0) {
+                    $this->multiselectMemberModel->addUser($ms_id, $user);
+                }
+            }
+            unset($values['owner_ms']);
+            $values['owner_ms'] = $ms_id;
 
-          $newMembersSet = $this->multiselectMemberModel->getMembers($values['owner_ms']); 
-          if (sort($previousMembers) !== sort($newMembersSet)) { $this->multiselectMemberModel->assigneeChanged($task, $values); }
+            $newMembersSet = $this->multiselectMemberModel->getMembers($values['owner_ms']);
+            if (sort($previousMembers) !== sort($newMembersSet)) {
+                $this->multiselectMemberModel->assigneeChanged($task, $values);
+            }
 
-          if ($values['owner_gp'] !== $task['owner_gp']) { $this->multiselectMemberModel->assigneeChanged($task, $values); }
+            if ($values['owner_gp'] !== $task['owner_gp']) {
+                $this->multiselectMemberModel->assigneeChanged($task, $values);
+            }
         } else {
             $this->multiselectMemberModel->removeAllUsers($task['owner_ms']);
         }

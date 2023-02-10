@@ -38,7 +38,7 @@ class Plugin extends Base
 
         //Notifications
         $this->container['userNotificationFilterModel'] = $this->container->factory(function ($c) {
-                return new NewUserNotificationFilterModel($c);
+            return new NewUserNotificationFilterModel($c);
         });
 
         //Helpers
@@ -54,7 +54,7 @@ class Plugin extends Base
         $clean_appversion = preg_replace('/\s+/', '', $applications_version);
 
         if (version_compare($clean_appversion, '1.2.5', '>')) {
-            if (file_exists('plugins/MetaMagik')){
+            if (file_exists('plugins/MetaMagik')) {
                 $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
                     return new NewMetaMagikSubquery($c);
                 });
@@ -67,16 +67,16 @@ class Plugin extends Base
                 return new GroupAssignTaskDuplicationModel($c);
             });
             $this->container['taskProjectDuplicationModel '] = $this->container->factory(function ($c) {
-                return new TaskProjectDuplicationModel ($c);
+                return new TaskProjectDuplicationModel($c);
             });
             $this->container['taskProjectMoveModel '] = $this->container->factory(function ($c) {
-                return new TaskProjectMoveModel ($c);
+                return new TaskProjectMoveModel($c);
             });
             $this->container['taskRecurrenceModel '] = $this->container->factory(function ($c) {
-                return new TaskRecurrenceModel ($c);
+                return new TaskRecurrenceModel($c);
             });
         } else {
-            if (file_exists('plugins/MetaMagik')){
+            if (file_exists('plugins/MetaMagik')) {
                 $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
                     return new OldMetaMagikSubquery($c);
                 });
@@ -89,13 +89,13 @@ class Plugin extends Base
                 return new GroupAssignTaskDuplicationModel($c);
             });
             $this->container['taskProjectDuplicationModel '] = $this->container->factory(function ($c) {
-                return new TaskProjectDuplicationModel ($c);
+                return new TaskProjectDuplicationModel($c);
             });
             $this->container['taskProjectMoveModel '] = $this->container->factory(function ($c) {
-                return new TaskProjectMoveModel ($c);
+                return new TaskProjectMoveModel($c);
             });
             $this->container['taskRecurrenceModel '] = $this->container->factory(function ($c) {
-                return new TaskRecurrenceModel ($c);
+                return new TaskRecurrenceModel($c);
             });
         }
 
@@ -120,8 +120,8 @@ class Plugin extends Base
             $this->template->hook->attach('template:board:private:task:before-title', 'group_assign:board/multi');
         }
         $groupmodel = $this->projectGroupRoleModel;
-        $this->template->hook->attachCallable('template:app:filters-helper:after', 'group_assign:board/filter', function($array = array()) use ($groupmodel) {
-            if(!empty($array) && $array['id'] >= 1){
+        $this->template->hook->attachCallable('template:app:filters-helper:after', 'group_assign:board/filter', function ($array = array()) use ($groupmodel) {
+            if (!empty($array) && $array['id'] >= 1) {
                 return ['grouplist' => array_column($groupmodel->getGroups($array['id']), 'name')];
             } else {
                 return ['grouplist' => array()];
@@ -129,7 +129,7 @@ class Plugin extends Base
         });
 
         //Filter
-        $this->container->extend('taskLexer', function($taskLexer, $c) {
+        $this->container->extend('taskLexer', function ($taskLexer, $c) {
             $taskLexer->withFilter(TaskAllAssigneeFilter::getInstance()->setDatabase($c['db'])
                                                                     ->setCurrentUserId($c['userSession']->getId()));
             return $taskLexer;
@@ -154,7 +154,7 @@ class Plugin extends Base
         //Calendar Events
         $container = $this->container;
 
-        $this->hook->on('controller:calendar:user:events', function($user_id, $start, $end) use ($container) {
+        $this->hook->on('controller:calendar:user:events', function ($user_id, $start, $end) use ($container) {
             $model = new GroupAssignCalendarModel($container);
             return $model->getUserCalendarEvents($user_id, $start, $end); // Return new events
         });
@@ -168,8 +168,6 @@ class Plugin extends Base
             $this->applicationAccessMap->add('GroupCreationController', '*', Role::APP_MANAGER);
             $this->template->setTemplateOverride('header/user_dropdown', 'group_assign:header/user_dropdown');
         }
-
-
     }
 
     public function onStartup()

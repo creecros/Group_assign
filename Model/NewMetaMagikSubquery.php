@@ -12,7 +12,7 @@ use Kanboard\Plugin\Group_assign\Model\NewTaskFinderModel;
  */
 class NewMetaMagikSubQuery extends NewTaskFinderModel
 {
-    const METADATA_TABLE = 'task_has_metadata';
+    public const METADATA_TABLE = 'task_has_metadata';
     /**
      * Extended query
      *

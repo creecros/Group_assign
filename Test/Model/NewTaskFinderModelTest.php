@@ -18,7 +18,7 @@ class NewTaskFinderModelTest extends Base
         $plugin = new Loader($this->container);
         $plugin->scan();
     }
-    
+
     public function testGetDetails()
     {
         $taskCreationModel = new TaskCreationModel($this->container);

@@ -9,14 +9,14 @@ const VERSION = 2;
 function version_2(PDO $pdo)
 {
     $pdo->exec("ALTER TABLE tasks ADD COLUMN owner_ms INTEGER DEFAULT '0'");
-    
+
     $pdo->exec("
         CREATE TABLE multiselect (
             id INTEGER PRIMARY KEY,
             external_id TEXT DEFAULT ''
         )
     ");
-    
+
     $pdo->exec("
         CREATE TABLE multiselect_has_users (
             group_id INTEGER NOT NULL,

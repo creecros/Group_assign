@@ -20,17 +20,17 @@ class NewUserNotificationFilterModel extends Base
      *
      * @var string
      */
-    const PROJECT_TABLE = 'user_has_notifications';
+    public const PROJECT_TABLE = 'user_has_notifications';
 
     /**
      * User filters
      *
      * @var integer
      */
-    const FILTER_NONE      = 1;
-    const FILTER_ASSIGNEE  = 2;
-    const FILTER_CREATOR   = 3;
-    const FILTER_BOTH      = 4;
+    public const FILTER_NONE      = 1;
+    public const FILTER_ASSIGNEE  = 2;
+    public const FILTER_CREATOR   = 3;
+    public const FILTER_BOTH      = 4;
 
     /**
      * Get the list of filters
@@ -158,10 +158,14 @@ class NewUserNotificationFilterModel extends Base
      */
     public function filterAssignee(array $user, array $event_data)
     {
-        if (!isset($event_data['task']['owner_ms'])) $event_data['task']['owner_ms'] = 0;
-        if (!isset($event_data['task']['owner_gp'])) $event_data['task']['owner_gp'] = 0;
-        return $user['notifications_filter'] == self::FILTER_ASSIGNEE && 
-               ($event_data['task']['owner_id'] == $user['id'] || 
+        if (!isset($event_data['task']['owner_ms'])) {
+            $event_data['task']['owner_ms'] = 0;
+        }
+        if (!isset($event_data['task']['owner_gp'])) {
+            $event_data['task']['owner_gp'] = 0;
+        }
+        return $user['notifications_filter'] == self::FILTER_ASSIGNEE &&
+               ($event_data['task']['owner_id'] == $user['id'] ||
                 $this->multiselectMemberModel->isMember($event_data['task']['owner_ms'], $user['id']) ||
                 $this->groupMemberModel->isMember($event_data['task']['owner_gp'], $user['id']));
     }
@@ -189,10 +193,14 @@ class NewUserNotificationFilterModel extends Base
      */
     public function filterBoth(array $user, array $event_data)
     {
-        if (!isset($event_data['task']['owner_ms'])) $event_data['task']['owner_ms'] = 0;
-        if (!isset($event_data['task']['owner_gp'])) $event_data['task']['owner_gp'] = 0;
+        if (!isset($event_data['task']['owner_ms'])) {
+            $event_data['task']['owner_ms'] = 0;
+        }
+        if (!isset($event_data['task']['owner_gp'])) {
+            $event_data['task']['owner_gp'] = 0;
+        }
         return $user['notifications_filter'] == self::FILTER_BOTH &&
-               ($event_data['task']['creator_id'] == $user['id'] || $event_data['task']['owner_id'] == $user['id'] || 
+               ($event_data['task']['creator_id'] == $user['id'] || $event_data['task']['owner_id'] == $user['id'] ||
                 $this->multiselectMemberModel->isMember($event_data['task']['owner_ms'], $user['id']) ||
                 $this->groupMemberModel->isMember($event_data['task']['owner_gp'], $user['id']));
     }

@@ -9,7 +9,7 @@ const VERSION = 2;
 function version_2(PDO $pdo)
 {
     $pdo->exec("ALTER TABLE `tasks` ADD COLUMN `owner_ms` INT DEFAULT '0'");
-    
+
     $pdo->exec("
         CREATE TABLE `multiselect` (
             id INT NOT NULL AUTO_INCREMENT,

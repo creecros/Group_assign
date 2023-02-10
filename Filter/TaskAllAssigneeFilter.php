@@ -11,7 +11,6 @@ use Kanboard\Model\GroupMemberModel;
 use Kanboard\Model\GroupModel;
 use PicoDb\Database;
 
-
 class TaskAllAssigneeFilter extends BaseFilter implements FilterInterface
 {
     /**
@@ -33,7 +32,7 @@ class TaskAllAssigneeFilter extends BaseFilter implements FilterInterface
         $this->db = $db;
         return $this;
     }
-    
+
     /**
      * Current user id
      *
@@ -98,7 +97,9 @@ class TaskAllAssigneeFilter extends BaseFilter implements FilterInterface
                     $useridsarray = $this->getSubQuery()->findAllByColumn('id');
                     $useridstring = implode("','", $useridsarray);
                     (!empty($useridstring)) ? $useridstring = $useridstring : $useridstring = 0;
-                    if ($useridstring == '') { $useridstring = 0; }
+                    if ($useridstring == '') {
+                        $useridstring = 0;
+                    }
                     $this->query->beginOr();
                     $this->query->ilike(UserModel::TABLE.'.username', '%'.$this->value.'%');
                     $this->query->ilike(UserModel::TABLE.'.name', '%'.$this->value.'%');
@@ -122,5 +123,4 @@ class TaskAllAssigneeFilter extends BaseFilter implements FilterInterface
             ->ilike(UserModel::TABLE.'.name', '%'.$this->value.'%')
             ->closeOr();
     }
-
 }

@@ -23,7 +23,7 @@ class GroupAssignCalendarModel extends Base
      *
      * @var string
      */
-    const TABLE = 'tasks';
+    public const TABLE = 'tasks';
     /**
      * Get query to fetch all users
      *
@@ -36,36 +36,37 @@ class GroupAssignCalendarModel extends Base
         $getMS_Ids = $this->db->table(MultiselectMemberModel::TABLE)
             ->eq('user_id', $user_id)
             ->findAllByColumn('group_id');
-        
+
         $getGr_Ids = $this->db->table(GroupMemberModel::TABLE)
             ->eq('user_id', $user_id)
             ->findAllByColumn('group_id');
-                
-         $tasks = $this->db->table(self::TABLE)
-            ->beginOr()
-            ->in('owner_gp', $getGr_Ids)
-            ->in('owner_ms', $getMS_Ids)
-            ->closeOr()
-            ->gte('date_due', strtotime($start))
-            ->lte('date_due', strtotime($end))
-            ->neq('is_active', 0)
-            ->findAll();
-            
-         $events = array();
 
-         foreach ($tasks as $task) {
-                  
-         $startDate = new DateTime();
-         $startDate->setTimestamp($task['date_started']);
-         
-         $endDate = new DateTime();
-         $endDate->setTimestamp($task['date_due']);
-         
-         if ($startDate == 0) { $startDate = $endDate; }
-         
-         $allDay = $startDate == $endDate && $endDate->format('Hi') == '0000';
-         $format = $allDay ? 'Y-m-d' : 'Y-m-d\TH:i:s';
-            
+        $tasks = $this->db->table(self::TABLE)
+           ->beginOr()
+           ->in('owner_gp', $getGr_Ids)
+           ->in('owner_ms', $getMS_Ids)
+           ->closeOr()
+           ->gte('date_due', strtotime($start))
+           ->lte('date_due', strtotime($end))
+           ->neq('is_active', 0)
+           ->findAll();
+
+        $events = array();
+
+        foreach ($tasks as $task) {
+            $startDate = new DateTime();
+            $startDate->setTimestamp($task['date_started']);
+
+            $endDate = new DateTime();
+            $endDate->setTimestamp($task['date_due']);
+
+            if ($startDate == 0) {
+                $startDate = $endDate;
+            }
+
+            $allDay = $startDate == $endDate && $endDate->format('Hi') == '0000';
+            $format = $allDay ? 'Y-m-d' : 'Y-m-d\TH:i:s';
+
             $events[] = array(
                 'timezoneParam' => $this->timezoneModel->getCurrentTimezone(),
                 'id' => $task['id'],
@@ -79,9 +80,8 @@ class GroupAssignCalendarModel extends Base
                 'editable' => $allDay,
                 'allday' => $allDay,
             );
-         }
-         
-         return $events;
-    }
+        }
 
+        return $events;
+    }
 }

@@ -40,26 +40,28 @@ class TaskProjectMoveModel extends TaskDuplicationModel
 
         // Check if the group is allowed for the destination project and unassign if not
         $group_id = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_gp');
-          if ($group_id > 0) {
+        if ($group_id > 0) {
             $group_in_project = $this->db
               ->table(ProjectGroupRoleModel::TABLE)
               ->eq('project_id', $project_id)
               ->eq('group_id', $group_id)
               ->exists();
-            if (!$group_in_project) { $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->update(['owner_gp' => 0]); }
-          }
-        
+            if (!$group_in_project) {
+                $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->update(['owner_gp' => 0]);
+            }
+        }
+
         // Check if the other assignees are allowed for the destination project and remove from ms group if not
         $ms_id = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_ms');
-          if ($ms_id > 0) {
+        if ($ms_id > 0) {
             $users_in_ms = $this->multiselectMemberModel->getMembers($ms_id);
             foreach ($users_in_ms as $user) {
-              if (! $this->projectPermissionModel->isAssignable($project_id, $user['id'])) { 
-                $this->multiselectMemberModel->removeUser($ms_id, $user['id']); 
-              }
+                if (! $this->projectPermissionModel->isAssignable($project_id, $user['id'])) {
+                    $this->multiselectMemberModel->removeUser($ms_id, $user['id']);
+                }
             }
-          }
-            
+        }
+
 
         if ($this->db->table(TaskModel::TABLE)->eq('id', $task_id)->update($values)) {
             $this->queueManager->push($this->taskEventJob->withParams($task_id, array(TaskModel::EVENT_MOVE_PROJECT), $values));

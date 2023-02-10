@@ -78,7 +78,7 @@
             }
         }
 
-        ?>
+?>
     </ul>
 
     <?php if (! empty($changes['description'])): ?>

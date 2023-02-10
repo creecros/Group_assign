@@ -18,7 +18,7 @@ class MultiselectModel extends Base
      *
      * @var string
      */
-    const TABLE = 'multiselect';
+    public const TABLE = 'multiselect';
 
     /**
      * Get query to fetch all groups

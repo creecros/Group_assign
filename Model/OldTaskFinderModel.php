@@ -76,7 +76,6 @@ use Kanboard\Model\UserNotificationTypeModel;
 use Kanboard\Model\UserUnreadNotificationModel;
 use Kanboard\Core\Base;
 
-
 class OldTaskFinderModel extends Base
 {
     /**

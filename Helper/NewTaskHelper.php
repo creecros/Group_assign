@@ -6,7 +6,6 @@ use Kanboard\Plugin\Group_assign\Model\MultiselectMemberModel;
 use Kanboard\Model\ProjectGroupRoleModel;
 use Kanboard\Core\Base;
 
-
 class NewTaskHelper extends Base
 {
     /**
@@ -129,7 +128,7 @@ class NewTaskHelper extends Base
 
         return $html;
     }
-    
+
     public function renderMultiAssigneeField(array $users, array $values, array $errors = array(), array $attributes = array())
     {
         if (isset($values['project_id']) && ! $this->helper->projectRole->canChangeAssignee($values)) {
@@ -140,25 +139,31 @@ class NewTaskHelper extends Base
         $name = 'owner_ms';
 
         $html = $this->helper->form->label(t('Other Assignees'), $name.'[]');
-        
+
         $html .= '<select class="group-assign-select" multiple="multiple" size="3" name="'.$name.'[]" id="form-'.$name.'" '.implode(' ', $attributes).'>';
-        
+
         foreach ($users as $id => $value) {
-            if($id !== 0){
+            if ($id !== 0) {
                 $html .= '<option value="'.$this->helper->text->e($id).'"';
                 if (isset($values->$name)) {
                     $multiusers = $this->multiselectMemberModel->getMembers($values->$name);
                     foreach ($multiusers as $member) {
-                        if ($member['user_id'] == $id){ $html .= ' selected="selected"'; break; }
+                        if ($member['user_id'] == $id) {
+                            $html .= ' selected="selected"';
+                            break;
+                        }
                     }
                 }
                 if (isset($values[$name])) {
                     $multiusers = $this->multiselectMemberModel->getMembers($values[$name]);
                     foreach ($multiusers as $member) {
-                        if ($member['user_id'] == $id){ $html .= ' selected="selected"'; break; }
+                        if ($member['user_id'] == $id) {
+                            $html .= ' selected="selected"';
+                            break;
+                        }
                     }
                 }
-            
+
                 $html .= '>'.$this->helper->text->e($value).'</option>';
             }
         }
@@ -166,7 +171,7 @@ class NewTaskHelper extends Base
 
         return $html;
     }
-    
+
     public function renderGroupField(array $values, array $errors = array(), array $attributes = array())
     {
         if (isset($values['project_id']) && ! $this->helper->projectRole->canChangeAssignee($values)) {
@@ -175,17 +180,17 @@ class NewTaskHelper extends Base
         $groups = $this->projectGroupRoleModel->getGroups($values['project_id']);
         $groupnames = array();
         $groupids = array();
-        
+
         $groupids[] = 0;
         $groupnames[] = t('Unassigned');
-        
-        
-        foreach ($groups as $group) { 
+
+
+        foreach ($groups as $group) {
             // array_splice($groupnames, 1, 0, $group['name']);
             $groupnames[] = $group['name'];
             $groupids[] = $group['id'];
-            }
-        
+        }
+
         $groupvalues = array_combine($groupids, $groupnames);
 
 
@@ -343,7 +348,8 @@ class NewTaskHelper extends Base
                 'plus',
                 t('Add a new task'),
                 'TaskCreationController',
-                'show', array(
+                'show',
+                array(
                     'project_id'  => $column['project_id'],
                     'column_id'   => $column['id'],
                     'swimlane_id' => $swimlane['id'],
@@ -357,7 +363,8 @@ class NewTaskHelper extends Base
                 'plus',
                 t('Add a new Kanboard task'),
                 'TaskCreationController',
-                'show', array(
+                'show',
+                array(
                     'project_id'  => $column['project_id'],
                     'column_id'   => $column['id'],
                     'swimlane_id' => $swimlane['id'],

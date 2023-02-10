@@ -4,6 +4,7 @@ namespace Kanboard\Plugin\Group_assign\Helper;
 
 use Kanboard\Helper\AvatarHelper;
 use Kanboard\Core\Base;
+
 /**
  * Avatar Helper
  *
@@ -12,7 +13,8 @@ use Kanboard\Core\Base;
  */
 class sizeAvatarHelperExtend extends AvatarHelper
 {
-    public function sizeMultiple($owner_ms, $css = '', $size = 20) {
+    public function sizeMultiple($owner_ms, $css = '', $size = 20)
+    {
         $assignees = $this->multiselectMemberModel->getMembers($owner_ms);
         $html = "";
         foreach ($assignees as $assignee) {

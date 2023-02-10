@@ -21,7 +21,7 @@ class MultiselectMemberModel extends Base
      *
      * @var string
      */
-    const TABLE = 'multiselect_has_users';
+    public const TABLE = 'multiselect_has_users';
 
     /**
      * Get query to fetch all users
@@ -114,7 +114,7 @@ class MultiselectMemberModel extends Base
             ->eq('group_id', $group_id)
             ->remove();
     }
-    
+
     /**
      * Check if a user is member
      *
@@ -147,7 +147,7 @@ class MultiselectMemberModel extends Base
             ->asc(MultiselectModel::TABLE.'.id')
             ->findAll();
     }
-    
+
     /**
      * Fire Assignee Change
      *
@@ -161,7 +161,8 @@ class MultiselectMemberModel extends Base
         $events[] = TaskModel::EVENT_ASSIGNEE_CHANGE;
 
         if (! empty($events)) {
-            $this->queueManager->push($this->taskEventJob
+            $this->queueManager->push(
+                $this->taskEventJob
                 ->withParams($task['id'], $events, $changes, array(), $task)
             );
         }

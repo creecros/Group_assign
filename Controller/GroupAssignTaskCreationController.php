@@ -15,7 +15,6 @@ use Kanboard\Model\ColorModel;
 use Kanboard\Controller\BaseController;
 use Kanboard\Core\Controller\PageNotFoundException;
 
-
 class GroupAssignTaskCreationController extends BaseController
 {
     /**
@@ -57,12 +56,12 @@ class GroupAssignTaskCreationController extends BaseController
         $values = $this->request->getValues();
         $values['project_id'] = $project['id'];
         if (isset($values['owner_ms']) && !empty($values['owner_ms'])) {
-          $ms_id = $this->multiselectModel->create();
-          foreach ($values['owner_ms'] as $user) {
-            $this->multiselectMemberModel->addUser($ms_id, $user);
-          }
-          unset($values['owner_ms']);
-          $values['owner_ms'] = $ms_id;
+            $ms_id = $this->multiselectModel->create();
+            foreach ($values['owner_ms'] as $user) {
+                $this->multiselectMemberModel->addUser($ms_id, $user);
+            }
+            unset($values['owner_ms']);
+            $values['owner_ms'] = $ms_id;
         }
 
         list($valid, $errors) = $this->taskValidator->validateCreation($values);
@@ -70,7 +69,7 @@ class GroupAssignTaskCreationController extends BaseController
         if (! $valid) {
             $this->flash->failure(t('Unable to create your task.'));
             $this->show($values, $errors);
-        } else if (! $this->helper->projectRole->canCreateTaskInColumn($project['id'], $values['column_id'])) {
+        } elseif (! $this->helper->projectRole->canCreateTaskInColumn($project['id'], $values['column_id'])) {
             $this->flash->failure(t('You cannot create tasks in this column.'));
             $this->response->redirect($this->helper->url->to('BoardViewController', 'show', array('project_id' => $project['id'])), true);
         } else {

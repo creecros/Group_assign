@@ -39,28 +39,30 @@ class TaskProjectDuplicationModel extends TaskDuplicationModel
         if ($new_task_id !== false) {
             // Check if the group is allowed for the destination project
             $group_id = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_gp');
-                    if ($group_id > 0) {
-                        $group_in_project = $this->db
-                            ->table(ProjectGroupRoleModel::TABLE)
-                            ->eq('project_id', $values['project_id'])
-                            ->eq('group_id', $group_id)
-                            ->exists();
-                        if ($group_in_project) { $this->db->table(TaskModel::TABLE)->eq('id', $new_task_id)->update(['owner_gp' => $group_id]); }
-                    }
-        
+            if ($group_id > 0) {
+                $group_in_project = $this->db
+                    ->table(ProjectGroupRoleModel::TABLE)
+                    ->eq('project_id', $values['project_id'])
+                    ->eq('group_id', $group_id)
+                    ->exists();
+                if ($group_in_project) {
+                    $this->db->table(TaskModel::TABLE)->eq('id', $new_task_id)->update(['owner_gp' => $group_id]);
+                }
+            }
+
             // Check if the other assignees are allowed for the destination project
             $ms_id = $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->findOneColumn('owner_ms');
-                    if ($ms_id > 0) {
-                        $users_in_ms = $this->multiselectMemberModel->getMembers($ms_id);
-                        $new_ms_id = $this->multiselectModel->create();
-                        $this->db->table(TaskModel::TABLE)->eq('id', $new_task_id)->update(['owner_ms' => $new_ms_id]);
-                        foreach ($users_in_ms as $user) {
-                            if ($this->projectPermissionModel->isAssignable($values['project_id'], $user['id'])) { 
-                                $this->multiselectMemberModel->addUser($new_ms_id, $user['id']); 
-                            }
-                        }
+            if ($ms_id > 0) {
+                $users_in_ms = $this->multiselectMemberModel->getMembers($ms_id);
+                $new_ms_id = $this->multiselectModel->create();
+                $this->db->table(TaskModel::TABLE)->eq('id', $new_task_id)->update(['owner_ms' => $new_ms_id]);
+                foreach ($users_in_ms as $user) {
+                    if ($this->projectPermissionModel->isAssignable($values['project_id'], $user['id'])) {
+                        $this->multiselectMemberModel->addUser($new_ms_id, $user['id']);
                     }
-            
+                }
+            }
+
             $this->tagDuplicationModel->duplicateTaskTagsToAnotherProject($task_id, $new_task_id, $project_id);
             $this->taskLinkModel->create($new_task_id, $task_id, 4);
         }

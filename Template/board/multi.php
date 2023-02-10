@@ -5,11 +5,11 @@
     ?>
 
     <strong class="assigned-other-label"><small><?= t('Other Assignees:') ?></small></strong>
-    <?= $this->helper->sizeAvatarHelperExtend->sizeMultiple($task['owner_ms'], 'avatar-inline avatar-bdyn', $this->task->configModel->get('b_av_size','20')) ?>
+    <?= $this->helper->sizeAvatarHelperExtend->sizeMultiple($task['owner_ms'], 'avatar-inline avatar-bdyn', $this->task->configModel->get('b_av_size', '20')) ?>
 
 <?php
 } else {
-?>
+    ?>
 
     <strong class="assigned-other-label"><small><?= t('Other Assignees:') ?></small></strong>
     <?= $this->helper->sizeAvatarHelperExtend->sizeMultiple($task['owner_ms'], 'avatar-inline avatar-bdyn', 13) ?>

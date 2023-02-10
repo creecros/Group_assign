@@ -6,7 +6,7 @@ use Kanboard\Model\TaskModel;
 use Kanboard\Action\Base;
 
 /**
- * Email a task notification of impending due date 
+ * Email a task notification of impending due date
  */
 class EmailOtherAssigneesDue extends Base
 {
@@ -54,7 +54,6 @@ class EmailOtherAssigneesDue extends Base
     public function getEventRequiredParameters()
     {
         return array('tasks');
-        
     }
     /**
      * Check if the event data meet the action condition
@@ -72,26 +71,26 @@ class EmailOtherAssigneesDue extends Base
     {
         $results = array();
         $max = $this->getParam('duration') * 86400;
-        
+
         foreach ($data['tasks'] as $task) {
             $groupmembers = $this->multiselectMemberModel->getMembers($task['owner_ms']);
-            
+
             if (! empty($groupmembers)) {
-	            foreach ($groupmembers as $members) {
-                $user = $this->userModel->getById($members['id']);
-          
-                $duration = $task['date_due'] - time();
-                if ($task['date_due'] > 0) {
-                  if ($duration < $max) {
-                      if (! empty($user['email'])) {
-                        $results[] = $this->sendEmail($task['id'], $user);
-                      }
-                  }
+                foreach ($groupmembers as $members) {
+                    $user = $this->userModel->getById($members['id']);
+
+                    $duration = $task['date_due'] - time();
+                    if ($task['date_due'] > 0) {
+                        if ($duration < $max) {
+                            if (! empty($user['email'])) {
+                                $results[] = $this->sendEmail($task['id'], $user);
+                            }
+                        }
+                    }
                 }
-             }
-           }
+            }
         }
-        
+
         return in_array(true, $results, true);
     }
     /**
