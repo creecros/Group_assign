@@ -28,6 +28,7 @@ class EmailGroup extends Base
         return array(
             'column_id' => t('Column'),
         'subject' => t('Email subject'),
+        'check_box_include_title' => t('Include Task Title and ID in subject line?'),
         );
     }
 
@@ -50,6 +51,12 @@ class EmailGroup extends Base
     {
         $groupmembers = $this->groupMemberModel->getMembers($data['task']['owner_gp']);
 
+        if ($this->getParam('check_box_include_title') == true) {
+            $subject = $this->getParam('subject') . ": " . $data['task']['title'] . "(#" . $data['task_id'] . ")";
+        } else {
+            $subject = $this->getParam('subject');
+        }
+
         if (! empty($groupmembers)) {
             foreach ($groupmembers as $members) {
                 $user = $this->userModel->getById($members['id']);
@@ -57,7 +64,7 @@ class EmailGroup extends Base
                     $this->emailClient->send(
                         $user['email'],
                         $user['name'] ?: $user['username'],
-                        $this->getParam('subject'),
+                        $subject,
                         $this->template->render('notification/task_create', array(
                          'task' => $data['task'],
                          ))

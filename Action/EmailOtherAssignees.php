@@ -28,6 +28,7 @@ class EmailOtherAssignees extends Base
         return array(
             'column_id' => t('Column'),
         'subject' => t('Email subject'),
+        'check_box_include_title' => t('Include Task Title and ID in subject line?'),
         );
     }
 
@@ -50,6 +51,12 @@ class EmailOtherAssignees extends Base
     {
         $multimembers = $this->multiselectMemberModel->getMembers($data['task']['owner_ms']);
 
+        if ($this->getParam('check_box_include_title') == true) {
+            $subject = $this->getParam('subject') . ": " . $data['task']['title'] . "(#" . $data['task_id'] . ")";
+        } else {
+            $subject = $this->getParam('subject');
+        }
+
         if (! empty($multimembers)) {
             foreach ($multimembers as $members) {
                 $user = $this->userModel->getById($members['id']);
@@ -57,7 +64,7 @@ class EmailOtherAssignees extends Base
                     $this->emailClient->send(
                         $user['email'],
                         $user['name'] ?: $user['username'],
-                        $this->getParam('subject'),
+                        $subject,
                         $this->template->render('notification/task_create', array(
                          'task' => $data['task'],
                          ))
