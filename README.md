@@ -23,8 +23,6 @@ Assign Tasks to Groups or from Multi-Select of Users with permissions from the p
 # Requirements
 Kanboard v1.1.0 or Higher
 
-PHP version < 8, not currently compatible with php 8.
-
 Group_assign Versions 1.7.7 and below will support PHP version below 7
 
 # Features and usage
