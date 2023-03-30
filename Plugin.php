@@ -54,7 +54,7 @@ class Plugin extends Base
         }
         $clean_appversion = preg_replace('/\s+/', '', $applications_version);
 
-        if (version_compare($clean_appversion, '1.2.5', '<')) {
+        if (version_compare($clean_appversion, '1.2.6', '<')) {
             if (file_exists('plugins/MetaMagik')) {
                 $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
                     return new OldMetaMagikSubquery($c);
