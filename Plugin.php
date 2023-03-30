@@ -54,14 +54,14 @@ class Plugin extends Base
         }
         $clean_appversion = preg_replace('/\s+/', '', $applications_version);
 
-        if (version_compare($clean_appversion, '1.2.5', '>')) {
+        if (version_compare($clean_appversion, '1.2.5', '<')) {
             if (file_exists('plugins/MetaMagik')) {
                 $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
-                    return new NewMetaMagikSubquery($c);
+                    return new OldMetaMagikSubquery($c);
                 });
             } else {
                 $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
-                    return new NewTaskFinderModel($c);
+                    return new OldTaskFinderModel($c);
                 });
             }
             $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
@@ -79,11 +79,11 @@ class Plugin extends Base
         } else {
             if (file_exists('plugins/MetaMagik')) {
                 $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
-                    return new OldMetaMagikSubquery($c);
+                    return new NewMetaMagikSubquery($c);
                 });
             } else {
                 $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
-                    return new OldTaskFinderModel($c);
+                    return new NewTaskFinderModel($c);
                 });
             }
             $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
@@ -202,7 +202,7 @@ class Plugin extends Base
     }
     public function getPluginVersion()
     {
-        return '1.8.0';
+        return '1.8.1';
     }
     public function getPluginHomepage()
     {
