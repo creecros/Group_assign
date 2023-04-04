@@ -46,22 +46,28 @@ class Plugin extends Base
         $this->helper->register('newTaskHelper', '\Kanboard\Plugin\Group_assign\Helper\NewTaskHelper');
         $this->helper->register('sizeAvatarHelperExtend', '\Kanboard\Plugin\Group_assign\Helper\SizeAvatarHelperExtend');
 
-
         //Models and backward compatibility
+        $load_new_classes = true;
         $applications_version = str_replace('v', '', APP_VERSION);
-        if ((strpos(APP_VERSION, 'master') !== false || strpos(APP_VERSION, 'main') !== false) && file_exists('ChangeLog')) {
-            $applications_version = trim(file_get_contents('ChangeLog', false, null, 8, 6), ' ');
-        }
-        $clean_appversion = preg_replace('/\s+/', '', $applications_version);
 
-        if (version_compare($clean_appversion, '1.2.6', '<')) {
+        if (strpos(APP_VERSION, 'master') !== false || strpos(APP_VERSION, 'main') !== false) {
+            if (file_exists('ChangeLog')) {
+                $applications_version = trim(file_get_contents('ChangeLog', false, null, 8, 6), ' ');
+                $clean_appversion = preg_replace('/\s+/', '', $applications_version);
+                $load_new_classes = version_compare($clean_appversion, '1.2.6', '<');
+            }
+        } else {
+            $load_new_classes = version_compare($applications_version, '1.2.5', '>');
+        }
+
+        if ($load_new_classes) {
             if (file_exists('plugins/MetaMagik')) {
                 $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
-                    return new OldMetaMagikSubquery($c);
+                    return new NewMetaMagikSubquery($c);
                 });
             } else {
                 $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
-                    return new OldTaskFinderModel($c);
+                    return new NewTaskFinderModel($c);
                 });
             }
             $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
@@ -79,11 +85,11 @@ class Plugin extends Base
         } else {
             if (file_exists('plugins/MetaMagik')) {
                 $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
-                    return new NewMetaMagikSubquery($c);
+                    return new OldMetaMagikSubquery($c);
                 });
             } else {
                 $this->container['taskFinderModel'] = $this->container->factory(function ($c) {
-                    return new NewTaskFinderModel($c);
+                    return new OldTaskFinderModel($c);
                 });
             }
             $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
