@@ -20,7 +20,6 @@ use Kanboard\Plugin\Group_assign\Action\EmailOtherAssigneesDue;
 use Kanboard\Plugin\Group_assign\Action\AssignGroup;
 use Kanboard\Plugin\Group_assign\Model\GroupAssignCalendarModel;
 use Kanboard\Plugin\Group_assign\Model\GroupAssignTaskDuplicationModel;
-use Kanboard\Plugin\Group_assign\Model\TaskProjectDuplicationModel;
 use Kanboard\Plugin\Group_assign\Model\TaskProjectMoveModel;
 use Kanboard\Plugin\Group_assign\Model\TaskRecurrenceModel;
 use Kanboard\Plugin\Group_assign\Model\NewMetaMagikSubquery;
@@ -29,6 +28,7 @@ use Kanboard\Plugin\Group_assign\Api\Procedure\GroupAssignTaskProcedures;
 use PicoDb\Table;
 use PicoDb\Database;
 use Kanboard\Core\Security\Role;
+use Kanboard\Model\TaskFinderModel;
 
 class Plugin extends Base
 {
@@ -101,13 +101,17 @@ class Plugin extends Base
         }
         
         $this->hook->on('model:task:project_duplication:aftersave', function($hook_values) {
-            if ($new_task_id !== false) {
+            $destination = $hook_values['destination_task_id'];
+            $source = $hook_values['source_task_id'];
+            $project_Id = $this->taskFinderModel->getProjectId($destination);
+
+            if ($destination !== false) {
                 // Check if the group is allowed for the destination project
-                $group_id = $this->db->table(TaskModel::TABLE)->eq('id', $hook_values['source_task_id'])->findOneColumn('owner_gp');
+                $group_id = $this->db->table(TaskModel::TABLE)->eq('id', $source)->findOneColumn('owner_gp');
                 if ($group_id > 0) {
                     $group_in_project = $this->db
                         ->table(ProjectGroupRoleModel::TABLE)
-                        ->eq('project_id', $values['project_id'])
+                        ->eq('project_id', $project_Id)
                         ->eq('group_id', $group_id)
                         ->exists();
                     if ($group_in_project) {
@@ -116,13 +120,13 @@ class Plugin extends Base
                 }
     
                 // Check if the other assignees are allowed for the destination project
-                $ms_id = $this->db->table(TaskModel::TABLE)->eq('id', $hook_values['source_task_id'])->findOneColumn('owner_ms');
+                $ms_id = $this->db->table(TaskModel::TABLE)->eq('id', $source)->findOneColumn('owner_ms');
                 if ($ms_id > 0) {
                     $users_in_ms = $this->multiselectMemberModel->getMembers($ms_id);
                     $new_ms_id = $this->multiselectModel->create();
                     $this->db->table(TaskModel::TABLE)->eq('id', $hook_values['destination_task_id'])->update(['owner_ms' => $new_ms_id]);
                     foreach ($users_in_ms as $user) {
-                        if ($this->projectPermissionModel->isAssignable($values['project_id'], $user['id'])) {
+                        if ($this->projectPermissionModel->isAssignable($project_Id, $user['id'])) {
                             $this->multiselectMemberModel->addUser($new_ms_id, $user['id']);
                         }
                     }
@@ -213,7 +217,7 @@ class Plugin extends Base
     {
         return [
             'Plugin\Group_assign\Model' => [
-                'MultiselectMemberModel', 'MultiselectModel', 'GroupColorExtension', 'TaskProjectDuplicationModel', 'TaskProjectMoveModel', 'TaskRecurrenceModel',
+                'MultiselectMemberModel', 'MultiselectModel', 'GroupColorExtension', 'TaskProjectMoveModel', 'TaskRecurrenceModel',
             ],
         ];
     }
