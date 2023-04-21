@@ -73,9 +73,6 @@ class Plugin extends Base
             $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
                 return new GroupAssignTaskDuplicationModel($c);
             });
-            $this->container['taskProjectDuplicationModel '] = $this->container->factory(function ($c) {
-                return new TaskProjectDuplicationModel($c);
-            });
             $this->container['taskProjectMoveModel '] = $this->container->factory(function ($c) {
                 return new TaskProjectMoveModel($c);
             });
@@ -94,10 +91,7 @@ class Plugin extends Base
             }
             $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
                 return new GroupAssignTaskDuplicationModel($c);
-            });
-            $this->container['taskProjectDuplicationModel '] = $this->container->factory(function ($c) {
-                return new TaskProjectDuplicationModel($c);
-            });
+            });            
             $this->container['taskProjectMoveModel '] = $this->container->factory(function ($c) {
                 return new TaskProjectMoveModel($c);
             });
@@ -105,6 +99,36 @@ class Plugin extends Base
                 return new TaskRecurrenceModel($c);
             });
         }
+        
+        $this->hook->on('model:task:project_duplication:aftersave', function($hook_values) {
+            if ($new_task_id !== false) {
+                // Check if the group is allowed for the destination project
+                $group_id = $this->db->table(TaskModel::TABLE)->eq('id', $hook_values['source_task_id'])->findOneColumn('owner_gp');
+                if ($group_id > 0) {
+                    $group_in_project = $this->db
+                        ->table(ProjectGroupRoleModel::TABLE)
+                        ->eq('project_id', $values['project_id'])
+                        ->eq('group_id', $group_id)
+                        ->exists();
+                    if ($group_in_project) {
+                        $this->db->table(TaskModel::TABLE)->eq('id', $hook_values['destination_task_id'])->update(['owner_gp' => $group_id]);
+                    }
+                }
+    
+                // Check if the other assignees are allowed for the destination project
+                $ms_id = $this->db->table(TaskModel::TABLE)->eq('id', $hook_values['source_task_id'])->findOneColumn('owner_ms');
+                if ($ms_id > 0) {
+                    $users_in_ms = $this->multiselectMemberModel->getMembers($ms_id);
+                    $new_ms_id = $this->multiselectModel->create();
+                    $this->db->table(TaskModel::TABLE)->eq('id', $hook_values['destination_task_id'])->update(['owner_ms' => $new_ms_id]);
+                    foreach ($users_in_ms as $user) {
+                        if ($this->projectPermissionModel->isAssignable($values['project_id'], $user['id'])) {
+                            $this->multiselectMemberModel->addUser($new_ms_id, $user['id']);
+                        }
+                    }
+                }
+            }
+        });
 
         //Task - Template - details.php
         $this->template->hook->attach('template:task:details:third-column', 'group_assign:task/details');
