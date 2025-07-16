@@ -1,7 +1,7 @@
 <div class="page-header">
     <h2><?= $this->text->e($project['name']) ?> &gt; <?= t('New task') ?></h2>
 </div>
-<form method="post" action="<?= $this->url->href('GroupAssignTaskCreationController', 'save', array('plugin' => 'Group_assign', 'project_id' => $project['id'])) ?>" autocomplete="off">
+<form class="js-modal-ignore-form" method="post" action="<?= $this->url->href('GroupAssignTaskCreationController', 'save', array('plugin' => 'Group_assign', 'project_id' => $project['id'])) ?>" autocomplete="off">
     <?= $this->form->csrf() ?>
 
     <div class="task-form-container">
@@ -42,6 +42,13 @@
 
             <?= $this->hook->render('template:task:form:bottom-before-buttons', array('values' => $values, 'errors' => $errors)) ?>
 
+            <details class="accordion-section">
+                <summary class="accordion-title"><?= t('Add attachments') ?></summary>
+                <div class="accordion-content">
+                    <?= $this->task->renderFileUpload($screenshot, $files) ?>
+                </div>
+            </details>
+            
             <?php if (! isset($duplicate)): ?>
                 <?= $this->form->checkbox('another_task', t('Create another task'), 1, isset($values['another_task']) && $values['another_task'] == 1) ?>
                 <?= $this->form->checkbox('duplicate_multiple_projects', t('Duplicate to multiple projects'), 1) ?>
