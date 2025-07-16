@@ -2,16 +2,6 @@
 
 namespace Kanboard\Plugin\Group_assign\Controller;
 
-use Kanboard\Plugin\Group_assign\Model\MultiselectModel;
-use Kanboard\Plugin\Group_assign\Model\MultiselectMemberModel;
-use Kanboard\Model\SwimlaneModel;
-use Kanboard\Model\ColumnModel;
-use Kanboard\Model\ProjectUserRoleModel;
-use Kanboard\Model\CategoryModel;
-use Kanboard\Model\TaskCreationModel;
-use Kanboard\Model\TaskProjectDuplicationModel;
-use Kanboard\Model\TaskFinderModel;
-use Kanboard\Model\ColorModel;
 use Kanboard\Controller\BaseController;
 use Kanboard\Core\Controller\PageNotFoundException;
 
@@ -25,7 +15,7 @@ class GroupAssignTaskCreationController extends BaseController
      * @param  array $errors
      * @throws PageNotFoundException
      */
-    public function show(array $values = array(), array $errors = array())
+    public function show(array $values = array(), $screenshot = '', array $files = array(), array $errors = array())
     {
         $project = $this->getProject();
         $swimlanesList = $this->swimlaneModel->getList($project['id'], false, true);
@@ -42,6 +32,8 @@ class GroupAssignTaskCreationController extends BaseController
             'users_list' => $this->projectUserRoleModel->getAssignableUsersList($project['id'], true, false, $project['is_private'] == 1),
             'categories_list' => $this->categoryModel->getList($project['id']),
             'swimlanes_list' => $swimlanesList,
+            'screenshot' => $screenshot,
+            'files' => $files,
         )));
     }
 
@@ -55,6 +47,14 @@ class GroupAssignTaskCreationController extends BaseController
         $project = $this->getProject();
         $values = $this->request->getValues();
         $values['project_id'] = $project['id'];
+        $files = $this->request->getFileInfo('files');
+
+        $screenshot = null;
+        if (array_key_exists('screenshot', $values)) {
+            $screenshot = $values['screenshot'];
+            unset($values['screenshot']);
+        }
+
         if (isset($values['owner_ms']) && !empty($values['owner_ms'])) {
             $ms_id = $this->multiselectModel->create();
             foreach ($values['owner_ms'] as $user) {
@@ -68,20 +68,33 @@ class GroupAssignTaskCreationController extends BaseController
 
         if (! $valid) {
             $this->flash->failure(t('Unable to create your task.'));
-            $this->show($values, $errors);
+            $this->show($values, $screenshot, $files, $errors);
         } elseif (! $this->helper->projectRole->canCreateTaskInColumn($project['id'], $values['column_id'])) {
             $this->flash->failure(t('You cannot create tasks in this column.'));
             $this->response->redirect($this->helper->url->to('BoardViewController', 'show', array('project_id' => $project['id'])), true);
         } else {
             $task_id = $this->taskCreationModel->create($values);
-
-            if ($task_id > 0) {
-                $this->flash->success(t('Task created successfully.'));
-                $this->afterSave($project, $values, $task_id);
-            } else {
+            if ($task_id === 0) {
                 $this->flash->failure(t('Unable to create this task.'));
                 $this->response->redirect($this->helper->url->to('BoardViewController', 'show', array('project_id' => $project['id'])), true);
+                return;
             }
+
+            if ($screenshot) {
+                $this->taskFileModel->uploadScreenshot($task_id, $screenshot);
+            }
+
+            if (isset($files['name'][0]) && $files['name'][0] !== '') {
+                $filesUploaded = $this->taskFileModel->uploadFiles($task_id, $files);
+                if (! $filesUploaded) {
+                    $this->flash->failure(t('Unable to upload files, check the permissions of your data folder.'));
+                    $this->response->redirect($this->helper->url->to('BoardViewController', 'show', ['project_id' => $project['id']]), true);
+                    return;
+                }
+            }
+
+            $this->flash->success(t('Task created successfully.'));
+            $this->afterSave($project, $values, $task_id);
         }
     }
 
