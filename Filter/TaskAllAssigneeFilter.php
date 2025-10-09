@@ -103,7 +103,7 @@ class TaskAllAssigneeFilter extends BaseFilter implements FilterInterface
                     $this->query->beginOr();
                     $this->query->ilike(UserModel::TABLE.'.username', '%'.$this->value.'%');
                     $this->query->ilike(UserModel::TABLE.'.name', '%'.$this->value.'%');
-                    $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT id FROM `".GroupModel::TABLE."` WHERE `".GroupModel::TABLE."`.name='$this->value')");
+                    $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT id FROM ".GroupModel::TABLE." WHERE ".GroupModel::TABLE.".name='$this->value')");
                     $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id IN ('$useridstring'))");
                     $this->query->addCondition(TaskModel::TABLE.".owner_ms IN (SELECT group_id FROM ".MultiselectMemberModel::TABLE." WHERE ".MultiselectMemberModel::TABLE.".user_id IN ('$useridstring'))");
                     $this->query->closeOr();
