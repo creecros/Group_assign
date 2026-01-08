@@ -21,7 +21,9 @@ It's the least you can do for all the work put into it!
 Assign Tasks to Groups or from Multi-Select of Users with permissions from the project
 
 # Requirements
-Kanboard v1.1.0 or Higher
+Kanboard v1.1.0 or Higher, **except** 1.2.45 to 1.2.48.
+
+Group_assign Version 1.8.3 will support Kanboard 1.2.45 to 1.2.48.
 
 Group_assign Versions 1.7.7 and below will support PHP version below 7
 
