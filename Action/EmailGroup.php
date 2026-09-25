@@ -29,7 +29,7 @@ class EmailGroup extends Base
         return array(
             'column_id' => t('Column'),
         'subject' => t('Email subject'),
-        'check_box_include_title' => t('Include Task Title and ID in subject line?'),
+        'check_box_include_title' => t('Include task title and ID in the subject line?'),
         );
     }
 

@@ -18,7 +18,7 @@ class EmailGroupDue extends Base
      */
     public function getDescription()
     {
-        return t('Send email notification of impending due date to Group Members Assigned');
+        return t('Send email notification of impending due date to assigned group members');
     }
     /**
      * Get the list of compatible events
