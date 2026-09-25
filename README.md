@@ -53,6 +53,18 @@ Group_assign Versions 1.7.7 and below will support PHP version below 7
 * Setting included to enable group managment for Application Managers
   * Found in `Settings > Application settings`
 
+
+# JSON-RPC API
+
+The plugin registers these Kanboard JSON-RPC methods:
+
+* `createTaskGroupAssign(...)`: creates a task with the standard `createTask` arguments plus `group_id` and `other_assignees`.
+* `updateTaskGroupAssign(...)`: updates a task with the standard `updateTask` arguments plus `group_id` and `other_assignees`. This method keeps the historical behavior where omitted `group_id` and `other_assignees` clear group assignments.
+* `getTaskGroupAssign(id)`: returns the assigned group id, multiselect container id, other assignee user ids, and public user records for the task.
+* `patchTaskGroupAssign(id, group_id = null, other_assignees = null)`: safely updates only the assignment fields passed by the caller. Omitted fields are preserved; pass `group_id = 0` or `other_assignees = []` to clear a field.
+
+API writes reject groups and users that are not assignable in the target project.
+
 # Future enhancments
 Find bugs or missing functionality, please report it.
 

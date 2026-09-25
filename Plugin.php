@@ -204,8 +204,20 @@ class Plugin extends Base
         }
 
         //API
-        $this->api->getProcedureHandler()->withClassAndMethod('createTaskGroupAssign', new GroupAssignTaskProcedures($this->container), 'createTaskGroupAssign');
-        $this->api->getProcedureHandler()->withClassAndMethod('updateTaskGroupAssign', new GroupAssignTaskProcedures($this->container), 'updateTaskGroupAssign');
+        if ($this->container->offsetExists('api')) {
+            if ($this->container->offsetExists('apiProjectAccessMap')) {
+                $this->apiProjectAccessMap->add('GroupAssignTaskProcedures', 'createTaskGroupAssign', Role::PROJECT_MEMBER);
+                $this->apiProjectAccessMap->add('GroupAssignTaskProcedures', 'updateTaskGroupAssign', Role::PROJECT_MEMBER);
+                $this->apiProjectAccessMap->add('GroupAssignTaskProcedures', 'getTaskGroupAssign', Role::PROJECT_VIEWER);
+                $this->apiProjectAccessMap->add('GroupAssignTaskProcedures', 'patchTaskGroupAssign', Role::PROJECT_MEMBER);
+            }
+
+            $procedure = new GroupAssignTaskProcedures($this->container);
+            $this->api->getProcedureHandler()->withClassAndMethod('createTaskGroupAssign', $procedure, 'createTaskGroupAssign');
+            $this->api->getProcedureHandler()->withClassAndMethod('updateTaskGroupAssign', $procedure, 'updateTaskGroupAssign');
+            $this->api->getProcedureHandler()->withClassAndMethod('getTaskGroupAssign', $procedure, 'getTaskGroupAssign');
+            $this->api->getProcedureHandler()->withClassAndMethod('patchTaskGroupAssign', $procedure, 'patchTaskGroupAssign');
+        }
     }
 
     public function onStartup()
