@@ -297,14 +297,28 @@ class GroupAssignTaskProcedures extends BaseProcedure
     {
         $users = array();
         foreach ($other_assignees as $user_id) {
-            $user_id = (int) $user_id;
-            if ($user_id <= 0 || ! $this->projectPermissionModel->isAssignable($project_id, $user_id)) {
+            $user_id = $this->normalizeUserId($user_id);
+            if ($user_id === false || ! $this->projectPermissionModel->isAssignable($project_id, $user_id)) {
                 return false;
             }
             $users[$user_id] = $user_id;
         }
 
         return array_values($users);
+    }
+
+    private function normalizeUserId($user_id)
+    {
+        if (is_int($user_id)) {
+            return $user_id > 0 ? $user_id : false;
+        }
+
+        if (is_string($user_id) && ctype_digit($user_id)) {
+            $user_id = (int) $user_id;
+            return $user_id > 0 ? $user_id : false;
+        }
+
+        return false;
     }
 
     private function createMultiselect(array $other_assignees)

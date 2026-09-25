@@ -79,6 +79,7 @@ class GroupAssignTaskProceduresTest extends Base
         $this->assertFalse($procedure->patchTaskGroupAssign($taskId, 999));
         $this->assertFalse($procedure->patchTaskGroupAssign($taskId, 'not-a-group'));
         $this->assertFalse($procedure->patchTaskGroupAssign($taskId, null, array(999)));
+        $this->assertFalse($procedure->patchTaskGroupAssign($taskId, null, array($fixture['user_id'].'abc')));
 
         $assignment = $procedure->getTaskGroupAssign($taskId);
         $this->assertSame($fixture['group_id'], $assignment['group_id']);
