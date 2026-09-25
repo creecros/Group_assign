@@ -74,19 +74,11 @@ class TaskAllAssigneeFilter extends BaseFilter implements FilterInterface
     public function apply()
     {
         if (is_int($this->value) || ctype_digit($this->value)) {
-            $this->query->beginOr();
-            $this->query->eq(TaskModel::TABLE.'.owner_id', $this->value);
-            $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id='$this->value')");
-            $this->query->addCondition(TaskModel::TABLE.".owner_ms IN (SELECT group_id FROM ".MultiselectMemberModel::TABLE." WHERE ".MultiselectMemberModel::TABLE.".user_id='$this->value')");
-            $this->query->closeOr();
+            $this->applyUserAssignmentConditions((int) $this->value);
         } else {
             switch ($this->value) {
                 case 'me':
-                    $this->query->beginOr();
-                    $this->query->eq(TaskModel::TABLE.'.owner_id', $this->currentUserId);
-                    $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id='$this->currentUserId')");
-                    $this->query->addCondition(TaskModel::TABLE.".owner_ms IN (SELECT group_id FROM ".MultiselectMemberModel::TABLE." WHERE ".MultiselectMemberModel::TABLE.".user_id='$this->currentUserId')");
-                    $this->query->closeOr();
+                    $this->applyUserAssignmentConditions((int) $this->currentUserId);
                     break;
                 case 'nobody':
                     $this->query->eq(TaskModel::TABLE.'.owner_id', 0);
@@ -94,30 +86,64 @@ class TaskAllAssigneeFilter extends BaseFilter implements FilterInterface
                     $this->query->eq(TaskModel::TABLE.'.owner_ms', 0);
                     break;
                 default:
-                    $useridsarray = $this->getSubQuery()->findAllByColumn('id');
-                    $useridstring = implode("','", $useridsarray);
-                    (!empty($useridstring)) ? $useridstring = $useridstring : $useridstring = 0;
-                    if ($useridstring == '') {
-                        $useridstring = 0;
-                    }
                     $this->query->beginOr();
                     $this->query->ilike(UserModel::TABLE.'.username', '%'.$this->value.'%');
                     $this->query->ilike(UserModel::TABLE.'.name', '%'.$this->value.'%');
-                    $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT id FROM ".GroupModel::TABLE." WHERE ".GroupModel::TABLE.".name='$this->value')");
-                    $this->query->addCondition(TaskModel::TABLE.".owner_gp IN (SELECT group_id FROM ".GroupMemberModel::TABLE." WHERE ".GroupMemberModel::TABLE.".user_id IN ('$useridstring'))");
-                    $this->query->addCondition(TaskModel::TABLE.".owner_ms IN (SELECT group_id FROM ".MultiselectMemberModel::TABLE." WHERE ".MultiselectMemberModel::TABLE.".user_id IN ('$useridstring'))");
+                    $this->query->inSubquery(TaskModel::TABLE.'.owner_gp', $this->getGroupByNameSubQuery());
+                    $this->query->inSubquery(TaskModel::TABLE.'.owner_gp', $this->getGroupMemberByUserSearchSubQuery());
+                    $this->query->inSubquery(TaskModel::TABLE.'.owner_ms', $this->getMultiselectMemberByUserSearchSubQuery());
                     $this->query->closeOr();
             }
         }
     }
-    public function getSubQuery()
+    private function applyUserAssignmentConditions($user_id)
+    {
+        $this->query->beginOr();
+        $this->query->eq(TaskModel::TABLE.'.owner_id', $user_id);
+        $this->query->inSubquery(TaskModel::TABLE.'.owner_gp', $this->getGroupMemberByUserIdSubQuery($user_id));
+        $this->query->inSubquery(TaskModel::TABLE.'.owner_ms', $this->getMultiselectMemberByUserIdSubQuery($user_id));
+        $this->query->closeOr();
+    }
+
+    private function getGroupMemberByUserIdSubQuery($user_id)
+    {
+        return $this->db->table(GroupMemberModel::TABLE)
+            ->columns('group_id')
+            ->eq('user_id', $user_id);
+    }
+
+    private function getMultiselectMemberByUserIdSubQuery($user_id)
+    {
+        return $this->db->table(MultiselectMemberModel::TABLE)
+            ->columns('group_id')
+            ->eq('user_id', $user_id);
+    }
+
+    private function getGroupByNameSubQuery()
+    {
+        return $this->db->table(GroupModel::TABLE)
+            ->columns('id')
+            ->eq('name', $this->value);
+    }
+
+    private function getGroupMemberByUserSearchSubQuery()
+    {
+        return $this->db->table(GroupMemberModel::TABLE)
+            ->columns('group_id')
+            ->inSubquery('user_id', $this->getUserIdSubQuery());
+    }
+
+    private function getMultiselectMemberByUserSearchSubQuery()
+    {
+        return $this->db->table(MultiselectMemberModel::TABLE)
+            ->columns('group_id')
+            ->inSubquery('user_id', $this->getUserIdSubQuery());
+    }
+
+    private function getUserIdSubQuery()
     {
         return $this->db->table(UserModel::TABLE)
-            ->columns(
-                UserModel::TABLE.'.id',
-                UserModel::TABLE.'.username',
-                UserModel::TABLE.'.name'
-            )
+            ->columns(UserModel::TABLE.'.id')
             ->beginOr()
             ->ilike(UserModel::TABLE.'.username', '%'.$this->value.'%')
             ->ilike(UserModel::TABLE.'.name', '%'.$this->value.'%')
