@@ -29,9 +29,9 @@
                     break;
                 case 'date_due':
                     if (empty($task['date_due'])) {
-                        echo '<li>'.t('The due date have been removed').'</li>';
+                        echo '<li>'.t('The due date has been removed').'</li>';
                     } else {
-                        echo '<li>'.t('New due date: ').$this->dt->datetime($task['date_due']).'</li>';
+                        echo '<li>'.t('New due date: %s', $this->dt->datetime($task['date_due'])).'</li>';
                     }
                     break;
                 case 'description':
@@ -56,7 +56,7 @@
                     break;
                 case 'date_started':
                     if ($value != 0) {
-                        echo '<li>'.t('Start date changed: ').$this->dt->datetime($task['date_started']).'</li>';
+                        echo '<li>'.t('Start date changed: %s', $this->dt->datetime($task['date_started'])).'</li>';
                     }
                     break;
                 case 'owner_gp':
@@ -70,11 +70,11 @@
                     if (empty($task['owner_ms'])) {
                         echo '<li>'.t('The task is not assigned to multiple users anymore').'</li>';
                     } else {
-                        echo '<li>'.t('The task has been assigned other users').'</li>';
+                        echo '<li>'.t('The task has been assigned to other users').'</li>';
                     }
                     break;
                 default:
-                    echo '<li>'.t('The field "%s" have been updated', $field).'</li>';
+                    echo '<li>'.t('The field "%s" has been updated', $field).'</li>';
             }
         }
 
