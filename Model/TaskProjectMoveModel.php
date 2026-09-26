@@ -60,6 +60,11 @@ class TaskProjectMoveModel extends TaskDuplicationModel
                     $this->multiselectMemberModel->removeUser($ms_id, $user['id']);
                 }
             }
+
+            if (empty($this->multiselectMemberModel->getMembers($ms_id))) {
+                $this->db->table(TaskModel::TABLE)->eq('id', $task_id)->update(['owner_ms' => 0]);
+                $this->groupAssignmentModel->removeMultiselectIfUnused($ms_id);
+            }
         }
 
 

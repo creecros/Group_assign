@@ -73,12 +73,26 @@ class AssignGroup extends Base
      */
     public function doAction(array $data)
     {
+        $group_id = $this->groupAssignmentModel->normalizeGroupId($this->getParam('group_id'));
+        if ($group_id === false || ! $this->groupAssignmentModel->validateGroupAssignment($data['task']['project_id'], $group_id)) {
+            return false;
+        }
+
+        $task = $this->taskFinderModel->getById($data['task_id']);
+        if (empty($task)) {
+            return false;
+        }
+
         $values = array(
             'id' => $data['task_id'],
-            'owner_gp' => $this->getParam('group_id'),
+            'owner_gp' => $group_id,
         );
+        $result = $this->taskModificationModel->update($values);
+        if ($result && $this->groupAssignmentModel->assignmentsChanged($task, $values)) {
+            $this->groupAssignmentModel->assigneeChanged($task, $values);
+        }
 
-        return $this->taskModificationModel->update($values);
+        return $result;
     }
 
     /**

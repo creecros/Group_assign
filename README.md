@@ -56,14 +56,73 @@ Group_assign Versions 1.7.7 and below will support PHP version below 7
 
 # JSON-RPC API
 
-The plugin registers these Kanboard JSON-RPC methods:
+The plugin registers these Kanboard JSON-RPC methods. All writes reject groups and users that are not assignable in the target project and return `false` on validation failure.
 
-* `createTaskGroupAssign(...)`: creates a task with the standard `createTask` arguments plus `group_id` and `other_assignees`.
-* `updateTaskGroupAssign(...)`: updates a task with the standard `updateTask` arguments plus `group_id` and `other_assignees`. This method keeps the historical behavior where omitted `group_id` and `other_assignees` clear group assignments.
-* `getTaskGroupAssign(id)`: returns the assigned group id, multiselect container id, other assignee user ids, and public user records for the task.
-* `patchTaskGroupAssign(id, group_id = null, other_assignees = null)`: safely updates only the assignment fields passed by the caller. Omitted fields are preserved; pass `group_id = 0` or `other_assignees = []` to clear a field.
+## `createTaskGroupAssign(...)`
 
-API writes reject groups and users that are not assignable in the target project.
+Creates a task with the standard Kanboard `createTask` arguments plus:
+
+| Extra argument | Meaning |
+| --- | --- |
+| `group_id` | Assigned Group id. Use `0` for no group. |
+| `other_assignees` | Array of user ids for Other Assignees. Use `[]` for none. |
+
+The plugin stores these fields as `tasks.owner_gp` and `tasks.owner_ms`. When there are no Other Assignees, `owner_ms` is kept as `0`; the plugin does not keep empty multiselect containers as task assignments.
+
+## `updateTaskGroupAssign(...)`
+
+Updates a task with the standard Kanboard `updateTask` arguments plus `group_id` and `other_assignees`.
+
+Warning: this method keeps the historical overwrite behavior:
+
+* omitted `group_id` clears the Assigned Group (`owner_gp = 0`);
+* omitted `other_assignees` clears Other Assignees (`owner_ms = 0`);
+* `owner_id = null` preserves the current main assignee;
+* do not pass `other_assignees = null`; pass an array, or omit it only when you intend to clear.
+
+Prefer `patchTaskGroupAssign()` when you only need to change group/other-assignee fields.
+
+## `getTaskGroupAssign(id)`
+
+Returns:
+
+```json
+{
+  "task_id": 123,
+  "group_id": 45,
+  "other_assignee_ids": [7, 8],
+  "other_assignees": [
+    {
+      "id": 7,
+      "username": "alice",
+      "name": "Alice",
+      "email": "alice@example.com",
+      "avatar_path": "",
+      "is_active": 1
+    }
+  ],
+  "multiselect_id": 67
+}
+```
+
+`other_assignees` contains only public user fields. `multiselect_id` is an internal container id; use `other_assignee_ids` for API updates.
+
+## `patchTaskGroupAssign(id, group_id = null, other_assignees = null)`
+
+Safely updates only the assignment fields passed by the caller:
+
+* omit `group_id` or pass `null` to preserve the current Assigned Group;
+* pass `group_id = 0` to clear the Assigned Group;
+* omit `other_assignees` or pass `null` to preserve current Other Assignees;
+* pass `other_assignees = []` to clear Other Assignees;
+* pass `other_assignees = [1, 2]` to replace Other Assignees with exactly those users.
+
+Safe merge flow:
+
+1. Call `getTaskGroupAssign(id)`.
+2. Merge your intended `group_id` or `other_assignee_ids` change locally.
+3. Call `patchTaskGroupAssign(id, group_id, other_assignees)`.
+4. Call `getTaskGroupAssign(id)` again and verify the returned assignment.
 
 # Future enhancments
 Find bugs or missing functionality, please report it.

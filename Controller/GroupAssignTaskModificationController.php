@@ -11,6 +11,7 @@ use Kanboard\Model\CategoryModel;
 use Kanboard\Model\TaskCreationModel;
 use Kanboard\Model\TaskProjectDuplicationModel;
 use Kanboard\Model\TaskFinderModel;
+use Kanboard\Model\TaskModel;
 use Kanboard\Model\ColorModel;
 use Kanboard\Controller\BaseController;
 use Kanboard\Core\Controller\PageNotFoundException;
@@ -139,48 +140,82 @@ class GroupAssignTaskModificationController extends BaseController
      */
     public function update()
     {
-        $previousMembers = array();
         $task = $this->getTask();
         $values = $this->request->getValues();
         $values['id'] = $task['id'];
         $values['project_id'] = $task['project_id'];
-        if (isset($values['owner_ms']) && !empty($values['owner_ms'])) {
-            if (!empty($task['owner_ms'])) {
-                $ms_id = $task['owner_ms'];
-                $previousMembers = $this->multiselectMemberModel->getMembers($ms_id);
-                $this->multiselectMemberModel->removeAllUsers($ms_id);
-            } else {
-                $ms_id = $this->multiselectModel->create();
-            }
-            foreach ($values['owner_ms'] as $user) {
-                if ($user !== 0) {
-                    $this->multiselectMemberModel->addUser($ms_id, $user);
-                }
-            }
-            unset($values['owner_ms']);
-            $values['owner_ms'] = $ms_id;
 
-            $newMembersSet = $this->multiselectMemberModel->getMembers($values['owner_ms']);
-            if (sort($previousMembers) !== sort($newMembersSet)) {
-                $this->multiselectMemberModel->assigneeChanged($task, $values);
-            }
+        $other_assignees = array();
+        $assignment_errors = array();
+        $new_ms_id = 0;
+        $assignments_processed = false;
 
-            if ($values['owner_gp'] !== $task['owner_gp']) {
-                $this->multiselectMemberModel->assigneeChanged($task, $values);
-            }
+        if ($this->helper->projectRole->canChangeAssignee($task)) {
+            $assignments_valid = $this->prepareGroupAssignmentValues($task['project_id'], $values, $other_assignees, $assignment_errors);
+            $assignments_processed = true;
         } else {
-            $this->multiselectMemberModel->removeAllUsers($task['owner_ms']);
+            unset($values['owner_gp']);
+            unset($values['owner_ms']);
+            $assignments_valid = true;
         }
 
         list($valid, $errors) = $this->taskValidator->validateModification($values);
+        $errors = array_merge($errors, $assignment_errors);
+        $valid = $valid && $assignments_valid;
 
-        if ($valid && $this->updateTask($task, $values, $errors)) {
+        if ($valid && $assignments_processed) {
+            $new_ms_id = $this->groupAssignmentModel->createMultiselect($other_assignees);
+            $values['owner_ms'] = $new_ms_id;
+        }
+
+        $updated = $valid && $this->updateTask($task, $values, $errors);
+
+        if ($updated) {
+            if ($assignments_processed) {
+                $this->groupAssignmentModel->removeMultiselectIfUnused((int) $task['owner_ms'], $new_ms_id);
+            }
+
+            if ($this->groupAssignmentModel->assignmentsChanged($task, $values, $assignments_processed ? $other_assignees : null)) {
+                $this->groupAssignmentModel->assigneeChanged($task, $values);
+            }
+
             $this->flash->success(t('Task updated successfully.'));
             $this->response->redirect($this->helper->url->to('TaskViewController', 'show', array('project_id' => $task['project_id'], 'task_id' => $task['id'])), true);
         } else {
+            if ($new_ms_id > 0 && (int) $this->db->table(TaskModel::TABLE)->eq('id', $task['id'])->findOneColumn('owner_ms') !== $new_ms_id) {
+                $this->multiselectModel->remove($new_ms_id);
+            }
+
             $this->flash->failure(t('Unable to update your task.'));
             $this->edit($values, $errors);
         }
+    }
+
+    private function prepareGroupAssignmentValues($project_id, array &$values, array &$other_assignees, array &$errors)
+    {
+        if (array_key_exists('owner_gp', $values)) {
+            $group_id = $this->groupAssignmentModel->normalizeGroupId($values['owner_gp']);
+            if ($group_id === false || ! $this->groupAssignmentModel->validateGroupAssignment($project_id, $group_id)) {
+                $errors['owner_gp'] = array(t('The assigned group is not allowed in this project.'));
+            } else {
+                $values['owner_gp'] = $group_id;
+            }
+        }
+
+        $raw_other_assignees = isset($values['owner_ms']) ? $values['owner_ms'] : array();
+        if (! is_array($raw_other_assignees)) {
+            $errors['owner_ms'] = array(t('The other assignees are not allowed in this project.'));
+        } else {
+            $other_assignees = $this->groupAssignmentModel->normalizeOtherAssignees($project_id, $raw_other_assignees);
+            if ($other_assignees === false) {
+                $errors['owner_ms'] = array(t('The other assignees are not allowed in this project.'));
+                $other_assignees = array();
+            }
+        }
+
+        $values['owner_ms'] = 0;
+
+        return empty($errors);
     }
 
     protected function updateTask(array &$task, array &$values, array &$errors)

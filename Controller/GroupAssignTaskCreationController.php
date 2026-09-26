@@ -55,16 +55,12 @@ class GroupAssignTaskCreationController extends BaseController
             unset($values['screenshot']);
         }
 
-        if (isset($values['owner_ms']) && !empty($values['owner_ms'])) {
-            $ms_id = $this->multiselectModel->create();
-            foreach ($values['owner_ms'] as $user) {
-                $this->multiselectMemberModel->addUser($ms_id, $user);
-            }
-            unset($values['owner_ms']);
-            $values['owner_ms'] = $ms_id;
-        }
-
+        $other_assignees = array();
+        $assignment_errors = array();
+        $assignments_valid = $this->prepareGroupAssignmentValues($project['id'], $values, $other_assignees, $assignment_errors);
         list($valid, $errors) = $this->taskValidator->validateCreation($values);
+        $errors = array_merge($errors, $assignment_errors);
+        $valid = $valid && $assignments_valid;
 
         if (! $valid) {
             $this->flash->failure(t('Unable to create your task.'));
@@ -73,8 +69,12 @@ class GroupAssignTaskCreationController extends BaseController
             $this->flash->failure(t('You cannot create tasks in this column.'));
             $this->response->redirect($this->helper->url->to('BoardViewController', 'show', array('project_id' => $project['id'])), true);
         } else {
+            $values['owner_ms'] = $this->groupAssignmentModel->createMultiselect($other_assignees);
             $task_id = $this->taskCreationModel->create($values);
             if ($task_id === 0) {
+                if ($values['owner_ms'] > 0) {
+                    $this->multiselectModel->remove($values['owner_ms']);
+                }
                 $this->flash->failure(t('Unable to create this task.'));
                 $this->response->redirect($this->helper->url->to('BoardViewController', 'show', array('project_id' => $project['id'])), true);
                 return;
@@ -96,6 +96,33 @@ class GroupAssignTaskCreationController extends BaseController
             $this->flash->success(t('Task created successfully.'));
             $this->afterSave($project, $values, $task_id);
         }
+    }
+
+    private function prepareGroupAssignmentValues($project_id, array &$values, array &$other_assignees, array &$errors)
+    {
+        if (array_key_exists('owner_gp', $values)) {
+            $group_id = $this->groupAssignmentModel->normalizeGroupId($values['owner_gp']);
+            if ($group_id === false || ! $this->groupAssignmentModel->validateGroupAssignment($project_id, $group_id)) {
+                $errors['owner_gp'] = array(t('The assigned group is not allowed in this project.'));
+            } else {
+                $values['owner_gp'] = $group_id;
+            }
+        }
+
+        $raw_other_assignees = isset($values['owner_ms']) ? $values['owner_ms'] : array();
+        if (! is_array($raw_other_assignees)) {
+            $errors['owner_ms'] = array(t('The other assignees are not allowed in this project.'));
+        } else {
+            $other_assignees = $this->groupAssignmentModel->normalizeOtherAssignees($project_id, $raw_other_assignees);
+            if ($other_assignees === false) {
+                $errors['owner_ms'] = array(t('The other assignees are not allowed in this project.'));
+                $other_assignees = array();
+            }
+        }
+
+        $values['owner_ms'] = 0;
+
+        return empty($errors);
     }
 
     /**

@@ -5,8 +5,6 @@ namespace Kanboard\Plugin\Group_assign\Api\Procedure;
 use Kanboard\Api\Authorization\ProjectAuthorization;
 use Kanboard\Api\Authorization\TaskAuthorization;
 use Kanboard\Api\Procedure\BaseProcedure;
-use Kanboard\Model\ProjectGroupRoleModel;
-use Kanboard\Model\TaskModel;
 
 /**
  * CreateTask with Group or Other Assignees API Procedure
@@ -51,9 +49,9 @@ class GroupAssignTaskProcedures extends BaseProcedure
 
         $owner_id = (int) $owner_id;
         $creator_id = (int) $creator_id;
-        $group_id = $this->normalizeGroupId($group_id);
-        $other_assignees = $this->normalizeOtherAssignees($project_id, $other_assignees);
-        if ($group_id === false || $other_assignees === false || ! $this->validateGroupAssignment($project_id, $group_id)) {
+        $group_id = $this->groupAssignmentModel->normalizeGroupId($group_id);
+        $other_assignees = $this->groupAssignmentModel->normalizeOtherAssignees($project_id, $other_assignees);
+        if ($group_id === false || $other_assignees === false || ! $this->groupAssignmentModel->validateGroupAssignment($project_id, $group_id)) {
             return false;
         }
 
@@ -101,7 +99,7 @@ class GroupAssignTaskProcedures extends BaseProcedure
             return false;
         }
 
-        $values['owner_ms'] = $this->createMultiselect($other_assignees);
+        $values['owner_ms'] = $this->groupAssignmentModel->createMultiselect($other_assignees);
         $task_id = $this->taskCreationModel->create($values);
         if ($task_id === 0 && $values['owner_ms'] > 0) {
             $this->multiselectModel->remove($values['owner_ms']);
@@ -142,9 +140,9 @@ class GroupAssignTaskProcedures extends BaseProcedure
         }
 
         $owner_id = $owner_id === null ? null : (int) $owner_id;
-        $group_id = $this->normalizeGroupId($group_id);
-        $other_assignees = $this->normalizeOtherAssignees($project_id, $other_assignees);
-        if ($group_id === false || $other_assignees === false || ! $this->validateGroupAssignment($project_id, $group_id)) {
+        $group_id = $this->groupAssignmentModel->normalizeGroupId($group_id);
+        $other_assignees = $this->groupAssignmentModel->normalizeOtherAssignees($project_id, $other_assignees);
+        if ($group_id === false || $other_assignees === false || ! $this->groupAssignmentModel->validateGroupAssignment($project_id, $group_id)) {
             return false;
         }
 
@@ -186,7 +184,7 @@ class GroupAssignTaskProcedures extends BaseProcedure
 
     public function getTaskGroupAssign($id)
     {
-        TaskAuthorization::getInstance($this->container)->check($this->getClassName(), 'getTask', $id);
+        TaskAuthorization::getInstance($this->container)->check($this->getClassName(), 'getTaskGroupAssign', $id);
 
         $task = $this->taskFinderModel->getById($id);
         if (empty($task)) {
@@ -218,8 +216,8 @@ class GroupAssignTaskProcedures extends BaseProcedure
 
         $values = array('id' => (int) $id);
         if ($group_id !== null) {
-            $group_id = $this->normalizeGroupId($group_id);
-            if ($group_id === false || ! $this->validateGroupAssignment($project_id, $group_id)) {
+            $group_id = $this->groupAssignmentModel->normalizeGroupId($group_id);
+            if ($group_id === false || ! $this->groupAssignmentModel->validateGroupAssignment($project_id, $group_id)) {
                 return false;
             }
             $values['owner_gp'] = $group_id;
@@ -229,7 +227,7 @@ class GroupAssignTaskProcedures extends BaseProcedure
             if (! is_array($other_assignees)) {
                 return false;
             }
-            $other_assignees = $this->normalizeOtherAssignees($project_id, $other_assignees);
+            $other_assignees = $this->groupAssignmentModel->normalizeOtherAssignees($project_id, $other_assignees);
             if ($other_assignees === false) {
                 return false;
             }
@@ -245,11 +243,7 @@ class GroupAssignTaskProcedures extends BaseProcedure
             return false;
         }
 
-        if (array_key_exists('owner_ms', $values)) {
-            return $this->updateTaskWithOtherAssignees($values, $other_assignees);
-        }
-
-        return $this->taskModificationModel->update($values);
+        return $this->updateTaskWithOtherAssignees($values, array_key_exists('owner_ms', $values) ? $other_assignees : null);
     }
 
     private function projectExists($project_id)
@@ -257,27 +251,6 @@ class GroupAssignTaskProcedures extends BaseProcedure
         return $this->projectModel->getById($project_id) !== false;
     }
 
-    private function validateGroupAssignment($project_id, $group_id)
-    {
-        return $group_id === 0 || $this->db
-            ->table(ProjectGroupRoleModel::TABLE)
-            ->eq('project_id', $project_id)
-            ->eq('group_id', $group_id)
-            ->exists();
-    }
-
-    private function normalizeGroupId($group_id)
-    {
-        if (is_int($group_id)) {
-            return $group_id >= 0 ? $group_id : false;
-        }
-
-        if (is_string($group_id) && ctype_digit($group_id)) {
-            return (int) $group_id;
-        }
-
-        return false;
-    }
 
     private function filterPublicUsers(array $users)
     {
@@ -293,49 +266,8 @@ class GroupAssignTaskProcedures extends BaseProcedure
         }, $users);
     }
 
-    private function normalizeOtherAssignees($project_id, array $other_assignees)
-    {
-        $users = array();
-        foreach ($other_assignees as $user_id) {
-            $user_id = $this->normalizeUserId($user_id);
-            if ($user_id === false || ! $this->projectPermissionModel->isAssignable($project_id, $user_id)) {
-                return false;
-            }
-            $users[$user_id] = $user_id;
-        }
 
-        return array_values($users);
-    }
-
-    private function normalizeUserId($user_id)
-    {
-        if (is_int($user_id)) {
-            return $user_id > 0 ? $user_id : false;
-        }
-
-        if (is_string($user_id) && ctype_digit($user_id)) {
-            $user_id = (int) $user_id;
-            return $user_id > 0 ? $user_id : false;
-        }
-
-        return false;
-    }
-
-    private function createMultiselect(array $other_assignees)
-    {
-        if (empty($other_assignees)) {
-            return 0;
-        }
-
-        $ms_id = $this->multiselectModel->create();
-        foreach ($other_assignees as $user_id) {
-            $this->multiselectMemberModel->addUser($ms_id, $user_id);
-        }
-
-        return $ms_id;
-    }
-
-    private function updateTaskWithOtherAssignees(array $values, array $other_assignees)
+    private function updateTaskWithOtherAssignees(array $values, array $other_assignees = null)
     {
         $task = $this->taskFinderModel->getById($values['id']);
         if (empty($task)) {
@@ -343,27 +275,23 @@ class GroupAssignTaskProcedures extends BaseProcedure
         }
 
         $previous_ms_id = (int) $task['owner_ms'];
-        $values['owner_ms'] = $this->createMultiselect($other_assignees);
+        if ($other_assignees !== null) {
+            $values['owner_ms'] = $this->groupAssignmentModel->createMultiselect($other_assignees);
+        }
+
         $result = $this->taskModificationModel->update($values);
 
         if ($result) {
-            $this->removeMultiselectIfUnused($previous_ms_id, $values['owner_ms']);
-        } elseif ($values['owner_ms'] > 0) {
+            $this->groupAssignmentModel->removeMultiselectIfUnused($previous_ms_id, isset($values['owner_ms']) ? $values['owner_ms'] : $previous_ms_id);
+            if ($this->groupAssignmentModel->assignmentsChanged($task, $values, $other_assignees)) {
+                $this->groupAssignmentModel->assigneeChanged($task, $values);
+            }
+        } elseif (isset($values['owner_ms']) && $values['owner_ms'] > 0) {
             $this->multiselectModel->remove($values['owner_ms']);
         }
 
         return $result;
     }
 
-    private function removeMultiselectIfUnused($ms_id, $replacement_ms_id)
-    {
-        if ($ms_id <= 0 || $ms_id === $replacement_ms_id) {
-            return;
-        }
-
-        if (! $this->db->table(TaskModel::TABLE)->eq('owner_ms', $ms_id)->exists()) {
-            $this->multiselectModel->remove($ms_id);
-        }
-    }
 
 }

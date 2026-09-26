@@ -100,6 +100,7 @@ class TaskAllAssigneeFilter extends BaseFilter implements FilterInterface
     {
         $this->query->beginOr();
         $this->query->eq(TaskModel::TABLE.'.owner_id', $user_id);
+        $this->query->eq(TaskModel::TABLE.'.owner_gp', $user_id);
         $this->query->inSubquery(TaskModel::TABLE.'.owner_gp', $this->getGroupMemberByUserIdSubQuery($user_id));
         $this->query->inSubquery(TaskModel::TABLE.'.owner_ms', $this->getMultiselectMemberByUserIdSubQuery($user_id));
         $this->query->closeOr();
