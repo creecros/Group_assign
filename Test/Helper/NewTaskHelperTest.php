@@ -1,13 +1,14 @@
 <?php
 
 require_once 'tests/units/Base.php';
+use KanboardTests\units\Base;
 
 use Kanboard\Core\Plugin\Loader;
 use Kanboard\Plugin\Group_assign\Helper\NewTaskHelper;
 
 class NewTaskHelperTest extends Base
 {
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $plugin = new Loader($this->container);

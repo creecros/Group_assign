@@ -1,6 +1,7 @@
 <?php
 
 require_once 'tests/units/Base.php';
+use KanboardTests\units\Base;
 
 use Kanboard\Core\Plugin\Loader;
 use Kanboard\Plugin\Group_assign\Model\NewTaskFinderModel;
@@ -12,7 +13,7 @@ use Kanboard\Model\TaskModel;
 
 class NewTaskFinderModelTest extends Base
 {
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $plugin = new Loader($this->container);

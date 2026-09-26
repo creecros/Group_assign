@@ -86,6 +86,60 @@ class GroupAssignTaskProceduresTest extends Base
         $this->assertSame(array($fixture['user_id']), $assignment['other_assignee_ids']);
     }
 
+    public function testUpdateClearsOmittedAssignmentsAndPreservesNullOwner()
+    {
+        $fixture = $this->createAssignmentFixture();
+        $procedure = new GroupAssignTaskProcedures($this->container);
+        $taskId = $procedure->createTaskGroupAssign(
+            'Task',
+            $fixture['project_id'],
+            '',
+            0,
+            $fixture['user_id'],
+            0,
+            '',
+            '',
+            0,
+            0,
+            null,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            '',
+            array(),
+            '',
+            null,
+            null,
+            $fixture['group_id'],
+            array($fixture['user_id'])
+        );
+
+        $this->assertTrue($procedure->updateTaskGroupAssign($taskId));
+        $task = $this->container['taskFinderModel']->getById($taskId);
+        $assignment = $procedure->getTaskGroupAssign($taskId);
+
+        $this->assertSame($fixture['user_id'], (int) $task['owner_id']);
+        $this->assertSame(0, $assignment['group_id']);
+        $this->assertSame(array(), $assignment['other_assignee_ids']);
+        $this->assertSame(0, $assignment['multiselect_id']);
+    }
+
+    public function testApiRejectsUnassignableGroupUsersOwnerAndCreator()
+    {
+        $fixture = $this->createAssignmentFixture();
+        $procedure = new GroupAssignTaskProcedures($this->container);
+        $unassignableUserId = (new UserModel($this->container))->create(array('username' => 'outsider'));
+        $unassignableGroupId = (new GroupModel($this->container))->create('Outsider Group');
+
+        $this->assertFalse($procedure->createTaskGroupAssign('Task', $fixture['project_id'], '', 0, $unassignableUserId));
+        $this->assertFalse($procedure->createTaskGroupAssign('Task', $fixture['project_id'], '', 0, 0, $unassignableUserId));
+        $this->assertFalse($procedure->createTaskGroupAssign('Task', $fixture['project_id'], '', 0, 0, 0, '', '', 0, 0, null, 0, 0, 0, 0, 0, 0, '', array(), '', null, null, $unassignableGroupId));
+        $this->assertFalse($procedure->createTaskGroupAssign('Task', $fixture['project_id'], '', 0, 0, 0, '', '', 0, 0, null, 0, 0, 0, 0, 0, 0, '', array(), '', null, null, 0, array($unassignableUserId)));
+    }
+
     private function createAssignedTask(GroupAssignTaskProcedures $procedure, array $fixture)
     {
         return $procedure->createTaskGroupAssign(

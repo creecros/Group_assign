@@ -73,10 +73,10 @@ class Plugin extends Base
             $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
                 return new GroupAssignTaskDuplicationModel($c);
             });
-            $this->container['taskProjectMoveModel '] = $this->container->factory(function ($c) {
+            $this->container['taskProjectMoveModel'] = $this->container->factory(function ($c) {
                 return new TaskProjectMoveModel($c);
             });
-            $this->container['taskRecurrenceModel '] = $this->container->factory(function ($c) {
+            $this->container['taskRecurrenceModel'] = $this->container->factory(function ($c) {
                 return new TaskRecurrenceModel($c);
             });
         } else {
@@ -92,10 +92,10 @@ class Plugin extends Base
             $this->container['taskDuplicationModel'] = $this->container->factory(function ($c) {
                 return new GroupAssignTaskDuplicationModel($c);
             });            
-            $this->container['taskProjectMoveModel '] = $this->container->factory(function ($c) {
+            $this->container['taskProjectMoveModel'] = $this->container->factory(function ($c) {
                 return new TaskProjectMoveModel($c);
             });
-            $this->container['taskRecurrenceModel '] = $this->container->factory(function ($c) {
+            $this->container['taskRecurrenceModel'] = $this->container->factory(function ($c) {
                 return new TaskRecurrenceModel($c);
             });
         }
@@ -123,13 +123,15 @@ class Plugin extends Base
                 $ms_id = $this->db->table(TaskModel::TABLE)->eq('id', $source)->findOneColumn('owner_ms');
                 if ($ms_id > 0) {
                     $users_in_ms = $this->multiselectMemberModel->getMembers($ms_id);
-                    $new_ms_id = $this->multiselectModel->create();
-                    $this->db->table(TaskModel::TABLE)->eq('id', $hook_values['destination_task_id'])->update(['owner_ms' => $new_ms_id]);
+                    $assignable_users = array();
                     foreach ($users_in_ms as $user) {
                         if ($this->projectPermissionModel->isAssignable($project_Id, $user['id'])) {
-                            $this->multiselectMemberModel->addUser($new_ms_id, $user['id']);
+                            $assignable_users[] = (int) $user['id'];
                         }
                     }
+
+                    $new_ms_id = $this->groupAssignmentModel->createMultiselect($assignable_users);
+                    $this->db->table(TaskModel::TABLE)->eq('id', $hook_values['destination_task_id'])->update(['owner_ms' => $new_ms_id]);
                 }
             }
         });
@@ -229,7 +231,7 @@ class Plugin extends Base
     {
         return [
             'Plugin\Group_assign\Model' => [
-                'MultiselectMemberModel', 'MultiselectModel', 'GroupColorExtension', 'TaskProjectMoveModel', 'TaskRecurrenceModel',
+                'MultiselectMemberModel', 'MultiselectModel', 'GroupAssignmentModel', 'GroupColorExtension', 'TaskProjectMoveModel', 'TaskRecurrenceModel',
             ],
         ];
     }

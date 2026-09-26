@@ -144,12 +144,12 @@ class GroupAssignTaskDuplicationModel extends Base
             $values[$field] = $task[$field];
         }
 
-        $ms_id = $this->multiselectModel->create();
-        $users_in_ms = $this->multiselectMemberModel->getMembers($values['owner_ms']);
-        $values['owner_ms'] = $ms_id;
+        $users_in_ms = $values['owner_ms'] > 0 ? $this->multiselectMemberModel->getMembers($values['owner_ms']) : array();
+        $user_ids = array();
         foreach ($users_in_ms as $user) {
-            $this->multiselectMemberModel->addUser($ms_id, $user['id']);
+            $user_ids[] = (int) $user['id'];
         }
+        $values['owner_ms'] = $this->groupAssignmentModel->createMultiselect($user_ids);
 
         return $values;
     }

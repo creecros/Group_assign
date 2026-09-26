@@ -38,6 +38,21 @@ class TaskAllAssigneeFilterTest extends Base
         $this->assertSame(array($taskId), $this->getFilteredTaskIds("O'Reilly"));
     }
 
+    public function testFilterMatchesNumericGroupId()
+    {
+        $projectId = (new ProjectModel($this->container))->create(array('name' => 'Project'));
+        (new GroupModel($this->container))->create('Other Group');
+        $groupId = (new GroupModel($this->container))->create('Numeric Group');
+        $taskId = (new TaskCreationModel($this->container))->create(array(
+            'project_id' => $projectId,
+            'title' => 'Numeric group task',
+            'owner_id' => 1,
+            'owner_gp' => $groupId,
+        ));
+
+        $this->assertSame(array($taskId), $this->getFilteredTaskIds((string) $groupId));
+    }
+
     public function testFilterMatchesUserGroupAndMultiselectAssignments()
     {
         $projectId = (new ProjectModel($this->container))->create(array('name' => 'Project'));
