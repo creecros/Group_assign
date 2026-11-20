@@ -267,7 +267,7 @@ class GroupAssignTaskProcedures extends BaseProcedure
     }
 
 
-    private function updateTaskWithOtherAssignees(array $values, array $other_assignees = null)
+    private function updateTaskWithOtherAssignees(array $values, ?array $other_assignees = null)
     {
         $task = $this->taskFinderModel->getById($values['id']);
         if (empty($task)) {

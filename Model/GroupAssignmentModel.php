@@ -107,7 +107,7 @@ class GroupAssignmentModel extends Base
         }
     }
 
-    public function assignmentsChanged(array $task, array $values, array $new_member_ids = null)
+    public function assignmentsChanged(array $task, array $values, ?array $new_member_ids = null)
     {
         if (array_key_exists('owner_gp', $values) && (int) $values['owner_gp'] !== (int) $task['owner_gp']) {
             return true;
