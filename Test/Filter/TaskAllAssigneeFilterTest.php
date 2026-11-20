@@ -115,7 +115,26 @@ class TaskAllAssigneeFilterTest extends Base
         $this->assertSame(array($groupTaskId, $multiselectTaskId), $taskIds);
     }
 
-    private function getFilteredTaskIds($value)
+    public function testMeDoesNotMatchGroupIdEqualToUserId()
+    {
+        $projectId = (new ProjectModel($this->container))->create(array('name' => 'Project'));
+        $memberId = (new UserModel($this->container))->create(array('username' => 'group-member'));
+        $groupId = (new GroupModel($this->container))->create('Group');
+        $this->assertTrue((new GroupMemberModel($this->container))->addUser($groupId, $memberId));
+
+        $taskId = (new TaskCreationModel($this->container))->create(array(
+            'project_id' => $projectId,
+            'title' => 'Task of another group',
+            'owner_gp' => $groupId,
+        ));
+
+        // The current user's id equals the group id, but the user is not in the group.
+        $this->assertSame(array(), $this->getFilteredTaskIds('me', $groupId));
+        $this->assertSame(array($taskId), $this->getFilteredTaskIds('me', $memberId));
+        $this->assertSame(array($taskId), $this->getFilteredTaskIds((string) $groupId));
+    }
+
+    private function getFilteredTaskIds($value, $currentUserId = 0)
     {
         $db = $this->container['db'];
         $query = $db
@@ -126,6 +145,7 @@ class TaskAllAssigneeFilterTest extends Base
 
         $filter = new TaskAllAssigneeFilter($value);
         $filter->setDatabase($db);
+        $filter->setCurrentUserId($currentUserId);
         $filter->withQuery($query);
         $filter->apply();
 

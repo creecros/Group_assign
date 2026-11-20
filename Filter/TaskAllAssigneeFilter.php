@@ -74,11 +74,11 @@ class TaskAllAssigneeFilter extends BaseFilter implements FilterInterface
     public function apply()
     {
         if (is_int($this->value) || ctype_digit($this->value)) {
-            $this->applyUserAssignmentConditions((int) $this->value);
+            $this->applyUserAssignmentConditions((int) $this->value, true);
         } else {
             switch ($this->value) {
                 case 'me':
-                    $this->applyUserAssignmentConditions((int) $this->currentUserId);
+                    $this->applyUserAssignmentConditions((int) $this->currentUserId, false);
                     break;
                 case 'nobody':
                     $this->query->eq(TaskModel::TABLE.'.owner_id', 0);
@@ -96,11 +96,19 @@ class TaskAllAssigneeFilter extends BaseFilter implements FilterInterface
             }
         }
     }
-    private function applyUserAssignmentConditions($user_id)
+    /**
+     * Match tasks where the user is the assignee, a member of the assigned
+     * group or one of the other assignees. With $match_group_id the value is
+     * also accepted as a group id (allassignees:<GroupID>); allassignees:me
+     * must not do that, the current user's id is not a group id.
+     */
+    private function applyUserAssignmentConditions($user_id, $match_group_id)
     {
         $this->query->beginOr();
         $this->query->eq(TaskModel::TABLE.'.owner_id', $user_id);
-        $this->query->eq(TaskModel::TABLE.'.owner_gp', $user_id);
+        if ($match_group_id) {
+            $this->query->eq(TaskModel::TABLE.'.owner_gp', $user_id);
+        }
         $this->query->inSubquery(TaskModel::TABLE.'.owner_gp', $this->getGroupMemberByUserIdSubQuery($user_id));
         $this->query->inSubquery(TaskModel::TABLE.'.owner_ms', $this->getMultiselectMemberByUserIdSubQuery($user_id));
         $this->query->closeOr();
