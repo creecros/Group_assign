@@ -75,6 +75,7 @@ use Kanboard\Model\UserNotificationModel;
 use Kanboard\Model\UserNotificationTypeModel;
 use Kanboard\Model\UserUnreadNotificationModel;
 use Kanboard\Core\Base;
+use Kanboard\Core\Security\Role;
 
 class NewTaskFinderModel extends Base
 {
@@ -125,7 +126,7 @@ class NewTaskFinderModel extends Base
      */
     public function getUserQuery($user_id)
     {
-        return $this->getExtendedQuery()
+        $query = $this->getExtendedQuery()
                     ->beginOr()
                     ->eq(TaskModel::TABLE.'.owner_id', $user_id)
                     ->inSubquery(TaskModel::TABLE.'.id', $this->db->table(SubtaskModel::TABLE)->columns('task_id')->eq('user_id', $user_id))
@@ -135,6 +136,15 @@ class NewTaskFinderModel extends Base
                     ->eq(TaskModel::TABLE.'.is_active', TaskModel::STATUS_OPEN)
                     ->eq(ProjectModel::TABLE.'.is_active', ProjectModel::ACTIVE)
                     ->eq(ColumnModel::TABLE.'.hide_in_dashboard', 0);
+
+        // As in Kanboard core (1.2.55+): only projects the user can access
+        $projectIds = $this->getActiveProjectIdsByUser($user_id);
+
+        if ($projectIds !== null) {
+            $query->in(TaskModel::TABLE.'.project_id', $projectIds);
+        }
+
+        return $query;
     }
 
     /**
@@ -305,7 +315,40 @@ class NewTaskFinderModel extends Base
      */
     public function getOverdueTasksByUser($user_id)
     {
-        return $this->getOverdueTasksQuery()->eq(TaskModel::TABLE.'.owner_id', $user_id)->findAll();
+        $query = $this->getOverdueTasksQuery()
+            ->eq(TaskModel::TABLE.'.owner_id', $user_id);
+
+        // As in Kanboard core (1.2.55+): only projects the user can access
+        $projectIds = $this->getActiveProjectIdsByUser($user_id);
+
+        if ($projectIds !== null) {
+            $query->in(TaskModel::TABLE.'.project_id', $projectIds);
+        }
+
+        return $query->findAll();
+    }
+
+    /**
+     * Active projects the user can access; null for administrators (all projects).
+     * Same as the private method of Kanboard core's TaskFinderModel (1.2.55+).
+     *
+     * @access private
+     * @param  integer $user_id
+     * @return array|null
+     */
+    private function getActiveProjectIdsByUser($user_id)
+    {
+        if ($user_id == 0) {
+            return null;
+        }
+
+        if ($this->db->table(UserModel::TABLE)->eq('id', $user_id)->eq('role', Role::APP_ADMIN)->exists()) {
+            return null;
+        }
+
+        $projectIds = $this->projectPermissionModel->getActiveProjectIds($user_id);
+
+        return empty($projectIds) ? array(-1) : $projectIds;
     }
 
     /**
@@ -391,17 +434,31 @@ class NewTaskFinderModel extends Base
     public function getICalQuery()
     {
         return $this->db->table(TaskModel::TABLE)
-            ->left(UserModel::TABLE, 'ua', 'id', TaskModel::TABLE, 'owner_id')
-            ->left(UserModel::TABLE, 'uc', 'id', TaskModel::TABLE, 'creator_id')
-            ->columns(
-                TaskModel::TABLE.'.*',
-                'ua.email AS assignee_email',
-                'ua.name AS assignee_name',
-                'ua.username AS assignee_username',
-                'uc.email AS creator_email',
-                'uc.name AS creator_name',
-                'uc.username AS creator_username'
+            ->columns(TaskModel::TABLE.'.*');
+    }
+
+    /**
+     * Get iCal query restricted to the active projects a user can access (Kanboard 1.2.58+)
+     *
+     * @access public
+     * @param  integer $user_id
+     * @return \PicoDb\Table
+     */
+    public function getUserICalQuery($user_id)
+    {
+        $query = $this->getICalQuery();
+        $projectIds = $this->getActiveProjectIdsByUser($user_id);
+
+        if ($projectIds === null) {
+            $query->inSubquery(
+                TaskModel::TABLE.'.project_id',
+                $this->db->table(ProjectModel::TABLE)->columns('id')->eq('is_active', ProjectModel::ACTIVE)
             );
+        } else {
+            $query->in(TaskModel::TABLE.'.project_id', $projectIds);
+        }
+
+        return $query;
     }
 
     /**

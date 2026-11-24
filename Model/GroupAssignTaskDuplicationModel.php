@@ -78,6 +78,26 @@ class GroupAssignTaskDuplicationModel extends Base
     }
 
     /**
+     * Get the column of the destination project that matches the title of the given column;
+     * the first column of the destination project when no title matches.
+     * Same as Kanboard core's TaskDuplicationModel (1.2.58+), which its controllers call.
+     *
+     * @access public
+     * @param  integer $project_id Destination project id
+     * @param  integer $column_id  Column id from any project
+     * @return integer
+     */
+    public function getDestinationColumnId($project_id, $column_id)
+    {
+        $destination_column_id = $this->columnModel->getColumnIdByTitle(
+            $project_id,
+            $this->columnModel->getColumnTitleById($column_id)
+        );
+
+        return $destination_column_id ?: $this->columnModel->getFirstColumnId($project_id);
+    }
+
+    /**
      * Check if the assignee and the category are available in the destination project
      *
      * @access public
@@ -111,12 +131,7 @@ class GroupAssignTaskDuplicationModel extends Base
 
         // Check if the column exists for the destination project
         if ($values['column_id'] > 0) {
-            $values['column_id'] = $this->columnModel->getColumnIdByTitle(
-                $values['project_id'],
-                $this->columnModel->getColumnTitleById($values['column_id'])
-            );
-
-            $values['column_id'] = $values['column_id'] ?: $this->columnModel->getFirstColumnId($values['project_id']);
+            $values['column_id'] = $this->getDestinationColumnId($values['project_id'], $values['column_id']);
         }
 
         // Check if priority exists for destination project
