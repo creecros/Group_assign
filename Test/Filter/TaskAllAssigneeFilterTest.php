@@ -4,8 +4,10 @@ require_once 'tests/units/Base.php';
 use KanboardTests\units\Base;
 
 use Kanboard\Core\Plugin\Loader;
+use Kanboard\Core\Security\Role;
 use Kanboard\Model\GroupMemberModel;
 use Kanboard\Model\GroupModel;
+use Kanboard\Model\ProjectGroupRoleModel;
 use Kanboard\Model\ProjectModel;
 use Kanboard\Model\TaskCreationModel;
 use Kanboard\Model\TaskModel;
@@ -93,6 +95,9 @@ class TaskAllAssigneeFilterTest extends Base
 
         $this->assertTrue((new GroupMemberModel($this->container))->addUser($groupId, $userId));
         $this->assertTrue((new MultiselectMemberModel($this->container))->addUser($multiselectId, $userId));
+        // The dashboard lists only tasks of projects the user can access (as Kanboard core 1.2.55+),
+        // and an assigned group must be attached to the project: give the user access through the group.
+        $this->assertTrue((new ProjectGroupRoleModel($this->container))->addGroup($projectId, $groupId, Role::PROJECT_MEMBER));
 
         $groupTaskId = (new TaskCreationModel($this->container))->create(array(
             'project_id' => $projectId,
